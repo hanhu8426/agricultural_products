@@ -43,6 +43,7 @@ const tableData = [
     address: 'No. 189, Grove St, Los Angeles',
   },
 ]
+
 </script>
 
 <template>
@@ -73,6 +74,9 @@ const tableData = [
             <p class="underline-text">
               农业农村部”农产品批发价格200指数“{{activeButton}}走势图
             </p>
+          </div>
+          <div>
+
           </div>
         </div>
       </el-tab-pane>
