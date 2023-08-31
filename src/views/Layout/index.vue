@@ -14,3 +14,9 @@ import LayoutFooter from './components/LayoutFooter.vue'
     <LayoutFooter />
   </div>
 </template>
+
+<style>
+LayoutHeader{
+ width: 100%;
+}
+</style>
