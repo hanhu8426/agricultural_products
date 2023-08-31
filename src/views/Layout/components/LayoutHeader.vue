@@ -15,7 +15,7 @@
         <li class="home">
           <RouterLink to="/">首页</RouterLink>
         </li>
-        <li> <RouterLink to="/">数据查询</RouterLink> </li>
+        <li> <RouterLink to="/dataQuery">数据查询</RouterLink> </li>
         <li> <RouterLink to="/">市场行情</RouterLink> </li>
         <li> <RouterLink to="/">分析预测</RouterLink> </li>
       </ul>
