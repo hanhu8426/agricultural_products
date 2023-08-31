@@ -1,10 +1,14 @@
 <script setup>
 import { ref } from 'vue'
+import trendChart from './DailyChart.vue';
+import MonthlyChart from './MonthlyChart.vue';
 const activeName = ref('first')
 const activeButton = ref('日度'); // 初始选中按钮
 const handleButtonClick = (button) => {
   activeButton.value = button;
 };
+
+
 
 const tableData = [
   {
@@ -73,6 +77,12 @@ const tableData = [
             <p class="underline-text">
               农业农村部”农产品批发价格200指数“{{activeButton}}走势图
             </p>
+          </div>
+          <div v-if="activeButton === '日度'">
+            <trendChart></trendChart>
+          </div>
+          <div v-else-if="activeButton === '月度'">
+            <MonthlyChart></MonthlyChart>  
           </div>
         </div>
       </el-tab-pane>
@@ -188,6 +198,5 @@ const tableData = [
   font-weight: bold;
 }
 .map{
-  background-color: #f5fdfb;
 }
 </style>
