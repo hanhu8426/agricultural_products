@@ -4,7 +4,7 @@ import trendChart from './DailyChart.vue';
 import MonthlyChart from './MonthlyChart.vue';
 
 // 引入Vue中的函数
-import { ref ,computed, onMounted} from 'vue'
+import {computed, onMounted, ref} from 'vue'
 import axios from "axios";
 
 // 创建变量
@@ -31,7 +31,7 @@ function formatDate(date) {
 
 // 分页展示价格行情
 const currentPage = ref(1); // 当前页码
-const pageSize = ref(20); // 每页显示数量
+const pageSize = ref(10); // 每页显示数量
 const priceTable = ref([
   {
     date: '2016-05-03',
@@ -80,13 +80,9 @@ function handlePageChange(newPage) {
 }
 
 // 选择框选中内容
-const value = ref([]);
 const props = {
   expandTrigger: 'hover'
 };
-const handleChange = (value) => {
-  console.log(value)
-}
 
 // options_market是市场的选项，options_product是产品选项
 const options_market = [
@@ -175,8 +171,8 @@ const options_market = [
     label: '上海市',
     children: [
       {
-        value: 'azure',
-        label: 'Azure Components',
+        value: '上海农产品中心批发市场经营管理有限公司',
+        label: '上海农产品中心批发市场经营管理有限公司',
       },
     ],
   },
@@ -444,268 +440,446 @@ const options_market = [
 
 const options_product = [
   {
-    value: 'beijing',
-    label: '北京',
+    value: '粮食',
+    label: '粮食 ',
     children: [
       {
-        value: 'disciplines',
-        label: 'Disciplines',
+        value: '谷物',
+        label: '谷物',
         children: [
           {
             value: 'consistency',
             label: 'Consistency',
           },
-          {
-            value: 'feedback',
-            label: 'Feedback',
-          },
-          {
-            value: 'efficiency',
-            label: 'Efficiency',
-          },
-          {
-            value: 'controllability',
-            label: 'Controllability',
-          },
         ],
       },
       {
-        value: 'navigation',
-        label: 'Navigation',
+        value: '豆类',
+        label: '豆类',
         children: [
           {
             value: 'side nav',
             label: 'Side Navigation',
           },
+        ],
+      },
+      {
+        value: '薯类',
+        label: '薯类',
+        children: [
           {
-            value: 'top nav',
-            label: 'Top Navigation',
+            value: 'side nav',
+            label: 'Side Navigation',
+          },
+        ],
+      },
+      {
+        value: '其他粮食',
+        label: '其他粮食',
+        children: [
+          {
+            value: 'side nav',
+            label: 'Side Navigation',
           },
         ],
       },
     ],
   },
   {
-    value: 'component',
-    label: 'Component',
+    value: '油料',
+    label: '油料',
     children: [
       {
-        value: 'basic',
-        label: 'Basic',
+        value: '食用油籽',
+        label: '食用油籽',
         children: [
           {
             value: 'layout',
             label: 'Layout',
           },
-          {
-            value: 'color',
-            label: 'Color',
-          },
-          {
-            value: 'typography',
-            label: 'Typography',
-          },
-          {
-            value: 'icon',
-            label: 'Icon',
-          },
-          {
-            value: 'button',
-            label: 'Button',
-          },
         ],
       },
       {
-        value: 'form',
-        label: 'Form',
-        children: [
-          {
-            value: 'radio',
-            label: 'Radio',
-          },
-          {
-            value: 'checkbox',
-            label: 'Checkbox',
-          },
-          {
-            value: 'input',
-            label: 'Input',
-          },
-          {
-            value: 'input-number',
-            label: 'InputNumber',
-          },
-          {
-            value: 'select',
-            label: 'Select',
-          },
-          {
-            value: 'cascader',
-            label: 'Cascader',
-          },
-          {
-            value: 'switch',
-            label: 'Switch',
-          },
-          {
-            value: 'slider',
-            label: 'Slider',
-          },
-          {
-            value: 'time-picker',
-            label: 'TimePicker',
-          },
-          {
-            value: 'date-picker',
-            label: 'DatePicker',
-          },
-          {
-            value: 'datetime-picker',
-            label: 'DateTimePicker',
-          },
-          {
-            value: 'upload',
-            label: 'Upload',
-          },
-          {
-            value: 'rate',
-            label: 'Rate',
-          },
-          {
-            value: 'form',
-            label: 'Form',
-          },
-        ],
-      },
-      {
-        value: 'data',
-        label: 'Data',
+        value: '非食用油籽',
+        label: '非食用油籽',
         children: [
           {
             value: 'table',
             label: 'Table',
-          },
-          {
-            value: 'tag',
-            label: 'Tag',
-          },
-          {
-            value: 'progress',
-            label: 'Progress',
-          },
-          {
-            value: 'tree',
-            label: 'Tree',
-          },
-          {
-            value: 'pagination',
-            label: 'Pagination',
-          },
-          {
-            value: 'badge',
-            label: 'Badge',
-          },
-        ],
-      },
-      {
-        value: 'notice',
-        label: 'Notice',
-        children: [
-          {
-            value: 'alert',
-            label: 'Alert',
-          },
-          {
-            value: 'loading',
-            label: 'Loading',
-          },
-          {
-            value: 'message',
-            label: 'Message',
-          },
-          {
-            value: 'message-box',
-            label: 'MessageBox',
-          },
-          {
-            value: 'notification',
-            label: 'Notification',
-          },
-        ],
-      },
-      {
-        value: 'navigation',
-        label: 'Navigation',
-        children: [
-          {
-            value: 'menu',
-            label: 'Menu',
-          },
-          {
-            value: 'tabs',
-            label: 'Tabs',
-          },
-          {
-            value: 'breadcrumb',
-            label: 'Breadcrumb',
-          },
-          {
-            value: 'dropdown',
-            label: 'Dropdown',
-          },
-          {
-            value: 'steps',
-            label: 'Steps',
-          },
-        ],
-      },
-      {
-        value: 'others',
-        label: 'Others',
-        children: [
-          {
-            value: 'dialog',
-            label: 'Dialog',
-          },
-          {
-            value: 'tooltip',
-            label: 'Tooltip',
-          },
-          {
-            value: 'popover',
-            label: 'Popover',
-          },
-          {
-            value: 'card',
-            label: 'Card',
-          },
-          {
-            value: 'carousel',
-            label: 'Carousel',
-          },
-          {
-            value: 'collapse',
-            label: 'Collapse',
           },
         ],
       },
     ],
   },
   {
-    value: 'resource',
-    label: 'Resource',
+    value: '糖烟茶',
+    label: '糖烟茶',
     children: [
       {
-        value: 'axure',
-        label: 'Axure Components',
+        value: '糖类',
+        label: '糖类',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+    ],
+  },
+  {
+    value: '蔬菜',
+    label: '蔬菜',
+    children: [
+      {
+        value: '叶菜类',
+        label: '叶菜类',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
       },
       {
-        value: 'sketch',
-        label: 'Sketch Templates',
+        value: '根和根茎类',
+        label: '根和根茎类',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
       },
       {
-        value: 'docs',
-        label: 'Design Documentation',
+        value: '芽、花类',
+        label: '芽、花类',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '瓜果类',
+        label: '瓜果类',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '食用菌类',
+        label: '食用菌类',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '其他蔬菜类',
+        label: '其他蔬菜类',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+    ],
+  },
+  {
+    value: '果品',
+    label: '果品',
+    children: [
+      {
+        value: '仁果类',
+        label: '仁果类',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '浆果类',
+        label: '浆果类',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '核果类',
+        label: '核果类',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '坚果类',
+        label: '坚果类',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '柑果类',
+        label: '柑果类',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '热带及亚热带水果',
+        label: '热带及亚热带水果',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '瓜类水果',
+        label: '瓜类水果',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '其他果品',
+        label: '其他果品',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+    ],
+  },
+  {
+    value: '药材',
+    label: '药材',
+    children: [
+      {
+        value: '种子果实类',
+        label: '种子果实类',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '其他果实类',
+        label: '其他果实类',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+    ],
+  },
+  {
+    value: '植物油',
+    label: '植物油',
+    children: [
+      {
+        value: '食用植物油',
+        label: '食用植物油',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '非食用植物油',
+        label: '非食用植物油',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+    ],
+  },
+  {
+    value: '畜禽产品',
+    label: '畜禽产品',
+    children: [
+      {
+        value: '家畜',
+        label: '家畜',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '家禽',
+        label: '家禽',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '特种养殖动物',
+        label: '特种养殖动物',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '禽蛋',
+        label: '禽蛋',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '动物皮毛',
+        label: '动物皮毛',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '其他畜禽产品',
+        label: '其他畜禽产品',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+    ],
+  },
+  {
+    value: '水产品',
+    label: '水产品',
+    children: [
+      {
+        value: '淡水鱼',
+        label: '淡水鱼',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '海水鱼',
+        label: '海水鱼',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '虾蟹及两栖类',
+        label: '虾蟹及两栖类',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '螺贝及软体类',
+        label: '螺贝及软体类',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '海水植物',
+        label: '海水植物',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '水产加工品',
+        label: '水产加工品',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '加工副产品',
+        label: '加工副产品',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
+      },
+      {
+        value: '其他水产品',
+        label: '其他水产品',
+        children: [
+          {
+            value:'甘蔗',
+            label:'甘蔗',
+          }
+        ]
       },
     ],
   },
@@ -723,6 +897,12 @@ const getDailyExponent = async () => {
 };
 
 // 从后端接收“农产品批发价格200月度指数”
+// 首先先保存选项框中的内容
+const handleMarketChange = () => {
+
+}
+const handleProductChange = () => {
+}
 const getMonthlyExponent = async () => {
   try {
     const response = await axios.get('http://10.203.234.177:8081/exponent/monthlyExponent'); // 发起请求获取数据
@@ -732,12 +912,40 @@ const getMonthlyExponent = async () => {
   }
 };
 
-
 // 在组件加载时获取数据
 onMounted(() => {
   getDailyExponent();
+  handleQuery();
 });
 
+// 批发市场价格查询向后端传递数据
+// 使用ref创建响应式变量来保存选中的值
+const selectedMarket = ref([]);
+const selectedProduct = ref([]);
+
+const handleQuery = () => {
+  // 在这里执行查询操作，发送选中的值到后端
+  const selectedMarketValue = selectedMarket.value;
+  const selectedProductValue = selectedProduct.value;
+
+  // 发送请求到后端，传递选中的值
+  // 可以使用axios或其他方式发送HTTP请求
+  axios.get('http://10.203.234.177:8081/priceQuery/PriceData', {
+    params: {
+      market: selectedMarketValue,
+      product: selectedProductValue,
+    },
+  })
+      .then((response) => {
+        // 处理从后端返回的数据
+        // 更新组件中的数据以供模板使用
+        priceTable.value = response.data.data;
+      })
+      .catch((error) => {
+        // 处理请求错误
+        console.error('请求失败', error);
+      });
+};
 
 </script>
 
@@ -789,25 +997,25 @@ onMounted(() => {
           <div class="firstSelect">
             批发市场:
             <el-cascader
-                v-model="value"
+                v-model="selectedMarket"
                 :options="options_market"
                 :props="props"
-                @change="handleChange"
+                @change="handleMarketChange"
                 placeholder="请选择"
             />
           </div>
           <div class="firstSelect">
             品种名称:
             <el-cascader
-                v-model="value"
+                v-model="selectedProduct"
                 :options="options_product"
                 :props="props"
-                @change="handleChange"
+                @change="handleProductChange"
                 placeholder="请选择"
             />
           </div>
           <div class="queryBox">
-            <el-button class="queryButton" type="success" plain >查询</el-button>
+            <el-button class="queryButton" type="success" plain @click="handleQuery">查询</el-button>
           </div>
           <div class="remark">
             单位：元/公斤
@@ -815,12 +1023,12 @@ onMounted(() => {
         </div>
         <div class="scrollTable">
           <el-table :data="displayedData" class="custom-table">
-            <el-table-column prop="address" label="批发市场"/>
-            <el-table-column prop="date" label="品种" width="180" />
-            <el-table-column prop="name" label="最高价"  />
-            <el-table-column prop="date" label="最低价" width="180" />
-            <el-table-column prop="date" label="大宗价" width="180" />
-            <el-table-column prop="address" label="产地"/>
+            <el-table-column prop="market" label="批发市场"/>
+            <el-table-column prop="variety" label="品种" width="180" />
+            <el-table-column prop="highestPrice" label="最高价"  />
+            <el-table-column prop="minimumPrice" label="最低价" width="180" />
+            <el-table-column prop="bulkPrice" label="大宗价" width="180" />
+            <el-table-column prop="province" label="产地"/>
           </el-table>
         </div>
 
