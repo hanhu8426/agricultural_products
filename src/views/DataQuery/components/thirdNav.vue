@@ -930,12 +930,7 @@ const getMonthlyExponent = async () => {
   }
 };
 
-<<<<<<< HEAD
-=======
-//截取指数数据
 
-
->>>>>>> e8fd0df55d52d7b41b83a3b6b79c7b47541f4e30
 // 在组件加载时获取数据
 onMounted(() => {
   getDailyExponent();
