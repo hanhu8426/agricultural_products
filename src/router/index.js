@@ -2,8 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '@/views/Login/index.vue'
 import Layout from '@/views/Layout/index.vue'
 import Home from '@/views/Home/index.vue'
-import Category from '@/views/Category/index.vue'
 import DataQuery from '@/views/DataQuery/index.vue'
+import MarketInfo from '@/views/MarketInfo/index.vue'
+import AnalysisForecast from '@/views/AnalysisForecast/index.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,12 +18,16 @@ const router = createRouter({
           component: Home
         },
         {
-          path:'category',
-          component: Category
-        },
-        {
           path:'dataQuery',
           component: DataQuery
+        },
+        {
+          path:'marketInfo',
+          component: MarketInfo
+        },
+        {
+          path:'analysisForecast',
+          component: AnalysisForecast
         },
       ]
     },

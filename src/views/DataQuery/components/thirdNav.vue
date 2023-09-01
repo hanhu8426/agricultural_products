@@ -885,12 +885,24 @@ const options_product = [
   },
 ]
 
-// 从后端接收“农产品批发价格200日度指数”
 const index200Table = ref([]); //初始化空数组
+const productExponentArray = ref([]);
+const refProductExponent = ref([]);
+const vegetableBasketExponentArray = ref([]);
+const refVegetableBasketExponent = ref([]);
+const grainOilExponentArray = ref([]);
+const refGrainOilExponent = ref([]);
+// 从后端接收“农产品批发价格200日度指数”
 const getDailyExponent = async () => {
   try {
     const response = await axios.get('http://10.203.234.177:8081/exponent/dailyExponent'); // 发起请求获取数据
     index200Table.value = response.data.data; // 更新tableData变量
+    productExponentArray.value = response.data.data.map(item => item.productExponent);
+    refProductExponent.value = productExponentArray.value.slice(0,10).reverse();
+    vegetableBasketExponentArray.value = response.data.data.map(item => item.vegetableBasketExponent);
+    refVegetableBasketExponent.value = vegetableBasketExponentArray.value.slice(0,10).reverse();
+    grainOilExponentArray.value = response.data.data.map(item => item.grainOilExponent);
+    refGrainOilExponent.value = grainOilExponentArray.value.slice(0,10).reverse();
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -907,11 +919,23 @@ const getMonthlyExponent = async () => {
   try {
     const response = await axios.get('http://10.203.234.177:8081/exponent/monthlyExponent'); // 发起请求获取数据
     index200Table.value = response.data.data; // 更新tableData变量
+    productExponentArray.value = response.data.data.map(item => item.productExponent);
+    refProductExponent.value = productExponentArray.value.slice(0,10).reverse();
+    vegetableBasketExponentArray.value = response.data.data.map(item => item.vegetableBasketExponent);
+    refVegetableBasketExponent.value = vegetableBasketExponentArray.value.slice(0,10).reverse();
+    grainOilExponentArray.value = response.data.data.map(item => item.grainOilExponent);
+    refGrainOilExponent.value = grainOilExponentArray.value.slice(0,10).reverse();
   } catch (error) {
     console.error('Error fetching data:', error);
   }
 };
 
+<<<<<<< HEAD
+=======
+//截取指数数据
+
+
+>>>>>>> e8fd0df55d52d7b41b83a3b6b79c7b47541f4e30
 // 在组件加载时获取数据
 onMounted(() => {
   getDailyExponent();
@@ -981,10 +1005,10 @@ const handleQuery = () => {
           </div>
 
           <div v-if="activeButton === '日度'">
-            <trendChart></trendChart>
+            <trendChart :refProductExponent="refProductExponent" :refVegetableBasketExponent="refVegetableBasketExponent" :refGrainOilExponent="refGrainOilExponent" />
           </div>
           <div v-else-if="activeButton === '月度'">
-            <MonthlyChart></MonthlyChart>
+            <MonthlyChart :refProductExponent="refProductExponent" :refVegetableBasketExponent="refVegetableBasketExponent" :refGrainOilExponent="refGrainOilExponent"></MonthlyChart>
           </div>
         </div>
       </el-tab-pane>

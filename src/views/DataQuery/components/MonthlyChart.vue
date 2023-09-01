@@ -8,15 +8,20 @@
 import Highcharts from 'highcharts';
 
 export default {
+  props:{
+      refProductExponent: Array,
+      refVegetableBasketExponent: Array,
+      refGrainOilExponent: Array,
+  },
   mounted() {
     Highcharts.chart('chart-container', {
       title:{
-        text: '注：定基指数，以2015年为100计算',
-        align: 'right',
-        style: {
-          fontSize: '12px', // 设置标题的大小
-          fontWeight:  'normal'
-        }
+          text: '注：定基指数，以2015年为100计算',
+          align: 'right',
+          style: {
+              fontSize: '12px', // 设置标题的大小
+              fontWeight:  'normal'
+          }
       },
       tooltip: {
         formatter: function () {
@@ -25,84 +30,70 @@ export default {
         },
       },
       yAxis: {
-        title: {
-          enabled: false
-        }
+          title: {
+              enabled: false
+          }
       },
 
       xAxis: {
-        type: 'datetime',
-        dateTimeLabelFormats: {
-          month: '%Y-%m' // 日期格式为年月（例如：2022年01月）
-        },
+          type: 'datetime',
+          dateTimeLabelFormats: {
+              month: '%Y-%m' // 日期格式为年月（例如：2022年01月）
+          },
       },
 
       legend: {
-        layout: 'horizontal',
-        align: 'center', // 居中对齐
-        verticalAlign: 'top'
+          layout: 'horizontal',
+          align: 'center', // 居中对齐
+          verticalAlign: 'top'
       },
 
       plotOptions: {
-        series: {
-          label: {
-            connectorAllowed: false
-          },
-          pointStart: Date.parse('2022-01'), // 设置起始日期
-          pointInterval: 30 * 24 * 3600 * 1000
-        }
+          series: {
+              label: {
+                  connectorAllowed: false
+              },
+              pointStart: Date.parse('2022-11'), // 设置起始日期
+              pointInterval: 30 * 24 * 3600 * 1000
+          }
       },
 
       series: [{
-        name: '农产品200指数',
-        data: [43934, 48656,65165,81827, 112143
-          , 142383,
-          171533, 165174, 155157, 161454, 154610
-        ]
+          name: '农产品批发价格200指数',
+          data: this.refProductExponent
       }
-        , {
-          name: 'Manufacturing',
-          data: [24916, 37941, 29742, 29851, 32490, 30282,
-            38121, 36885, 33726, 34243, 31050]
-        }, {
-          name: 'Sales & Distribution',
-          data: [11744, 30000, 16005, 19771, 20185, 24377,
-            32147, 30912, 29243, 29213, 25663]
-        }, {
-          name: 'Operations & Maintenance',
-          data: [null, null, null, null, null, null, null,
-            null, 11164, 11218, 10077]
-        }, {
-          name: 'Other',
-          data: [21908, 5548, 8105, 11248, 8989, 11816, 18274,
-            17300, 13053, 11906, 10073]
-        }
+       , {
+           name: '‘菜篮子’产品批发价格200指数',
+           data: this.refVegetableBasketExponent
+       }, {
+           name: '粮油产品批发价格200指数',
+           data: this.refGrainOilExponent
+       }
       ],
-
+      
 
       responsive: {
-        rules: [{
-          condition: {
-            maxWidth: 500
-          },
-          chartOptions: {
-            legend: {
-              layout: 'horizontal',
-              align: 'center',
-              verticalAlign: 'bottom'
-            }
-          }
-        }]
+          rules: [{
+              condition: {
+                  maxWidth: 500
+              },
+              chartOptions: {
+                  legend: {
+                      layout: 'horizontal',
+                      align: 'center',
+                      verticalAlign: 'bottom'
+                  }
+              }
+          }]
       },
       credits: {
-        enabled: false
+          enabled: false
       },
       chart: {
-        backgroundColor: '#f5fdfb' // 设置图表的背景颜色为浅蓝色
-      },
-    });
+          backgroundColor: '#f5fdfb' // 设置图表的背景颜色为浅蓝色
+},
+  });
   }
 }
 </script>
-  
-  
+
