@@ -16,11 +16,11 @@
           <RouterLink to="/">首页</RouterLink>
         </li>
         <li> <RouterLink to="/dataQuery">数据查询</RouterLink> </li>
-        <li> <RouterLink to="/">市场行情</RouterLink> </li>
-        <li> <RouterLink to="/">分析预测</RouterLink> </li>
+        <li> <RouterLink to="/marketInfo">市场行情</RouterLink> </li>
+        <li> <RouterLink to="/analysisForecast">分析预测</RouterLink> </li>
       </ul>
       <ul class="login">
-        <li> <RouterLink to="/">管理员登录</RouterLink> </li>
+        <li> <RouterLink to="/login">管理员登录</RouterLink> </li>
       </ul>
       
       
