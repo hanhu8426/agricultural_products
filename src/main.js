@@ -9,10 +9,10 @@ import router from './router'
 import '@/styles/common.scss'
 import '@/styles/index.scss'
 
-import {getCategory} from '@/apis/testAPI'
-getCategory().then(res=>{
-    console.log(res)
-})
+// import {getCategory} from '@/apis/api'
+// getCategory().then(res=>{
+//     console.log(res)
+// })
 const app = createApp(App)
 
 app.use(createPinia())
