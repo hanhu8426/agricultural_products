@@ -1,3 +1,11 @@
+<script setup>
+import NavBar from './components/NavBar.vue';
+</script>
+
 <template>
-    我是市场行情页
+  <NavBar></NavBar>
 </template>
+
+<style scoped lang="scss">
+
+</style>
