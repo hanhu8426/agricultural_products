@@ -895,7 +895,7 @@ const refGrainOilExponent = ref([]);
 // 从后端接收“农产品批发价格200日度指数”
 const getDailyExponent = async () => {
   try {
-    const response = await axios.get('http://10.203.234.177:8081/exponent/dailyExponent'); // 发起请求获取数据
+    const response = await axios.get('http://10.203.149.83:8081/exponent/dailyExponent'); // 发起请求获取数据
     index200Table.value = response.data.data; // 更新tableData变量
     productExponentArray.value = response.data.data.map(item => item.productExponent);
     refProductExponent.value = productExponentArray.value.slice(0,10).reverse();
@@ -917,7 +917,7 @@ const handleProductChange = () => {
 }
 const getMonthlyExponent = async () => {
   try {
-    const response = await axios.get('http://10.203.234.177:8081/exponent/monthlyExponent'); // 发起请求获取数据
+    const response = await axios.get('http://10.203.149.83:8081/exponent/monthlyExponent'); // 发起请求获取数据
     index200Table.value = response.data.data; // 更新tableData变量
     productExponentArray.value = response.data.data.map(item => item.productExponent);
     refProductExponent.value = productExponentArray.value.slice(0,10).reverse();
@@ -949,7 +949,7 @@ const handleQuery = () => {
 
   // 发送请求到后端，传递选中的值
   // 可以使用axios或其他方式发送HTTP请求
-  axios.get('http://10.203.234.177:8081/priceQuery/PriceData', {
+  axios.get('http://10.203.149.83:8081/priceQuery/PriceData', {
     params: {
       market: selectedMarketValue,
       product: selectedProductValue,

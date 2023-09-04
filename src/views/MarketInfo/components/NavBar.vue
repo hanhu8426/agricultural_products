@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import MarketLineChartVue from './MarketLineChart.vue';
 const activeName = ref('first')
 const selectedMarket = ref([]);
 const selectedProduct = ref([]);
@@ -258,17 +259,21 @@ const handleProductChange = () => {
                     <div class="overView_title">查询结果</div>
                     <div class="overView_item">
                         <p class="overView_item_title"> <img src="@/assets/images/shijian.png" /> 时间范围 </p>
-                        <p></p>
+                        <p class="overView_item_text">2023/08--2023/09</p>
                     </div>
                     <div class="overView_item">
-
+                        <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格： <span class="font_red">37元</span> </p>
+                        <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
+                        <p class="overView_item_text">2023/08--2023/09</p>
                     </div>
                     <div class="overView_item">
-
+                        <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格 <span class="font_red">37元</span> </p>
+                        <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
+                        <p class="overView_item_text">2023/08--2023/09</p>
                     </div>
                 </div>
                 <div class="tableArea">
-
+                    <MarketLineChartVue></MarketLineChartVue>
                 </div>
             </div>
         </el-tab-pane>
@@ -428,7 +433,7 @@ const handleProductChange = () => {
 }
 .overView_item{
     border-bottom: 1px dashed #ddd;
-    min-height: 100px;
+    min-height: 80px;
     box-sizing: border-box;
     padding: 0 10px;
 }
@@ -452,6 +457,20 @@ p img {
     max-height: 100%;
     vertical-align: middle;
     background: transparent;
+}
+.overView_item_text{
+    font-family: MicrosoftYaHei;
+    font-size: 14px;
+    font-weight: 400;
+    font-stretch: normal;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: #666;
+    text-align: center;
+}
+.font_red{
+    font-size: 22px;
+    color: #c50b03;
 }
 
 </style>
