@@ -1117,15 +1117,23 @@ const handleQuery = () => {
   --el-tabs-header-height: 60px;
   --el-font-size-base:16px;
 }
+.el-tabs__nav {
+  width: 100%;
+  justify-content: center; 
+}
 .el-tabs--top .el-tabs__item.is-top:last-child, .el-tabs--top .el-tabs__item.is-bottom:last-child, .el-tabs--bottom .el-tabs__item.is-top:last-child, .el-tabs--bottom .el-tabs__item.is-bottom:last-child {
-  padding-right: 50%;
-  padding-left: 50%;
+  width: auto;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .el-tabs--top .el-tabs__item.is-top:nth-child(2), .el-tabs--top .el-tabs__item.is-bottom:nth-child(2), .el-tabs--bottom .el-tabs__item.is-top:nth-child(2), .el-tabs--bottom .el-tabs__item.is-bottom:nth-child(2) {
-  padding-left: 85%;
-  padding-right: 50%;
+  width: auto;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .topButton{
   width: 100%;
