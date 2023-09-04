@@ -46,7 +46,7 @@ onMounted(() => {
     <el-tab-pane label="日度报告" name="first" strech="true" >
       <!--报告的边框-->
       <div class="report_border" v-for="item in displayedData" :key="item.id">
-      <!--报告的内容（三条）-->
+        <!--报告的内容（三条）-->
         <div class="report_item">
           <!--左侧日历栏 -->
           <div class="date">
@@ -116,6 +116,52 @@ onMounted(() => {
       </div>
     </el-tab-pane>
   </el-tabs>
+
+  <div class="forecast">
+    <div class="forecast_report">
+      <div class="forecast_report_title">
+
+      </div>
+      <div class="forecast_report_content">
+
+      </div>
+    </div>
+    <div class="forecast_chart">
+      <div class="forecast_chart_title">
+        <p class="forecast_chart_title_content">
+          常见农产品各省市（全国）均价预测表
+        </p>
+      </div>
+      <div class="forecast_chart_searchBar">
+        <div class="selectOption">
+          省市:
+          <el-cascader
+              v-model="selectedProvince"
+              :options="options_province"
+              :props="props"
+              @change="handleProvinceChange"
+              placeholder="请选择"
+          />
+        </div>
+        <div class="selectOption">
+          品种:
+          <el-cascader
+              v-model="selectedProduct"
+              :options="options_product"
+              :props="props"
+              @change="handleProductChange"
+              placeholder="请选择"
+          />
+        </div>
+        <div class="query">
+          <el-button class="queryButton" type="success" plain @click="handleQuery">查询</el-button>
+        </div>
+      </div>
+      <div class="forecast_chart_content">
+
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -173,4 +219,48 @@ onMounted(() => {
   color: #999;
 }
 
+.forecast{
+  display: flex;
+  justify-content:normal;/* 水平对齐 */
+  padding-top: 30px;
+  height:400px;
+}
+.forecast_report{
+  width: 25%;
+  height: 100%;
+  border: 1px solid #c6c6c6;
+  border-radius: 10px;
+  margin-left: 10px;
+  margin-right: 40px;
+}
+
+.forecast_report_title{
+
+}
+
+.forecast_chart{
+
+}
+.forecast_chart_searchBar{
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.selectOption{
+  margin-right: 30px;
+}
+
+.forecast_chart_title_content{
+  color: #b32b2e;
+  font-weight: bold;
+  font-size: 20px;
+  display: inline-block; /* 让下划线仅包围文本 */
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.query{
+  margin-left: 30px;
+}
 </style>
