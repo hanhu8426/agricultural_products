@@ -8,6 +8,13 @@ import {computed, onMounted, ref} from 'vue'
 import axios from "axios";
 
 // 创建变量
+// 表格展示数据
+const productExponentArray = ref([]);
+const refProductExponent = ref([]);
+const vegetableBasketExponentArray = ref([]);
+const refVegetableBasketExponent = ref([]);
+const grainOilExponentArray = ref([]);
+const refGrainOilExponent = ref([]);
 const activeName = ref('first')  //默认打开第一个标签页（农产品批发价格200指数）
 const activeButton = ref('日度'); // 初始选中按钮
 const handleButtonClick = (button) => {  // 点击日度、月度按钮进行跳转
@@ -79,366 +86,191 @@ function handlePageChange(newPage) {
   currentPage.value = newPage;
 }
 
-// 选择框选中内容
+// 设置下拉框是悬停点开
 const props = {
-  expandTrigger: 'hover'
-};
+  expandTrigger:'hover'
+}
 
 // options_market是市场的选项，options_product是产品选项
-const options_market = [
+const options_market = ref([
   {
     value: '北京市',
     label: '北京市',
-    children: [
-      {
-        value: 'disciplines',
-        label: 'Disciplines',
-      },
-    ],
+    children: [],
   },
   {
     value: '天津市',
     label: '天津市',
-    children: [
-      {
-        value: 'basic',
-        label: 'Basic',
-      },
-    ],
+    children: [],
   },
   {
     value: '河北省',
     label: '河北省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '山西省',
     label: '山西省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '内蒙古自治区',
     label: '内蒙古自治区',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '辽宁省',
     label: '辽宁省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '吉林省',
     label: '吉林省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '黑龙江省',
     label: '黑龙江省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '上海市',
     label: '上海市',
-    children: [
-      {
-        value: '上海农产品中心批发市场经营管理有限公司',
-        label: '上海农产品中心批发市场经营管理有限公司',
-      },
-    ],
+    children: [],
   },
   {
     value: '江苏省',
     label: '江苏省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '浙江省',
     label: '浙江省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '安徽省',
     label: '安徽省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '福建省',
     label: '福建省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '江西省',
     label: '江西省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '山东省',
     label: '山东省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '河南省',
     label: '河南省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '湖南省',
     label: '湖南省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '广东省',
     label: '广东省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '湖北省',
     label: '湖北省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '广东省',
     label: '广东省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '广西壮族自治区',
     label: '广西壮族自治区',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '海南省',
     label: '海南省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '重庆市',
     label: '重庆市',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '四川省',
     label: '四川省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '贵州省',
     label: '贵州省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '云南省',
     label: '云南省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '西藏自治区',
     label: '西藏自治区',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '陕西省',
     label: '陕西省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '甘肃省',
     label: '甘肃省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '青海省',
     label: '青海省',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '宁夏回族自治区',
     label: '宁夏回族自治区',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '新疆维吾尔自治区',
     label: '新疆维吾尔自治区',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '台湾',
     label: '台湾',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '香港特别行政区',
     label: '香港特别行政区',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
   {
     value: '澳门特别行政区',
     label: '澳门特别行政区',
-    children: [
-      {
-        value: 'azure',
-        label: 'Azure Components',
-      },
-    ],
+    children: [],
   },
-]
+])
 
-const options_product = [
+const options_product = ref([
   {
     value: '粮食',
     label: '粮食 ',
@@ -446,42 +278,22 @@ const options_product = [
       {
         value: '谷物',
         label: '谷物',
-        children: [
-          {
-            value: 'consistency',
-            label: 'Consistency',
-          },
-        ],
+        children: [],
       },
       {
         value: '豆类',
         label: '豆类',
-        children: [
-          {
-            value: 'side nav',
-            label: 'Side Navigation',
-          },
-        ],
+        children: [],
       },
       {
         value: '薯类',
         label: '薯类',
-        children: [
-          {
-            value: 'side nav',
-            label: 'Side Navigation',
-          },
-        ],
+        children: [],
       },
       {
         value: '其他粮食',
         label: '其他粮食',
-        children: [
-          {
-            value: 'side nav',
-            label: 'Side Navigation',
-          },
-        ],
+        children: [],
       },
     ],
   },
@@ -492,22 +304,12 @@ const options_product = [
       {
         value: '食用油籽',
         label: '食用油籽',
-        children: [
-          {
-            value: 'layout',
-            label: 'Layout',
-          },
-        ],
+        children: [],
       },
       {
         value: '非食用油籽',
         label: '非食用油籽',
-        children: [
-          {
-            value: 'table',
-            label: 'Table',
-          },
-        ],
+        children: [],
       },
     ],
   },
@@ -518,12 +320,7 @@ const options_product = [
       {
         value: '糖类',
         label: '糖类',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
     ],
   },
@@ -534,62 +331,32 @@ const options_product = [
       {
         value: '叶菜类',
         label: '叶菜类',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '根和根茎类',
         label: '根和根茎类',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '芽、花类',
         label: '芽、花类',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '瓜果类',
         label: '瓜果类',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: [],
       },
       {
         value: '食用菌类',
         label: '食用菌类',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '其他蔬菜类',
         label: '其他蔬菜类',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
     ],
   },
@@ -600,82 +367,42 @@ const options_product = [
       {
         value: '仁果类',
         label: '仁果类',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '浆果类',
         label: '浆果类',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '核果类',
         label: '核果类',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '坚果类',
         label: '坚果类',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '柑果类',
         label: '柑果类',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '热带及亚热带水果',
         label: '热带及亚热带水果',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '瓜类水果',
         label: '瓜类水果',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '其他果品',
         label: '其他果品',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
     ],
   },
@@ -686,22 +413,12 @@ const options_product = [
       {
         value: '种子果实类',
         label: '种子果实类',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '其他果实类',
         label: '其他果实类',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
     ],
   },
@@ -712,22 +429,12 @@ const options_product = [
       {
         value: '食用植物油',
         label: '食用植物油',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '非食用植物油',
         label: '非食用植物油',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
     ],
   },
@@ -738,62 +445,32 @@ const options_product = [
       {
         value: '家畜',
         label: '家畜',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '家禽',
         label: '家禽',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '特种养殖动物',
         label: '特种养殖动物',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '禽蛋',
         label: '禽蛋',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '动物皮毛',
         label: '动物皮毛',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '其他畜禽产品',
         label: '其他畜禽产品',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
     ],
   },
@@ -804,94 +481,49 @@ const options_product = [
       {
         value: '淡水鱼',
         label: '淡水鱼',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '海水鱼',
         label: '海水鱼',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '虾蟹及两栖类',
         label: '虾蟹及两栖类',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '螺贝及软体类',
         label: '螺贝及软体类',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '海水植物',
         label: '海水植物',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '水产加工品',
         label: '水产加工品',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '加工副产品',
         label: '加工副产品',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
       {
         value: '其他水产品',
         label: '其他水产品',
-        children: [
-          {
-            value:'甘蔗',
-            label:'甘蔗',
-          }
-        ]
+        children: []
       },
     ],
   },
-]
+])
 
 const index200Table = ref([]); //初始化空数组
-const productExponentArray = ref([]);
-const refProductExponent = ref([]);
-const vegetableBasketExponentArray = ref([]);
-const refVegetableBasketExponent = ref([]);
-const grainOilExponentArray = ref([]);
-const refGrainOilExponent = ref([]);
+
 // 从后端接收“农产品批发价格200日度指数”
 const getDailyExponent = async () => {
   try {
@@ -909,12 +541,6 @@ const getDailyExponent = async () => {
 };
 
 // 从后端接收“农产品批发价格200月度指数”
-// 首先先保存选项框中的内容
-const handleMarketChange = () => {
-
-}
-const handleProductChange = () => {
-}
 const getMonthlyExponent = async () => {
   try {
     const response = await axios.get('http://10.203.149.83:8081/exponent/monthlyExponent'); // 发起请求获取数据
@@ -930,13 +556,47 @@ const getMonthlyExponent = async () => {
   }
 };
 
+// 获得市场第一级后面的children
+async function fetchSecondLevelDataMarket(firstLevelOption_market) {
+  try {
+    const encodedValue = encodeURIComponent(firstLevelOption_market.value);
+    const response = await axios.get(`http://10.203.149.83:8081/dropDownBox/markets?province=${encodedValue}`);
+    // 更新一级市场的 children 属性
+    const marketNames = response.data.data;
+    for (const marketName of marketNames) {
+      firstLevelOption_market.children.push({
+        value: marketName,
+        label: marketName,
+      });
+    }
+  } catch (error) {
+    console.error('获取第二级数据失败', error);
+  }
+}
 
-// 在组件加载时获取数据
-onMounted(() => {
-  getDailyExponent();
-  handleQuery();
-});
+// 获得产品第二级后面的children
+async  function fetchThirdLevelDataProduct(secondLevelOption_product){
+  try {
+    const encodedValue = encodeURIComponent(secondLevelOption_product.value);
+    const response = await axios.get(`http://10.203.149.83:8081/dropDownBox/varietis?secondVariety=${encodedValue}`);
+    // 更新一级市场的 children 属性
+    const productNames = response.data.data;
+    for (const marketName of productNames) {
+      secondLevelOption_product.children.push({
+        value: marketName,
+        label: marketName,
+      });
+    }
+  } catch (error) {
+    console.error('获取第二级数据失败', error);
+  }
+}
 
+// 首先先保存选项框中的内容
+const handleMarketChange = () =>{
+}
+const handleProductChange = () => {
+}
 // 批发市场价格查询向后端传递数据
 // 使用ref创建响应式变量来保存选中的值
 const selectedMarket = ref([]);
@@ -944,15 +604,14 @@ const selectedProduct = ref([]);
 
 const handleQuery = () => {
   // 在这里执行查询操作，发送选中的值到后端
-  const selectedMarketValue = selectedMarket.value;
-  const selectedProductValue = selectedProduct.value;
-
+  const selectedMarketValue = selectedMarket.value[1];
+  const selectedProductValue = selectedProduct.value[2];
   // 发送请求到后端，传递选中的值
   // 可以使用axios或其他方式发送HTTP请求
   axios.get('http://10.203.149.83:8081/priceQuery/PriceData', {
     params: {
       market: selectedMarketValue,
-      product: selectedProductValue,
+      variety: selectedProductValue,
     },
   })
       .then((response) => {
@@ -965,6 +624,26 @@ const handleQuery = () => {
         console.error('请求失败', error);
       });
 };
+
+// 在组件加载时获取数据
+onMounted(() => {
+  getDailyExponent();
+  handleQuery();
+});
+onMounted(async () => {
+  // 遍历所有的一级下拉框
+  for (const firstLevelOption_market of options_market.value) {
+    // 调用函数获取二级数据
+    await fetchSecondLevelDataMarket(firstLevelOption_market);
+  }
+
+  for (const firstLevelOption_product of options_product.value) {
+    // 调用函数获取第三级数据
+    for (const secondLevelOption_product of firstLevelOption_product.children){
+      await fetchThirdLevelDataProduct(secondLevelOption_product);
+    }
+  }
+});
 
 </script>
 
