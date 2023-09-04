@@ -1,3 +1,7 @@
+<script setup>
+import Report from "./components/report.vue"
+</script>
+
 <template>
-    我是分析预测页
+<Report />
 </template>
