@@ -1,11 +1,28 @@
 <script setup>
 import { ref } from 'vue'
 import MarketLineChartVue from './MarketLineChart.vue';
+import MarketStickChart from './MarketStickChart.vue';
+import MarketPieChart from './MarketPieChart.vue';
+import zhexiantu from '@/assets/images/zhexiantu-xianxing.png'
+import zhuzhuangtu from '@/assets/images/stick.png'
+import bingtu from '@/assets/images/tubiao-bingtu.png'
 const activeName = ref('first')
 const selectedMarket = ref([]);
 const selectedProduct = ref([]);
 const props = {
   expandTrigger: 'hover'
+};
+const selectedIndex = ref(0); // 默认选中第一个图标
+
+const icons = [
+  zhexiantu, // 本地PNG图片的相对路径
+  zhuzhuangtu,
+  bingtu,
+];
+
+const selectTable = (index) => {
+  // 切换选中状态
+  selectedIndex.value = index;
 };
 const options_product = [
   {
@@ -261,19 +278,42 @@ const handleProductChange = () => {
                         <p class="overView_item_title"> <img src="@/assets/images/shijian.png" /> 时间范围 </p>
                         <p class="overView_item_text">2023/08--2023/09</p>
                     </div>
-                    <div class="overView_item">
+                    <div class="overView_item_larger">
                         <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格： <span class="font_red">37元</span> </p>
                         <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
                         <p class="overView_item_text">2023/08--2023/09</p>
                     </div>
-                    <div class="overView_item">
+                    <div class="overView_item_larger">
                         <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格 <span class="font_red">37元</span> </p>
                         <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
                         <p class="overView_item_text">2023/08--2023/09</p>
                     </div>
                 </div>
                 <div class="tableArea">
-                    <MarketLineChartVue></MarketLineChartVue>
+                    <!-- 根据selectedIndex的值显示对应的表格 -->
+                    <div v-if="selectedIndex === 0" class="tables">
+                        <MarketLineChartVue></MarketLineChartVue>
+                    </div>
+                    <div v-if="selectedIndex === 1" class="tables">
+                        <MarketStickChart></MarketStickChart>
+                    </div>
+                    <div v-if="selectedIndex === 2" class="tables">
+                        <MarketPieChart></MarketPieChart>
+                    </div>
+                    <div class="icon_container">
+                        <!-- 使用ref来引用图标元素 -->
+                        <img class="tableImg"
+                            v-for="(icon, index) in icons"
+                            :key="index"
+                            :src="icon"
+                            :ref="`iconRef${index}`"
+                            @click="selectTable(index)"
+                            :style="{ 
+                                filter: selectedIndex === index ? 'none' : 'brightness(3) grayscale(100%)' ,
+                                cursor: 'pointer'
+                                }"
+                        />
+                    </div>
                 </div>
             </div>
         </el-tab-pane>
@@ -410,7 +450,7 @@ const handleProductChange = () => {
     padding-top: 20px;
 }
 .overView{
-    width: 260px;
+    width: 200px;
     min-height: 400px;
     background-color: #fff;
     box-shadow: 1px 2px 16px 0 rgba(6,0,1,.04);
@@ -419,7 +459,7 @@ const handleProductChange = () => {
     padding: 0 10px;
 }
 .overView_title{
-    width: 260px;
+    width: 200px;
     height: 46px;
     text-align: center;
     background-color: #37cba3;
@@ -433,7 +473,13 @@ const handleProductChange = () => {
 }
 .overView_item{
     border-bottom: 1px dashed #ddd;
-    min-height: 80px;
+    min-height: 100px;
+    box-sizing: border-box;
+    padding: 0 10px;
+}
+.overView_item_larger{
+    border-bottom: 1px dashed #ddd;
+    min-height: 140px;
     box-sizing: border-box;
     padding: 0 10px;
 }
@@ -445,7 +491,7 @@ const handleProductChange = () => {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-family: MicrosoftYaHei;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
     font-stretch: normal;
     line-height: 24px;
@@ -455,6 +501,12 @@ const handleProductChange = () => {
 p img {
     max-width: 100%;
     max-height: 100%;
+    vertical-align: middle;
+    background: transparent;
+}
+.tableImg{
+    width: 30px;
+    height: 30px;
     vertical-align: middle;
     background: transparent;
 }
@@ -471,6 +523,25 @@ p img {
 .font_red{
     font-size: 22px;
     color: #c50b03;
+}
+.tableArea{
+    position: relative;
+    width: 100%;
+    height: 494px;
+    margin: 0 0 0 30px;
+    background-color: #fef8ef;
+}
+.tables{
+    width: 95%;
+    height: 494px;
+}
+.icon_container{
+    display: grid;
+    grid-template-columns: 1fr; /* 一个列，使子项竖直排列 */
+    grid-gap: 30px;
+    position: absolute;
+    right: 0;
+    top: 60px;
 }
 
 </style>

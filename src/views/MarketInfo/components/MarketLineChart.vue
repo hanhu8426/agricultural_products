@@ -1,36 +1,91 @@
 <template>
     <div>
-      <div id="chart-container" style="width: 800px; height: 400px;"></div>
+      <div id="chart-container" style="width: 100%; height: 494px;"></div>
     </div>
   </template>
   
-  <script>
+  <script setup>
   import * as echarts from 'echarts';
+  import {onMounted} from "vue";
+  // 引入ECharts主题文件
+  import 'echarts/theme/vintage'; // 假设你要引入vintage主题
   
-  export default {
-    mounted() {
+  onMounted(()=>{
+    {
       // 使用ECharts初始化图表
       const chartContainer = document.getElementById('chart-container');
-      const chart = echarts.init(chartContainer);
+      const chart = echarts.init(chartContainer, 'vintage'); // 使用vintage主题
   
       // 设置ECharts配置选项
       const option = {
         title: {
-            text: 'ECharts 入门示例'
+            text: 'Temperature Change in the Coming Week',
+            show: false
         },
-        tooltip: {},
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {},
+        toolbox: {
+            show: true,
+            feature: {
+            saveAsImage: {}
+            }
+        },
         xAxis: {
-            data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+            type: 'category',
+            boundaryGap: false,
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
         },
-        yAxis: {},
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+            formatter: '{value}'
+            }
+        },
         series: [
             {
-            name: '销量',
-            type: 'bar',
-            data: [5, 20, 36, 10, 10, 20]
+            name: 'Highest',
+            type: 'line',
+            data: [10, 11, 13, 11, 12, 12, 9],
+            markPoint: {
+                data: [
+                { type: 'max', name: 'Max' },
+                { type: 'min', name: 'Min' }
+                ]
+            },
+            markLine: {
+                data: [{ type: 'average', name: 'Avg' }],
+                label: {
+                show: true,
+                position: 'end',
+                offset: [10, 0],
+                },
             }
-        ]
+            },
+            {
+            name: 'Lowest',
+            type: 'line',
+            data: [1, -2, 2, 5, 3, 2, 0],
+            markPoint: {
+                data: [
+                { type: 'max', name: 'Max' },
+                { type: 'min', name: 'Min' }
+                ]
+            },
+            markLine: {
+                data: [
+                { type: 'average', name: 'Avg' }
+                ],
+                label: {
+                show: true,
+                position: 'end',
+                offset: [10, 0],
+                },
+            }
+        }]
       };
+
   
       // 渲染图表
       chart.setOption(option);
@@ -39,10 +94,11 @@
       window.addEventListener('resize', () => {
         chart.resize();
       });
-    },
-  };
-  </script>
+    }
+  })
   
+  </script>
+
   <style scoped>
   /* 可以在这里添加样式，自定义图表容器的样式 */
   </style>

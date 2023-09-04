@@ -26,21 +26,6 @@ const priceTable = ref([
     name: 'Tom',
     address: 'No. 189, Grove St, Los Angeles',
   },
-  {
-    date: '2016-05-08',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-06',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-07',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
 ])
 // displayData是获取到每一页的展示数据
 const displayedData = computed(() => {
@@ -95,6 +80,40 @@ onMounted(() => {
       </div>
     </el-tab-pane>
     <el-tab-pane label="周度报告" name="second" strech="true">
+      <!--报告的边框-->
+      <div class="report_border" v-for="item in displayedData" :key="item.id">
+        <!--报告的内容（三条）-->
+        <div class="report_item">
+          <!--左侧日历栏 -->
+          <div class="date">
+
+          </div>
+          <!-- 右侧标题和内容-->
+          <div class="content">
+            <div class="content_title">
+              <div class="title">
+
+              </div>
+              <div class="source">
+
+              </div>
+            </div>
+            <div class="content_main">
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination">
+        <el-pagination
+            :page-size="20"
+            :pager-count="11"
+            layout="prev, pager, next"
+            :total="1000"
+            @current-change="handlePageChange"
+        />
+      </div>
     </el-tab-pane>
   </el-tabs>
 </template>
