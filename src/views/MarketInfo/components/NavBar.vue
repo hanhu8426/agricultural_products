@@ -3,6 +3,9 @@ import { ref } from 'vue'
 import MarketLineChartVue from './MarketLineChart.vue';
 import MarketStickChart from './MarketStickChart.vue';
 import MarketPieChart from './MarketPieChart.vue';
+import MarketLineChart_area from "@/views/MarketInfo/components/MarketLineChart_area.vue";
+import MarketStickChart_area from "@/views/MarketInfo/components/MarketStickChart_area.vue";
+import MarketPieChart_area from "@/views/MarketInfo/components/MarketPieChart_area.vue";
 import zhexiantu from '@/assets/images/zhexiantu-xianxing.png'
 import zhuzhuangtu from '@/assets/images/stick.png'
 import bingtu from '@/assets/images/tubiao-bingtu.png'
@@ -13,17 +16,52 @@ const props = {
   expandTrigger: 'hover'
 };
 const selectedIndex = ref(0); // 默认选中第一个图标
-
 const icons = [
   zhexiantu, // 本地PNG图片的相对路径
   zhuzhuangtu,
   bingtu,
 ];
-
 const selectTable = (index) => {
   // 切换选中状态
   selectedIndex.value = index;
 };
+
+
+// 接收时间范围的值
+const timeFrame = ref('')
+
+// 设置时间选择时的快捷键
+const shortcuts = [
+  {
+    text: 'Last week',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+      return [start, end]
+    },
+  },
+  {
+    text: 'Last month',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+      return [start, end]
+    },
+  },
+  {
+    text: 'Last 3 months',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+      return [start, end]
+    },
+  },
+]
+
+// 品种数组
 const options_product = [
   {
     value: '粮食',
@@ -237,28 +275,162 @@ const options_product = [
   },
 ]
 const handleMarketChange = () => {
-
 }
 const handleProductChange = () => {
 }
+
+// 第二个标签页
+const options_province = [
+  {
+    value: '北京市',
+    label: '北京市',
+  },
+  {
+    value: '天津市',
+    label: '天津市',
+  },
+  {
+    value: '河北省',
+    label: '河北省',
+  },
+  {
+    value: '山西省',
+    label: '山西省',
+  },
+  {
+    value: '内蒙古自治区',
+    label: '内蒙古自治区',
+  },
+  {
+    value: '辽宁省',
+    label: '辽宁省',
+  },
+  {
+    value: '吉林省',
+    label: '吉林省',
+  },
+  {
+    value: '黑龙江省',
+    label: '黑龙江省',
+  },
+  {
+    value: '上海市',
+    label: '上海市',
+  },
+  {
+    value: '江苏省',
+    label: '江苏省',
+  },
+  {
+    value: '浙江省',
+    label: '浙江省',
+  },
+  {
+    value: '安徽省',
+    label: '安徽省',
+  },
+  {
+    value: '福建省',
+    label: '福建省',
+  },
+  {
+    value: '江西省',
+    label: '江西省',
+  },
+  {
+    value: '山东省',
+    label: '山东省',
+  },
+  {
+    value: '河南省',
+    label: '河南省',
+  },
+  {
+    value: '湖南省',
+    label: '湖南省',
+  },
+  {
+    value: '广东省',
+    label: '广东省',
+  },
+  {
+    value: '湖北省',
+    label: '湖北省',
+  },
+  {
+    value: '广东省',
+    label: '广东省',
+  },
+  {
+    value: '广西壮族自治区',
+    label: '广西壮族自治区',
+  },
+  {
+    value: '海南省',
+    label: '海南省',
+  },
+  {
+    value: '重庆市',
+    label: '重庆市',
+  },
+  {
+    value: '四川省',
+    label: '四川省',
+  },
+  {
+    value: '贵州省',
+    label: '贵州省',
+  },
+  {
+    value: '云南省',
+    label: '云南省',
+  },
+  {
+    value: '西藏自治区',
+    label: '西藏自治区',
+  },
+  {
+    value: '陕西省',
+    label: '陕西省',
+  },
+  {
+    value: '甘肃省',
+    label: '甘肃省',
+  },
+  {
+    value: '青海省',
+    label: '青海省',
+  },
+  {
+    value: '宁夏回族自治区',
+    label: '宁夏回族自治区',
+  },
+  {
+    value: '新疆维吾尔自治区',
+    label: '新疆维吾尔自治区',
+  },
+  {
+    value: '台湾',
+    label: '台湾',
+  },
+  {
+    value: '香港特别行政区',
+    label: '香港特别行政区',
+  },
+  {
+    value: '澳门特别行政区',
+    label: '澳门特别行政区',
+  },
+] // 固定的省市数组
+
 </script>
 
 <template>
     <el-tabs v-model="activeName" class="demo-tabs" >
         <el-tab-pane label="单一品种全国平均价" name="first" >
             <div class="searchBar">
-                <div class="firstSelect">
-                    品种大类:
-                    <el-cascader
-                        v-model="selectedMarket"
-                        :options="options_product"
-                        :props="props"
-                        @change="handleMarketChange"
-                        placeholder="请选择"
-                    />
-                </div>
-                <div class="firstSelect">
-                    品种小类:
+                <div class="firstTab_kind">
+                    品种类别:
                     <el-cascader
                         v-model="selectedProduct"
                         :options="options_product"
@@ -266,6 +438,19 @@ const handleProductChange = () => {
                         @change="handleProductChange"
                         placeholder="请选择"
                     />
+                </div>
+                <div class="timeSelect">
+                  <p class="select_title">时间范围：</p>
+                  <el-date-picker
+                      v-model="timeFrame"
+                      type="daterange"
+                      unlink-panels
+                      range-separator="To"
+                      start-placeholder="Start date"
+                      end-placeholder="End date"
+                      :shortcuts="shortcuts"
+                      :size="'default'"
+                  />
                 </div>
                 <div class="queryBox">
                     <el-button class="queryButton" type="success" plain @click="handleQuery">查询</el-button>
@@ -319,35 +504,93 @@ const handleProductChange = () => {
         </el-tab-pane>
         <el-tab-pane label="单一品种地区平均价" name="second" >
             <div class="searchBar">
-                <div class="firstSelect">
-                    批发市场:
+                <div class="secondTab">
+                    <p class="secondTab_title">地区:</p>
                     <el-cascader
                         v-model="selectedMarket"
-                        :options="options_market"
+                        :options="options_province"
                         :props="props"
                         @change="handleMarketChange"
                         placeholder="请选择"
                     />
                 </div>
-                <div class="firstSelect">
-                    品种名称:
-                    <el-cascader
-                        v-model="selectedProduct"
-                        :options="options_product"
-                        :props="props"
-                        @change="handleProductChange"
-                        placeholder="请选择"
-                    />
+                <div class="secondTab">
+                  <p class="secondTab_title">品种类别:</p>
+                  <el-cascader
+                      v-model="selectedProduct"
+                      :options="options_product"
+                      :props="props"
+                      @change="handleProductChange"
+                      placeholder="请选择"
+                  />
                 </div>
-                <div class="queryBox">
+                <div class="secondTimeSelect">
+                  <p class="secondTab_title">时间范围:</p>
+                  <el-date-picker
+                      v-model="timeFrame"
+                      type="daterange"
+                      unlink-panels
+                      range-separator="To"
+                      start-placeholder="Start date"
+                      end-placeholder="End date"
+                      :shortcuts="shortcuts"
+                      :size="'default'"
+                  />
+                </div>
+                <div class="smallQueryBox">
                     <el-button class="queryButton" type="success" plain @click="handleQuery">查询</el-button>
                 </div>
+            </div>
+            <div class="content">
+              <div class="overView">
+                <div class="overView_title">查询结果</div>
+                <div class="overView_item">
+                  <p class="overView_item_title"> <img src="@/assets/images/shijian.png" /> 时间范围 </p>
+                  <p class="overView_item_text">2023/08--2023/09</p>
+                </div>
+                <div class="overView_item_larger">
+                  <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格： <span class="font_red">37元</span> </p>
+                  <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
+                  <p class="overView_item_text">2023/08--2023/09</p>
+                </div>
+                <div class="overView_item_larger">
+                  <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格 <span class="font_red">37元</span> </p>
+                  <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
+                  <p class="overView_item_text">2023/08--2023/09</p>
+                </div>
+              </div>
+              <div class="tableArea">
+                <!-- 根据selectedIndex的值显示对应的表格 -->
+                <div v-if="selectedIndex === 0" class="tables">
+                  <MarketLineChart_area></MarketLineChart_area>
+                </div>
+                <div v-if="selectedIndex === 1" class="tables">
+                  <MarketStickChart_area></MarketStickChart_area>
+                </div>
+                <div v-if="selectedIndex === 2" class="tables">
+                  <MarketPieChart_area></MarketPieChart_area>
+                </div>
+                <div class="icon_container">
+                  <!-- 使用ref来引用图标元素 -->
+                  <img class="tableImg"
+                       v-for="(icon, index) in icons"
+                       :key="index"
+                       :src="icon"
+                       :ref="`iconRef${index}`"
+                       @click="selectTable(index)"
+                       :style="{
+                                  filter: selectedIndex === index ? 'none' : 'brightness(3) grayscale(100%)' ,
+                                  cursor: 'pointer'
+                                  }"
+                  />
+                </div>
+              </div>
             </div>
         </el-tab-pane>
         <el-tab-pane label="单一市场多品种对比" name="third" >
             <div class="searchBar">
-                <div class="firstSelect">
-                    批发市场:
+                <div class="thirdTab">
+                    <p class="thirdTab_title">批发市场：</p>
                     <el-cascader
                         v-model="selectedMarket"
                         :options="options_market"
@@ -356,8 +599,8 @@ const handleProductChange = () => {
                         placeholder="请选择"
                     />
                 </div>
-                <div class="firstSelect">
-                    品种名称:
+                <div class="thirdTab">
+                  <p class="thirdTab_title">品种名称：</p>
                     <el-cascader
                         v-model="selectedProduct"
                         :options="options_product"
@@ -366,10 +609,68 @@ const handleProductChange = () => {
                         placeholder="请选择"
                     />
                 </div>
-                <div class="queryBox">
+                <div class="thirdTimeSelect">
+                  <p class="thirdTab_title">时间范围:</p>
+                  <el-date-picker
+                      v-model="timeFrame"
+                      type="daterange"
+                      unlink-panels
+                      range-separator="To"
+                      start-placeholder="Start date"
+                      end-placeholder="End date"
+                      :shortcuts="shortcuts"
+                      :size="'default'"
+                  />
+                </div>
+                <div class="smallQueryBox">
                     <el-button class="queryButton" type="success" plain @click="handleQuery">查询</el-button>
                 </div>
             </div>
+            <div class="content">
+            <div class="overView">
+              <div class="overView_title">查询结果</div>
+              <div class="overView_item">
+                <p class="overView_item_title"> <img src="@/assets/images/shijian.png" /> 时间范围 </p>
+                <p class="overView_item_text">2023/08--2023/09</p>
+              </div>
+              <div class="overView_item_larger">
+                <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格： <span class="font_red">37元</span> </p>
+                <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
+                <p class="overView_item_text">2023/08--2023/09</p>
+              </div>
+              <div class="overView_item_larger">
+                <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格 <span class="font_red">37元</span> </p>
+                <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
+                <p class="overView_item_text">2023/08--2023/09</p>
+              </div>
+            </div>
+            <div class="tableArea">
+              <!-- 根据selectedIndex的值显示对应的表格 -->
+              <div v-if="selectedIndex === 0" class="tables">
+                <MarketLineChart_area></MarketLineChart_area>
+              </div>
+              <div v-if="selectedIndex === 1" class="tables">
+                <MarketStickChart_area></MarketStickChart_area>
+              </div>
+              <div v-if="selectedIndex === 2" class="tables">
+                <MarketPieChart_area></MarketPieChart_area>
+              </div>
+              <div class="icon_container">
+                <!-- 使用ref来引用图标元素 -->
+                <img class="tableImg"
+                     v-for="(icon, index) in icons"
+                     :key="index"
+                     :src="icon"
+                     :ref="`iconRef${index}`"
+                     @click="selectTable(index)"
+                     :style="{
+                                  filter: selectedIndex === index ? 'none' : 'brightness(3) grayscale(100%)' ,
+                                  cursor: 'pointer'
+                                  }"
+                />
+              </div>
+            </div>
+          </div>
         </el-tab-pane>
         <el-tab-pane label="单一品种多市场对比" name="forth" >
             <div class="searchBar">
@@ -464,7 +765,6 @@ const handleProductChange = () => {
     text-align: center;
     background-color: #37cba3;
     border-radius: 6px 6px 0 0;
-    font-family: MicrosoftYaHei;
     font-size: 18px;
     font-weight: normal;
     line-height: 46px;
@@ -488,9 +788,8 @@ const handleProductChange = () => {
     display: block;
     margin-block-start: 1em;
     margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    font-family: MicrosoftYaHei;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
     font-size: 16px;
     font-weight: 400;
     font-stretch: normal;
@@ -511,7 +810,6 @@ p img {
     background: transparent;
 }
 .overView_item_text{
-    font-family: MicrosoftYaHei;
     font-size: 14px;
     font-weight: 400;
     font-stretch: normal;
@@ -544,4 +842,99 @@ p img {
     top: 60px;
 }
 
+// 第一个标签页
+.firstTab_kind{
+  margin-left: 35px;
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: normal;
+  color: #615551;
+  margin-right: 50px;
+}
+.timeSelect{
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: normal;
+  color: #615551;
+  margin-right: 50px;
+} // 时间选择器
+.select_title{
+  margin-top: 1px;
+  font-size: 18px;
+  font-weight: normal;
+  color: #615551;
+}
+.demo-date-picker .block {
+  padding: 30px 0;
+  text-align: center;
+  border-right: solid 1px var(--el-border-color);
+  flex: 1;
+}
+.demo-date-picker .block:last-child {
+  border-right: none;
+}
+.smallQueryBox{
+  padding-top: 15px;
+  padding-left: 40px;
+  padding-right: 10px;
+}
+
+//第二个标签页
+.secondTab{
+  display: flex;
+  justify-content: center;
+  margin-left: 10px;
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: normal;
+  color: #615551;
+  margin-right: 10px;
+}
+.secondTab_title {
+  margin-top: 3px;
+  margin-right: 3px;
+  font-size: 18px;
+  font-weight: normal;
+  color: #615551;
+}
+.secondTimeSelect{
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: normal;
+  color: #615551;
+  margin-right: 30px;
+  margin-left: 15px;
+}
+
+//第三个标签页
+.thirdTab{
+  display: flex;
+  justify-content: center;
+  margin-left: 10px;
+  margin-top: 16px;
+  font-size: 18px;
+  font-weight: normal;
+  color: #615551;
+  margin-right: 0px;
+}
+.thirdTab_title{
+  margin-top: 3px;
+  margin-right: 2px;
+  font-size: 18px;
+  font-weight: normal;
+  color: #615551;
+}
+.thirdTimeSelect{
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: normal;
+  color: #615551;
+  margin-left: 10px;
+}
 </style>
