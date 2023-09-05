@@ -6,9 +6,19 @@ import MarketPieChart from './MarketPieChart.vue';
 import MarketLineChart_area from './MarketLineChart_area.vue';
 import MarketStickChart_area from './MarketStickChart_area.vue';
 import MarketPieChart_area from './MarketPieChart_area.vue';
+import MarketLineChart_multiCategory from './MarketLineChart_multiCategory.vue'
+import MarketStickChart_multiCategory from './MarketStickChart_multiCategory.vue'
+import MarketRadarChart_multiCategory from './MarketRadarChart_multiCategory.vue'
+import MarketLineChart_multiMarket from './MarketLineChart_multiMarket.vue'
+import MarketStickChart_multiMarket from './MarketStickChart_multiMarket.vue'
+import MarketRadarChart_multiMarket from './MarketRadarChart_multiMarket.vue'
+import MarketLineChart_multiArea from './MarketLineChart_multiArea.vue'
+import MarketStickChart_multiArea from './MarketStickChart_multiArea.vue'
+import MarketRadarChart_multiArea from './MarketRadarChart_multiArea.vue'
 import zhexiantu from '@/assets/images/zhexiantu-xianxing.png'
 import zhuzhuangtu from '@/assets/images/stick.png'
 import bingtu from '@/assets/images/tubiao-bingtu.png'
+import leidatu from '@/assets/images/leidatu.png'
 const activeName = ref('first')
 const selectedMarket = ref([]);
 const selectedProduct = ref([]);
@@ -17,11 +27,19 @@ const props = {
 };
 const selectedIndex = ref(0); // 默认选中第一个图标
 const selectedIndex_2 = ref(0); // 默认选中第一个图标
+const selectedIndex_3 = ref(0); // 默认选中第一个图标
+const selectedIndex_4 = ref(0); // 默认选中第一个图标
+const selectedIndex_5 = ref(0); // 默认选中第一个图标
 
 const icons = [
   zhexiantu, // 本地PNG图片的相对路径
   zhuzhuangtu,
   bingtu,
+];
+const icons_2 = [
+  zhexiantu, // 本地PNG图片的相对路径
+  zhuzhuangtu,
+  leidatu,
 ];
 const selectTable = (index) => {
   // 切换选中状态
@@ -30,6 +48,18 @@ const selectTable = (index) => {
 const selectTable_2 = (index) => {
   // 切换选中状态
   selectedIndex_2.value = index;
+};
+const selectTable_3 = (index) => {
+  // 切换选中状态
+  selectedIndex_3.value = index;
+};
+const selectTable_4 = (index) => {
+  // 切换选中状态
+  selectedIndex_4.value = index;
+};
+const selectTable_5 = (index) => {
+  // 切换选中状态
+  selectedIndex_5.value = index;
 };
 
 
@@ -652,25 +682,25 @@ const options_province = [
             </div>
             <div class="tableArea">
               <!-- 根据selectedIndex的值显示对应的表格 -->
-              <div v-if="selectedIndex === 0" class="tables">
-                <MarketLineChart_area></MarketLineChart_area>
+              <div v-if="selectedIndex_3 === 0" class="tables">
+                <MarketLineChart_multiCategory></MarketLineChart_multiCategory>
               </div>
-              <div v-if="selectedIndex === 1" class="tables">
-                <MarketStickChart_area></MarketStickChart_area>
+              <div v-if="selectedIndex_3 === 1" class="tables">
+                <MarketStickChart_multiCategory></MarketStickChart_multiCategory>
               </div>
-              <div v-if="selectedIndex === 2" class="tables">
-                <MarketPieChart_area></MarketPieChart_area>
+              <div v-if="selectedIndex_3 === 2" class="tables">
+                <MarketRadarChart_multiCategory></MarketRadarChart_multiCategory>
               </div>
               <div class="icon_container">
                 <!-- 使用ref来引用图标元素 -->
                 <img class="tableImg"
-                     v-for="(icon, index) in icons"
+                     v-for="(icon, index) in icons_2"
                      :key="index"
                      :src="icon"
                      :ref="`iconRef${index}`"
-                     @click="selectTable(index)"
+                     @click="selectTable_3(index)"
                      :style="{
-                                  filter: selectedIndex === index ? 'none' : 'brightness(3) grayscale(100%)' ,
+                                  filter: selectedIndex_3 === index ? 'none' : 'brightness(3) grayscale(100%)' ,
                                   cursor: 'pointer'
                                   }"
                 />
@@ -704,6 +734,51 @@ const options_province = [
                     <el-button class="queryButton" type="success" plain @click="handleQuery">查询</el-button>
                 </div>
             </div>
+            <div class="content">
+            <div class="overView">
+              <div class="overView_title">查询结果</div>
+              <div class="overView_item">
+                <p class="overView_item_title"> <img src="@/assets/images/shijian.png" /> 时间范围 </p>
+                <p class="overView_item_text">2023/08--2023/09</p>
+              </div>
+              <div class="overView_item_larger">
+                <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格： <span class="font_red">37元</span> </p>
+                <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
+                <p class="overView_item_text">2023/08--2023/09</p>
+              </div>
+              <div class="overView_item_larger">
+                <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格 <span class="font_red">37元</span> </p>
+                <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
+                <p class="overView_item_text">2023/08--2023/09</p>
+              </div>
+            </div>
+            <div class="tableArea">
+              <!-- 根据selectedIndex的值显示对应的表格 -->
+              <div v-if="selectedIndex_4 === 0" class="tables">
+                <MarketLineChart_multiMarket></MarketLineChart_multiMarket>
+              </div>
+              <div v-if="selectedIndex_4 === 1" class="tables">
+                <MarketStickChart_multiMarket></MarketStickChart_multiMarket>
+              </div>
+              <div v-if="selectedIndex_4 === 2" class="tables">
+                <MarketRadarChart_multiMarket></MarketRadarChart_multiMarket>
+              </div>
+              <div class="icon_container">
+                <!-- 使用ref来引用图标元素 -->
+                <img class="tableImg"
+                     v-for="(icon, index) in icons_2"
+                     :key="index"
+                     :src="icon"
+                     :ref="`iconRef${index}`"
+                     @click="selectTable_4(index)"
+                     :style="{
+                                  filter: selectedIndex_4 === index ? 'none' : 'brightness(3) grayscale(100%)' ,
+                                  cursor: 'pointer'
+                                  }"
+                />
+              </div>
+            </div>
+          </div>
         </el-tab-pane>
         <el-tab-pane label="单一品种多地区对比" name="fifth" >
             <div class="searchBar">
@@ -731,6 +806,51 @@ const options_province = [
                     <el-button class="queryButton" type="success" plain @click="handleQuery">查询</el-button>
                 </div>
             </div>
+            <div class="content">
+            <div class="overView">
+              <div class="overView_title">查询结果</div>
+              <div class="overView_item">
+                <p class="overView_item_title"> <img src="@/assets/images/shijian.png" /> 时间范围 </p>
+                <p class="overView_item_text">2023/08--2023/09</p>
+              </div>
+              <div class="overView_item_larger">
+                <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格： <span class="font_red">37元</span> </p>
+                <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
+                <p class="overView_item_text">2023/08--2023/09</p>
+              </div>
+              <div class="overView_item_larger">
+                <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格 <span class="font_red">37元</span> </p>
+                <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
+                <p class="overView_item_text">2023/08--2023/09</p>
+              </div>
+            </div>
+            <div class="tableArea">
+              <!-- 根据selectedIndex的值显示对应的表格 -->
+              <div v-if="selectedIndex_5 === 0" class="tables">
+                <MarketLineChart_multiArea></MarketLineChart_multiArea>
+              </div>
+              <div v-if="selectedIndex_5 === 1" class="tables">
+                <MarketStickChart_multiArea></MarketStickChart_multiArea>
+              </div>
+              <div v-if="selectedIndex_5 === 2" class="tables">
+                <MarketRadarChart_multiArea></MarketRadarChart_multiArea>
+              </div>
+              <div class="icon_container">
+                <!-- 使用ref来引用图标元素 -->
+                <img class="tableImg"
+                     v-for="(icon, index) in icons_2"
+                     :key="index"
+                     :src="icon"
+                     :ref="`iconRef${index}`"
+                     @click="selectTable_5(index)"
+                     :style="{
+                                  filter: selectedIndex_5 === index ? 'none' : 'brightness(3) grayscale(100%)' ,
+                                  cursor: 'pointer'
+                                  }"
+                />
+              </div>
+            </div>
+          </div>
         </el-tab-pane>
     </el-tabs>
 </template>
