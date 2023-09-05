@@ -766,7 +766,7 @@ onMounted(async () => {
 }
 .firstSelect{
   padding-left: 40px;
-  padding-top: 5px;
+  padding-top: 7px;
   font-size: 18px;
   font-weight: normal;
   color: #615551;
