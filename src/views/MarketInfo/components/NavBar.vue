@@ -1,5 +1,5 @@
 <script setup>
-import { ref,onMounted } from 'vue'
+import {onMounted, ref} from 'vue'
 import MarketLineChartVue from './MarketLineChart.vue';
 import MarketStickChart from './MarketStickChart.vue';
 import MarketPieChart from './MarketPieChart.vue';
@@ -21,6 +21,7 @@ import bingtu from '@/assets/images/tubiao-bingtu.png'
 import leidatu from '@/assets/images/leidatu.png'
 import axios from "axios";
 import {baseUrl} from "@/main";
+
 const activeName = ref('first')
 const props = {
   expandTrigger: 'hover'
@@ -62,9 +63,21 @@ const selectTable_5 = (index) => {
   selectedIndex_5.value = index;
 };
 
-const priceTable = ref([]);
+// 处理时间选择器时间格式的函数
+function formatDates(dateStrings) {
+  return dateStrings.map((dateString) => {
+    const originalDate = new Date(dateString);
+    const year = originalDate.getFullYear();
+    const month = (originalDate.getMonth() + 1).toString().padStart(2, '0'); // +1 因为月份从 0 开始
+    const day = originalDate.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  });
+}
 
-const timeFrame = ref('')  // 接收时间范围的值
+
+const timeFrame_p3 = ref('')
+const timeFrame_p4 = ref('')
+const timeFrame_p5 = ref('')
 // 设置时间选择时的快捷键
 const shortcuts = [
   {
@@ -96,9 +109,40 @@ const shortcuts = [
   },
 ]
 
-// 接收选中单一的市场或产品（适用于第一第二标签页）
-const selectedMarket = ref([]);
-const selectedProduct = ref([]);
+// 接收第一标签页的品种类别
+const selectedProduct_p1 = ref([]);
+const timeFrame_p1 = ref('') // 接收时间范围的值
+const time_start_p1 = ref('');
+const time_end_p1 = ref('');
+const highestPrice_p1 = ref('');
+const highestMarket_p1 = ref('');
+const highestTime_p1 = ref('');
+const lowestPrice_p1 = ref('');
+const lowestMarket_p1 = ref('');
+const lowestTime_p1 = ref('');
+const content_p1 = ref([]); // 接收后端返回的varietyNationalAverageList
+// 第二标签页中的地区，品种类别
+const selectedProvince_p2 = ref('');
+const selectedProduct_p2 = ref([]);
+const timeFrame_p2 = ref('')
+const time_start_p2 = ref('');
+const time_end_p2 = ref('');
+const highestPrice_p2 = ref('');
+const highestMarket_p2 = ref('');
+const highestTime_p2 = ref('');
+const lowestPrice_p2 = ref('');
+const lowestMarket_p2 = ref('');
+const lowestTime_p2 = ref('');
+const content_p2 = ref([]); // 接收后端返回数组
+// 第三标签页中的批发市场，多选产品
+const selectedMarket_p3 = ref([]);
+const selectedProduct_p3 = ref([]);
+// 第四个标签页中的多选市场，单选产品
+const selectedMarket_p4 = ref([]);
+const selectedProduct_p4 = ref([]);
+// 第五个标签页中的多选省市，单选产品
+const selectedProvince_p5 = ref([]);
+const selectedProduct_p5 = ref([]);
 
 // 创建ref数组接收后端数据
 const options_product = ref([
@@ -109,18 +153,22 @@ const options_product = ref([
       {
         value: '谷物',
         label: '谷物',
+        children: [],
       },
       {
         value: '豆类',
         label: '豆类',
+        children: [],
       },
       {
         value: '薯类',
         label: '薯类',
+        children: [],
       },
       {
         value: '其他粮食',
         label: '其他粮食',
+        children: [],
       },
     ],
   },
@@ -131,10 +179,12 @@ const options_product = ref([
       {
         value: '食用油籽',
         label: '食用油籽',
+        children: [],
       },
       {
         value: '非食用油籽',
         label: '非食用油籽',
+        children: [],
       },
     ],
   },
@@ -145,6 +195,7 @@ const options_product = ref([
       {
         value: '糖类',
         label: '糖类',
+        children: []
       },
     ],
   },
@@ -155,26 +206,32 @@ const options_product = ref([
       {
         value: '叶菜类',
         label: '叶菜类',
+        children: []
       },
       {
         value: '根和根茎类',
         label: '根和根茎类',
+        children: []
       },
       {
         value: '芽、花类',
         label: '芽、花类',
+        children: []
       },
       {
         value: '瓜果类',
         label: '瓜果类',
+        children: [],
       },
       {
         value: '食用菌类',
         label: '食用菌类',
+        children: []
       },
       {
         value: '其他蔬菜类',
         label: '其他蔬菜类',
+        children: []
       },
     ],
   },
@@ -185,34 +242,42 @@ const options_product = ref([
       {
         value: '仁果类',
         label: '仁果类',
+        children: []
       },
       {
         value: '浆果类',
         label: '浆果类',
+        children: []
       },
       {
         value: '核果类',
         label: '核果类',
+        children: []
       },
       {
         value: '坚果类',
         label: '坚果类',
+        children: []
       },
       {
         value: '柑果类',
         label: '柑果类',
+        children: []
       },
       {
         value: '热带及亚热带水果',
         label: '热带及亚热带水果',
+        children: []
       },
       {
         value: '瓜类水果',
         label: '瓜类水果',
+        children: []
       },
       {
         value: '其他果品',
         label: '其他果品',
+        children: []
       },
     ],
   },
@@ -223,10 +288,12 @@ const options_product = ref([
       {
         value: '种子果实类',
         label: '种子果实类',
+        children: []
       },
       {
         value: '其他果实类',
         label: '其他果实类',
+        children: []
       },
     ],
   },
@@ -237,10 +304,12 @@ const options_product = ref([
       {
         value: '食用植物油',
         label: '食用植物油',
+        children: []
       },
       {
         value: '非食用植物油',
         label: '非食用植物油',
+        children: []
       },
     ],
   },
@@ -251,26 +320,32 @@ const options_product = ref([
       {
         value: '家畜',
         label: '家畜',
+        children: []
       },
       {
         value: '家禽',
         label: '家禽',
+        children: []
       },
       {
         value: '特种养殖动物',
         label: '特种养殖动物',
+        children: []
       },
       {
         value: '禽蛋',
         label: '禽蛋',
+        children: []
       },
       {
         value: '动物皮毛',
         label: '动物皮毛',
+        children: []
       },
       {
         value: '其他畜禽产品',
         label: '其他畜禽产品',
+        children: []
       },
     ],
   },
@@ -281,34 +356,42 @@ const options_product = ref([
       {
         value: '淡水鱼',
         label: '淡水鱼',
+        children: []
       },
       {
         value: '海水鱼',
         label: '海水鱼',
+        children: []
       },
       {
         value: '虾蟹及两栖类',
         label: '虾蟹及两栖类',
+        children: []
       },
       {
         value: '螺贝及软体类',
         label: '螺贝及软体类',
+        children: []
       },
       {
         value: '海水植物',
         label: '海水植物',
+        children: []
       },
       {
         value: '水产加工品',
         label: '水产加工品',
+        children: []
       },
       {
         value: '加工副产品',
         label: '加工副产品',
+        children: []
       },
       {
         value: '其他水产品',
         label: '其他水产品',
+        children: []
       },
     ],
   },
@@ -676,16 +759,23 @@ async  function fetchThirdLevelDataProduct(secondLevelOption_product){
 // 为每一个标签页的“查询”按钮写接口
 const handleQueryP1 = () => {
   // 在这里执行查询操作，发送选中的值到后端
-  const selectedProductValue_p1 = selectedProduct.value[2];
-  const timeStart_p1 = timeFrame.value[1];
-  const timeEnd_p1 = timeFrame.value[2];
+  const time = formatDates(timeFrame_p1.value);
+  const selectedProductValue_p1 = selectedProduct_p1.value[2];
+  time_start_p1.value = time[0];
+  time_end_p1.value = time[1];
   // 发送请求到后端，传递选中的值
   // 可以使用axios或其他方式发送HTTP请求
-  axios.get(`${baseUrl}/marketSituation/nationalAveragePrices/${selectedProductValue_p1}/${timeStart_p1}/${timeEnd_p1}`)
+  axios.get(`${baseUrl}/marketSituation/nationalAveragePrices/${selectedProductValue_p1}/${time_start_p1.value}/${time_end_p1.value}`)
       .then((response) => {
         // 处理从后端返回的数据
         // 更新组件中的数据以供模板使用
-        priceTable.value = response.data.data;
+        content_p1.value = response.data.data.varietyNationalAverageList;
+        highestPrice_p1.value = response.data.data.highestPrice;
+        highestMarket_p1.value = response.data.data.highestPriceMarket;
+        highestTime_p1.value = response.data.data.highestPriceDate;
+        lowestPrice_p1.value = response.data.data.bottomPrice;
+        lowestMarket_p1.value = response.data.data.bottomPriceMarket;
+        lowestTime_p1.value = response.data.data.bottomPriceDate;
       })
       .catch((error) => {
         // 处理请求错误
@@ -694,20 +784,24 @@ const handleQueryP1 = () => {
 };
 const handleQueryP2 = () => {
   // 在这里执行查询操作，发送选中的值到后端
-  const selectedMarketValue = selectedMarket.value[1];
-  const selectedProductValue = selectedProduct.value[2];
+  const time = formatDates(timeFrame_p2.value);
+  const province = selectedProvince_p2.value;
+  const selectedProductValue = selectedProduct_p2.value[2];
+  time_start_p2.value = time[0];
+  time_end_p2.value = time[1];
   // 发送请求到后端，传递选中的值
   // 可以使用axios或其他方式发送HTTP请求
-  axios.get(`${baseUrl}/priceQuery/PriceData`, {
-    params: {
-      market: selectedMarketValue,
-      variety: selectedProductValue,
-    },
-  })
+  axios.get(`${baseUrl}/marketSituation/regionalAveragePrices/${province}/${selectedProductValue}/${time_start_p2.value}/${time_end_p2.value}`)
       .then((response) => {
         // 处理从后端返回的数据
         // 更新组件中的数据以供模板使用
-        priceTable.value = response.data.data;
+        content_p2.value = response.data.data.varietyRegionalAverageList;
+        highestPrice_p2.value = response.data.data.highestPrice;
+        highestMarket_p2.value = response.data.data.highestPriceMarket;
+        highestTime_p2.value = response.data.data.highestPriceDate;
+        lowestPrice_p2.value = response.data.data.bottomPrice;
+        lowestMarket_p2.value = response.data.data.bottomPriceMarket;
+        lowestTime_p2.value = response.data.data.bottomPriceDate;
       })
       .catch((error) => {
         // 处理请求错误
@@ -807,7 +901,7 @@ onMounted(async () => {
                 <div class="firstTab_kind">
                     品种类别:
                     <el-cascader
-                        v-model="selectedProduct"
+                        v-model="selectedProduct_p1"
                         :options="options_product"
                         :props="props"
                         @change="handleProductChange"
@@ -817,7 +911,7 @@ onMounted(async () => {
                 <div class="timeSelect">
                   <p class="select_title">时间范围：</p>
                   <el-date-picker
-                      v-model="timeFrame"
+                      v-model="timeFrame_p1"
                       type="daterange"
                       unlink-panels
                       range-separator="To"
@@ -836,17 +930,17 @@ onMounted(async () => {
                     <div class="overView_title">查询结果</div>
                     <div class="overView_item">
                         <p class="overView_item_title"> <img src="@/assets/images/shijian.png" /> 时间范围 </p>
-                        <p class="overView_item_text">2023/08--2023/09</p>
+                        <p class="overView_item_text">{{time_start_p1}}--{{time_end_p1}}</p>
                     </div>
                     <div class="overView_item_larger">
-                        <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格： <span class="font_red">37元</span> </p>
-                        <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
-                        <p class="overView_item_text">2023/08--2023/09</p>
+                        <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格： <span class="font_red">{{ highestPrice_p1 }}元</span> </p>
+                        <p class="overView_item_text">{{highestMarket_p1}}</p>
+                        <p class="overView_item_text">{{ highestTime_p1 }}</p>
                     </div>
                     <div class="overView_item_larger">
-                        <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格 <span class="font_red">37元</span> </p>
-                        <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
-                        <p class="overView_item_text">2023/08--2023/09</p>
+                        <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格： <span class="font_red">{{lowestPrice_p1}}元</span> </p>
+                        <p class="overView_item_text">{{ lowestMarket_p1 }}</p>
+                        <p class="overView_item_text">{{ lowestTime_p1}}</p>
                     </div>
                 </div>
                 <div class="tableArea">
@@ -882,7 +976,7 @@ onMounted(async () => {
                 <div class="secondTab">
                     <p class="secondTab_title">地区:</p>
                     <el-cascader
-                        v-model="selectedMarket"
+                        v-model="selectedProvince_p2"
                         :options="options_province"
                         :props="props"
                         @change="handleMarketChange"
@@ -892,7 +986,7 @@ onMounted(async () => {
                 <div class="secondTab">
                   <p class="secondTab_title">品种类别:</p>
                   <el-cascader
-                      v-model="selectedProduct"
+                      v-model="selectedProduct_p2"
                       :options="options_product"
                       :props="props"
                       @change="handleProductChange"
@@ -902,7 +996,7 @@ onMounted(async () => {
                 <div class="secondTimeSelect">
                   <p class="secondTab_title">时间范围:</p>
                   <el-date-picker
-                      v-model="timeFrame"
+                      v-model="timeFrame_p2"
                       type="daterange"
                       unlink-panels
                       range-separator="To"
@@ -921,17 +1015,17 @@ onMounted(async () => {
                     <div class="overView_title">查询结果</div>
                     <div class="overView_item">
                         <p class="overView_item_title"> <img src="@/assets/images/shijian.png" /> 时间范围 </p>
-                        <p class="overView_item_text">2023/08--2023/09</p>
+                        <p class="overView_item_text">{{ time_start_p2 }}--{{time_end_p2}}</p>
                     </div>
                     <div class="overView_item_larger">
-                        <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格： <span class="font_red">37元</span> </p>
-                        <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
-                        <p class="overView_item_text">2023/08--2023/09</p>
+                        <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格： <span class="font_red">{{ highestPrice_p2 }}元</span> </p>
+                        <p class="overView_item_text">{{ highestMarket_p2 }}</p>
+                        <p class="overView_item_text">{{highestTime_p2}}</p>
                     </div>
                     <div class="overView_item_larger">
-                        <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格 <span class="font_red">37元</span> </p>
-                        <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
-                        <p class="overView_item_text">2023/08--2023/09</p>
+                        <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格： <span class="font_red">{{ lowestPrice_p2 }}元</span> </p>
+                        <p class="overView_item_text">{{ lowestMarket_p2 }}</p>
+                        <p class="overView_item_text">{{ lowestTime_p2 }}</p>
                     </div>
                 </div>
                 <div class="tableArea">
@@ -953,7 +1047,7 @@ onMounted(async () => {
                             :src="icon"
                             :ref="`iconRef${index}`"
                             @click="selectTable_2(index)"
-                            :style="{ 
+                            :style="{
                                 filter: selectedIndex_2 === index ? 'none' : 'brightness(3) grayscale(100%)' ,
                                 cursor: 'pointer'
                                 }"
@@ -967,7 +1061,7 @@ onMounted(async () => {
                 <div class="thirdTab">
                     <p class="thirdTab_title">批发市场：</p>
                     <el-cascader
-                        v-model="selectedMarket"
+                        v-model="selectedMarket_p3"
                         :options="options_market"
                         :props="props"
                         @change="handleMarketChange"
@@ -977,7 +1071,7 @@ onMounted(async () => {
                 <div class="thirdTab">
                   <p class="thirdTab_title">品种名称：</p>
                     <el-cascader
-                        v-model="selectedProduct"
+                        v-model="selectedProduct_p3"
                         :options="options_product"
                         :props="props"
                         @change="handleProductChange"
@@ -987,7 +1081,7 @@ onMounted(async () => {
                 <div class="thirdTimeSelect">
                   <p class="thirdTab_title">时间范围:</p>
                   <el-date-picker
-                      v-model="timeFrame"
+                      v-model="timeFrame_p3"
                       type="daterange"
                       unlink-panels
                       range-separator="To"
@@ -1014,7 +1108,7 @@ onMounted(async () => {
                 <p class="overView_item_text">2023/08--2023/09</p>
               </div>
               <div class="overView_item_larger">
-                <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格 <span class="font_red">37元</span> </p>
+                <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格： <span class="font_red">37元</span> </p>
                 <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
                 <p class="overView_item_text">2023/08--2023/09</p>
               </div>
@@ -1052,7 +1146,7 @@ onMounted(async () => {
               <div class="thirdTab">
                 <p class="thirdTab_title">批发市场：</p>
                 <el-cascader
-                    v-model="selectedMarket"
+                    v-model="selectedMarket_p4"
                     :options="options_market"
                     :props="props"
                     @change="handleMarketChange"
@@ -1062,7 +1156,7 @@ onMounted(async () => {
               <div class="thirdTab">
                 <p class="thirdTab_title">品种名称：</p>
                 <el-cascader
-                    v-model="selectedProduct"
+                    v-model="selectedProduct_p4"
                     :options="options_product"
                     :props="props"
                     @change="handleProductChange"
@@ -1072,7 +1166,7 @@ onMounted(async () => {
               <div class="thirdTimeSelect">
                 <p class="thirdTab_title">时间范围:</p>
                 <el-date-picker
-                    v-model="timeFrame"
+                    v-model="timeFrame_p4"
                     type="daterange"
                     unlink-panels
                     range-separator="To"
@@ -1099,7 +1193,7 @@ onMounted(async () => {
                 <p class="overView_item_text">2023/08--2023/09</p>
               </div>
               <div class="overView_item_larger">
-                <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格 <span class="font_red">37元</span> </p>
+                <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格： <span class="font_red">37元</span> </p>
                 <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
                 <p class="overView_item_text">2023/08--2023/09</p>
               </div>
@@ -1135,19 +1229,19 @@ onMounted(async () => {
         <el-tab-pane label="单一品种多地区对比" name="fifth" >
             <div class="searchBar">
               <div class="thirdTab">
-                <p class="thirdTab_title">批发市场：</p>
+                <p class="thirdTab_title">地区：</p>
                 <el-cascader
-                    v-model="selectedMarket"
-                    :options="options_market"
+                    v-model="selectedProvince_p5"
+                    :options="options_province"
                     :props="props"
                     @change="handleMarketChange"
-                    placeholder="请选择"
+                    placeholder="请选择（可多选）"
                 />
               </div>
               <div class="thirdTab">
                 <p class="thirdTab_title">品种名称：</p>
                 <el-cascader
-                    v-model="selectedProduct"
+                    v-model="selectedProduct_p5"
                     :options="options_product"
                     :props="props"
                     @change="handleProductChange"
@@ -1157,7 +1251,7 @@ onMounted(async () => {
               <div class="thirdTimeSelect">
                 <p class="thirdTab_title">时间范围:</p>
                 <el-date-picker
-                    v-model="timeFrame"
+                    v-model="timeFrame_p5"
                     type="daterange"
                     unlink-panels
                     range-separator="To"
@@ -1184,7 +1278,7 @@ onMounted(async () => {
                 <p class="overView_item_text">2023/08--2023/09</p>
               </div>
               <div class="overView_item_larger">
-                <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格 <span class="font_red">37元</span> </p>
+                <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格： <span class="font_red">37元</span> </p>
                 <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
                 <p class="overView_item_text">2023/08--2023/09</p>
               </div>
