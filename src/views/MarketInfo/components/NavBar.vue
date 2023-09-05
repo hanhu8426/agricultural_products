@@ -110,6 +110,7 @@ const shortcuts = [
 
 // 接收第一标签页的品种类别
 const selectedProduct_p1 = ref([]);
+const selectedProductValue_p1 = ref([]);
 const timeFrame_p1 = ref('') // 接收时间范围的值
 const time_start_p1 = ref('');
 const time_end_p1 = ref('');
@@ -120,10 +121,13 @@ const lowestPrice_p1 = ref('');
 const lowestMarket_p1 = ref('');
 const lowestTime_p1 = ref('');
 const content_p1 = ref([]); // 接收后端返回的varietyNationalAverageList
+const refDate_p1 = ref([]);
+const refPrice_p1 = ref([]);
 // 第二标签页中的地区，品种类别
 const selectedProvince_p2 = ref('');
 const selectedProduct_p2 = ref([]);
-const timeFrame_p2 = ref('')
+const selectedProductValue_p2 = ref([]);
+const timeFrame_p2 = ref('');
 const time_start_p2 = ref('');
 const time_end_p2 = ref('');
 const highestPrice_p2 = ref('');
@@ -133,6 +137,9 @@ const lowestPrice_p2 = ref('');
 const lowestMarket_p2 = ref('');
 const lowestTime_p2 = ref('');
 const content_p2 = ref([]); // 接收后端返回数组
+const refDate_p2 = ref([]);
+const refPrice_p2 = ref([]);
+const combinedData = ref([]);
 // 第三标签页中的批发市场，多选产品
 const selectedMarket_p3 = ref([]);
 const selectedProduct_p3 = ref([]);
@@ -759,12 +766,12 @@ async  function fetchThirdLevelDataProduct(secondLevelOption_product){
 const handleQueryP1 = () => {
   // 在这里执行查询操作，发送选中的值到后端
   const time = formatDates(timeFrame_p1.value);
-  const selectedProductValue_p1 = selectedProduct_p1.value[2];
+  selectedProductValue_p1.value = selectedProduct_p1.value[2];
   time_start_p1.value = time[0];
   time_end_p1.value = time[1];
   // 发送请求到后端，传递选中的值
   // 可以使用axios或其他方式发送HTTP请求
-  axios.get(`${baseUrl}/marketSituation/nationalAveragePrices/${selectedProductValue_p1}/${time_start_p1.value}/${time_end_p1.value}`)
+  axios.get(`${baseUrl}/marketSituation/nationalAveragePrices/${selectedProductValue_p1.value}/${time_start_p1.value}/${time_end_p1.value}`)
       .then((response) => {
         // 处理从后端返回的数据
         // 更新组件中的数据以供模板使用
@@ -775,6 +782,12 @@ const handleQueryP1 = () => {
         lowestPrice_p1.value = response.data.data.bottomPrice;
         lowestMarket_p1.value = response.data.data.bottomPriceMarket;
         lowestTime_p1.value = response.data.data.bottomPriceDate;
+        refDate_p1.value = content_p1.value.map(item => item.collectDate);
+        refPrice_p1.value = content_p1.value.map(item => item.averagePrice);
+        combinedData.value = content_p1.value.map(item => ({
+          value: item.averagePrice,
+          name: item.collectDate
+        }));
       })
       .catch((error) => {
         // 处理请求错误
@@ -785,12 +798,12 @@ const handleQueryP2 = () => {
   // 在这里执行查询操作，发送选中的值到后端
   const time = formatDates(timeFrame_p2.value);
   const province = selectedProvince_p2.value;
-  const selectedProductValue = selectedProduct_p2.value[2];
+  selectedProductValue_p2.value = selectedProduct_p2.value[2];
   time_start_p2.value = time[0];
   time_end_p2.value = time[1];
   // 发送请求到后端，传递选中的值
   // 可以使用axios或其他方式发送HTTP请求
-  axios.get(`${baseUrl}/marketSituation/regionalAveragePrices/${province}/${selectedProductValue}/${time_start_p2.value}/${time_end_p2.value}`)
+  axios.get(`${baseUrl}/marketSituation/regionalAveragePrices/${province}/${selectedProductValue_p2.value}/${time_start_p2.value}/${time_end_p2.value}`)
       .then((response) => {
         // 处理从后端返回的数据
         // 更新组件中的数据以供模板使用
@@ -801,6 +814,8 @@ const handleQueryP2 = () => {
         lowestPrice_p2.value = response.data.data.bottomPrice;
         lowestMarket_p2.value = response.data.data.bottomPriceMarket;
         lowestTime_p2.value = response.data.data.bottomPriceDate;
+        refDate_p2.value = content_p2.value.map(item => item.collectDate);
+        refPrice_p2.value = content_p2.value.map(item => item.averagePrice);
       })
       .catch((error) => {
         // 处理请求错误
@@ -945,13 +960,13 @@ onMounted(async () => {
                 <div class="tableArea">
                     <!-- 根据selectedIndex的值显示对应的表格 -->
                     <div v-if="selectedIndex === 0" class="tables">
-                        <MarketLineChartVue></MarketLineChartVue>
+                        <MarketLineChartVue :selectedProductValue_p1="selectedProductValue_p1" :refDate_p1="refDate_p1" :refPrice_p1="refPrice_p1"></MarketLineChartVue>
                     </div>
                     <div v-if="selectedIndex === 1" class="tables">
-                        <MarketStickChart></MarketStickChart>
+                        <MarketStickChart :selectedProductValue_p1="selectedProductValue_p1" :refDate_p1="refDate_p1" :refPrice_p1="refPrice_p1"></MarketStickChart>
                     </div>
                     <div v-if="selectedIndex === 2" class="tables">
-                        <MarketPieChart></MarketPieChart>
+                        <MarketPieChart :selectedProductValue_p1="selectedProductValue_p1" :combinedData="combinedData"></MarketPieChart>
                     </div>
                     <div class="icon_container">
                         <!-- 使用ref来引用图标元素 -->
@@ -1030,7 +1045,7 @@ onMounted(async () => {
                 <div class="tableArea">
                     <!-- 根据selectedIndex的值显示对应的表格 -->
                     <div v-if="selectedIndex_2 === 0" class="tables">
-                        <MarketLineChart_area></MarketLineChart_area>
+                        <MarketLineChart_area :selectedProductValue_p2="selectedProductValue_p2" :refDate_p2="refDate_p2" :refPrice_p2="refPrice_p2"></MarketLineChart_area>
                     </div>
                     <div v-if="selectedIndex_2 === 1" class="tables">
                         <MarketStickChart_area></MarketStickChart_area>

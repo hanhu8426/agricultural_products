@@ -6,9 +6,21 @@
 
 <script setup>
 import * as echarts from 'echarts';
-import {onMounted} from "vue";
+import {ref,defineProps,onMounted,watch} from "vue";
 // 引入ECharts主题文件
-import 'echarts/theme/vintage'; // 假设你要引入vintage主题
+import 'echarts/theme/vintage'; 
+
+// 使用 defineProps 获取多个 props 并创建响应式变量
+const { selectedProductValue_p1, refDate_p1, refPrice_p1 } = defineProps([
+  'selectedProductValue_p1',
+  'refDate_p1',
+  'refPrice_p1'
+]);
+
+// 直接创建响应式变量，无需额外变量
+const selectedProduct_p1 = ref(selectedProductValue_p1);
+const refDateValue_p1 = ref(refDate_p1);
+const refPriceValue_p1 = ref(refPrice_p1);
 
 onMounted(()=>{
   {
@@ -35,7 +47,7 @@ onMounted(()=>{
       xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          data: refDateValue_p1.value
       },
       yAxis: {
           type: 'value',
@@ -45,9 +57,9 @@ onMounted(()=>{
       },
       series: [
           {
-          name: 'Highest',
+          name: selectedProduct_p1.value,
           type: 'line',
-          data: [10, 11, 13, 11, 12, 12, 9],
+          data: refPriceValue_p1.value,
           markPoint: {
               data: [
               { type: 'max', name: 'Max' },
@@ -63,37 +75,15 @@ onMounted(()=>{
               },
           }
           },
-          {
-          name: 'Lowest',
-          type: 'line',
-          data: [1, -2, 2, 5, 3, 2, 0],
-          markPoint: {
-              data: [
-              { type: 'max', name: 'Max' },
-              { type: 'min', name: 'Min' }
-              ]
-          },
-          markLine: {
-              data: [
-              { type: 'average', name: 'Avg' }
-              ],
-              label: {
-              show: true,
-              position: 'end',
-              offset: [10, 0],
-              },
-          }
-      }]
+          ]
     };
 
 
     // 渲染图表
     chart.setOption(option);
-
-    // 可选：监听窗口大小变化，自适应调整图表大小
-    // window.addEventListener('resize', () => {
-    //   chart.resize();
-    // });
+    watch([refPriceValue_p1], () => {
+      chart.setOption(option);
+  });
   }
 })
 
