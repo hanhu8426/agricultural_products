@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
 import MarketLineChartVue from './MarketLineChart.vue';
 import MarketStickChart from './MarketStickChart.vue';
 import MarketPieChart from './MarketPieChart.vue';
@@ -18,19 +18,25 @@ import MarketRadarChart_multiArea from './MarketRadarChart_multiArea.vue'
 import zhexiantu from '@/assets/images/zhexiantu-xianxing.png'
 import zhuzhuangtu from '@/assets/images/stick.png'
 import bingtu from '@/assets/images/tubiao-bingtu.png'
+<<<<<<< HEAD
 import leidatu from '@/assets/images/leidatu.png'
+=======
+import axios from "axios";
+import {baseUrl} from "@/main";
+>>>>>>> 653d544a68fabbcbd668dd87c7aa2eb830b75743
 const activeName = ref('first')
-const selectedMarket = ref([]);
-const selectedProduct = ref([]);
 const props = {
   expandTrigger: 'hover'
 };
 const selectedIndex = ref(0); // 默认选中第一个图标
 const selectedIndex_2 = ref(0); // 默认选中第一个图标
+<<<<<<< HEAD
 const selectedIndex_3 = ref(0); // 默认选中第一个图标
 const selectedIndex_4 = ref(0); // 默认选中第一个图标
 const selectedIndex_5 = ref(0); // 默认选中第一个图标
 
+=======
+>>>>>>> 653d544a68fabbcbd668dd87c7aa2eb830b75743
 const icons = [
   zhexiantu, // 本地PNG图片的相对路径
   zhuzhuangtu,
@@ -62,10 +68,9 @@ const selectTable_5 = (index) => {
   selectedIndex_5.value = index;
 };
 
+const priceTable = ref([]);
 
-// 接收时间范围的值
-const timeFrame = ref('')
-
+const timeFrame = ref('')  // 接收时间范围的值
 // 设置时间选择时的快捷键
 const shortcuts = [
   {
@@ -97,8 +102,12 @@ const shortcuts = [
   },
 ]
 
-// 品种数组
-const options_product = [
+// 接收选中单一的市场或产品（适用于第一第二标签页）
+const selectedMarket = ref([]);
+const selectedProduct = ref([]);
+
+// 创建ref数组接收后端数据
+const options_product = ref([
   {
     value: '粮食',
     label: '粮食 ',
@@ -309,13 +318,184 @@ const options_product = [
       },
     ],
   },
-]
-const handleMarketChange = () => {
-}
-const handleProductChange = () => {
-}
-
-// 第二个标签页
+])  // 品种数组
+const options_market = ref([
+  {
+    value: '北京市',
+    label: '北京市',
+    children: [],
+  },
+  {
+    value: '天津市',
+    label: '天津市',
+    children: [],
+  },
+  {
+    value: '河北省',
+    label: '河北省',
+    children: [],
+  },
+  {
+    value: '山西省',
+    label: '山西省',
+    children: [],
+  },
+  {
+    value: '内蒙古自治区',
+    label: '内蒙古自治区',
+    children: [],
+  },
+  {
+    value: '辽宁省',
+    label: '辽宁省',
+    children: [],
+  },
+  {
+    value: '吉林省',
+    label: '吉林省',
+    children: [],
+  },
+  {
+    value: '黑龙江省',
+    label: '黑龙江省',
+    children: [],
+  },
+  {
+    value: '上海市',
+    label: '上海市',
+    children: [],
+  },
+  {
+    value: '江苏省',
+    label: '江苏省',
+    children: [],
+  },
+  {
+    value: '浙江省',
+    label: '浙江省',
+    children: [],
+  },
+  {
+    value: '安徽省',
+    label: '安徽省',
+    children: [],
+  },
+  {
+    value: '福建省',
+    label: '福建省',
+    children: [],
+  },
+  {
+    value: '江西省',
+    label: '江西省',
+    children: [],
+  },
+  {
+    value: '山东省',
+    label: '山东省',
+    children: [],
+  },
+  {
+    value: '河南省',
+    label: '河南省',
+    children: [],
+  },
+  {
+    value: '湖南省',
+    label: '湖南省',
+    children: [],
+  },
+  {
+    value: '广东省',
+    label: '广东省',
+    children: [],
+  },
+  {
+    value: '湖北省',
+    label: '湖北省',
+    children: [],
+  },
+  {
+    value: '广东省',
+    label: '广东省',
+    children: [],
+  },
+  {
+    value: '广西壮族自治区',
+    label: '广西壮族自治区',
+    children: [],
+  },
+  {
+    value: '海南省',
+    label: '海南省',
+    children: [],
+  },
+  {
+    value: '重庆市',
+    label: '重庆市',
+    children: [],
+  },
+  {
+    value: '四川省',
+    label: '四川省',
+    children: [],
+  },
+  {
+    value: '贵州省',
+    label: '贵州省',
+    children: [],
+  },
+  {
+    value: '云南省',
+    label: '云南省',
+    children: [],
+  },
+  {
+    value: '西藏自治区',
+    label: '西藏自治区',
+    children: [],
+  },
+  {
+    value: '陕西省',
+    label: '陕西省',
+    children: [],
+  },
+  {
+    value: '甘肃省',
+    label: '甘肃省',
+    children: [],
+  },
+  {
+    value: '青海省',
+    label: '青海省',
+    children: [],
+  },
+  {
+    value: '宁夏回族自治区',
+    label: '宁夏回族自治区',
+    children: [],
+  },
+  {
+    value: '新疆维吾尔自治区',
+    label: '新疆维吾尔自治区',
+    children: [],
+  },
+  {
+    value: '台湾',
+    label: '台湾',
+    children: [],
+  },
+  {
+    value: '香港特别行政区',
+    label: '香港特别行政区',
+    children: [],
+  },
+  {
+    value: '澳门特别行政区',
+    label: '澳门特别行政区',
+    children: [],
+  },
+])   // 市场数组
 const options_province = [
   {
     value: '北京市',
@@ -457,7 +637,172 @@ const options_province = [
     value: '澳门特别行政区',
     label: '澳门特别行政区',
   },
-] // 固定的省市数组
+] // 第二个标签页中固定的省市数组
+const handleMarketChange = () => {
+}
+const handleProductChange = () => {
+}
+
+// 获得市场第一级后面的children
+async function fetchSecondLevelDataMarket(firstLevelOption_market) {
+  try {
+    const encodedValue = encodeURIComponent(firstLevelOption_market.value);
+    const response = await axios.get(`${baseUrl}/dropDownBox/markets?province=${encodedValue}`);
+    // 更新一级市场的 children 属性
+    const marketNames = response.data.data;
+    for (const marketName of marketNames) {
+      firstLevelOption_market.children.push({
+        value: marketName,
+        label: marketName,
+      });
+    }
+  } catch (error) {
+    console.error('获取第二级数据失败', error);
+  }
+}
+
+// 获得产品第二级后面的children
+async  function fetchThirdLevelDataProduct(secondLevelOption_product){
+  try {
+    const encodedValue = encodeURIComponent(secondLevelOption_product.value);
+    const response = await axios.get(`${baseUrl}/dropDownBox/varietis?secondVariety=${encodedValue}`);
+    // 更新一级市场的 children 属性
+    const productNames = response.data.data;
+    for (const marketName of productNames) {
+      secondLevelOption_product.children.push({
+        value: marketName,
+        label: marketName,
+      });
+    }
+  } catch (error) {
+    console.error('获取第二级数据失败', error);
+  }
+}
+
+// 为每一个标签页的“查询”按钮写接口
+const handleQueryP1 = () => {
+  // 在这里执行查询操作，发送选中的值到后端
+  const selectedProductValue_p1 = selectedProduct.value[2];
+  const timeStart_p1 = timeFrame.value[1];
+  const timeEnd_p1 = timeFrame.value[2];
+  // 发送请求到后端，传递选中的值
+  // 可以使用axios或其他方式发送HTTP请求
+  axios.get(`${baseUrl}/marketSituation/nationalAveragePrices/${selectedProductValue_p1}/${timeStart_p1}/${timeEnd_p1}`)
+      .then((response) => {
+        // 处理从后端返回的数据
+        // 更新组件中的数据以供模板使用
+        priceTable.value = response.data.data;
+      })
+      .catch((error) => {
+        // 处理请求错误
+        console.error('请求失败', error);
+      });
+};
+const handleQueryP2 = () => {
+  // 在这里执行查询操作，发送选中的值到后端
+  const selectedMarketValue = selectedMarket.value[1];
+  const selectedProductValue = selectedProduct.value[2];
+  // 发送请求到后端，传递选中的值
+  // 可以使用axios或其他方式发送HTTP请求
+  axios.get(`${baseUrl}/priceQuery/PriceData`, {
+    params: {
+      market: selectedMarketValue,
+      variety: selectedProductValue,
+    },
+  })
+      .then((response) => {
+        // 处理从后端返回的数据
+        // 更新组件中的数据以供模板使用
+        priceTable.value = response.data.data;
+      })
+      .catch((error) => {
+        // 处理请求错误
+        console.error('请求失败', error);
+      });
+};
+const handleQueryP3 = () => {
+  // 在这里执行查询操作，发送选中的值到后端
+  const selectedMarketValue = selectedMarket.value[1];
+  const selectedProductValue = selectedProduct.value[2];
+  // 发送请求到后端，传递选中的值
+  // 可以使用axios或其他方式发送HTTP请求
+  axios.get(`${baseUrl}/priceQuery/PriceData`, {
+    params: {
+      market: selectedMarketValue,
+      variety: selectedProductValue,
+    },
+  })
+      .then((response) => {
+        // 处理从后端返回的数据
+        // 更新组件中的数据以供模板使用
+        priceTable.value = response.data.data;
+      })
+      .catch((error) => {
+        // 处理请求错误
+        console.error('请求失败', error);
+      });
+};
+const handleQueryP4 = () => {
+  // 在这里执行查询操作，发送选中的值到后端
+  const selectedMarketValue = selectedMarket.value[1];
+  const selectedProductValue = selectedProduct.value[2];
+  // 发送请求到后端，传递选中的值
+  // 可以使用axios或其他方式发送HTTP请求
+  axios.get(`${baseUrl}/priceQuery/PriceData`, {
+    params: {
+      market: selectedMarketValue,
+      variety: selectedProductValue,
+    },
+  })
+      .then((response) => {
+        // 处理从后端返回的数据
+        // 更新组件中的数据以供模板使用
+        priceTable.value = response.data.data;
+      })
+      .catch((error) => {
+        // 处理请求错误
+        console.error('请求失败', error);
+      });
+};
+const handleQueryP5 = () => {
+  // 在这里执行查询操作，发送选中的值到后端
+  const selectedMarketValue = selectedMarket.value[1];
+  const selectedProductValue = selectedProduct.value[2];
+  // 发送请求到后端，传递选中的值
+  // 可以使用axios或其他方式发送HTTP请求
+  axios.get(`${baseUrl}/priceQuery/PriceData`, {
+    params: {
+      market: selectedMarketValue,
+      variety: selectedProductValue,
+    },
+  })
+      .then((response) => {
+        // 处理从后端返回的数据
+        // 更新组件中的数据以供模板使用
+        priceTable.value = response.data.data;
+      })
+      .catch((error) => {
+        // 处理请求错误
+        console.error('请求失败', error);
+      });
+};
+
+
+// 挂载时加载产品三级一级省市二级批发市场
+onMounted(async () => {
+  // 遍历所有的一级下拉框
+  for (const firstLevelOption_market of options_market.value) {
+    // 调用函数获取二级数据
+    await fetchSecondLevelDataMarket(firstLevelOption_market);
+  }
+
+  for (const firstLevelOption_product of options_product.value) {
+    // 调用函数获取第三级数据
+    for (const secondLevelOption_product of firstLevelOption_product.children) {
+      await fetchThirdLevelDataProduct(secondLevelOption_product);
+    }
+  }
+});
 
 </script>
 
@@ -489,7 +834,7 @@ const options_province = [
                   />
                 </div>
                 <div class="queryBox">
-                    <el-button class="queryButton" type="success" plain @click="handleQuery">查询</el-button>
+                    <el-button class="queryButton" type="success" plain @click="handleQueryP1">查询</el-button>
                 </div>
             </div>
             <div class="content">
@@ -574,7 +919,7 @@ const options_province = [
                   />
                 </div>
                 <div class="smallQueryBox">
-                    <el-button class="queryButton" type="success" plain @click="handleQuery">查询</el-button>
+                    <el-button class="queryButton" type="success" plain @click="handleQueryP2">查询</el-button>
                 </div>
             </div>
             <div class="content">
@@ -642,7 +987,7 @@ const options_province = [
                         :options="options_product"
                         :props="props"
                         @change="handleProductChange"
-                        placeholder="请选择"
+                        placeholder="请选择（可多选）"
                     />
                 </div>
                 <div class="thirdTimeSelect">
@@ -659,7 +1004,7 @@ const options_province = [
                   />
                 </div>
                 <div class="smallQueryBox">
-                    <el-button class="queryButton" type="success" plain @click="handleQuery">查询</el-button>
+                    <el-button class="queryButton" type="success" plain @click="handleQueryP3">查询</el-button>
                 </div>
             </div>
             <div class="content">
@@ -710,29 +1055,42 @@ const options_province = [
         </el-tab-pane>
         <el-tab-pane label="单一品种多市场对比" name="forth" >
             <div class="searchBar">
-                <div class="firstSelect">
-                    批发市场:
-                    <el-cascader
-                        v-model="selectedMarket"
-                        :options="options_market"
-                        :props="props"
-                        @change="handleMarketChange"
-                        placeholder="请选择"
-                    />
-                </div>
-                <div class="firstSelect">
-                    品种名称:
-                    <el-cascader
-                        v-model="selectedProduct"
-                        :options="options_product"
-                        :props="props"
-                        @change="handleProductChange"
-                        placeholder="请选择"
-                    />
-                </div>
-                <div class="queryBox">
-                    <el-button class="queryButton" type="success" plain @click="handleQuery">查询</el-button>
-                </div>
+              <div class="thirdTab">
+                <p class="thirdTab_title">批发市场：</p>
+                <el-cascader
+                    v-model="selectedMarket"
+                    :options="options_market"
+                    :props="props"
+                    @change="handleMarketChange"
+                    placeholder="请选择（可多选）"
+                />
+              </div>
+              <div class="thirdTab">
+                <p class="thirdTab_title">品种名称：</p>
+                <el-cascader
+                    v-model="selectedProduct"
+                    :options="options_product"
+                    :props="props"
+                    @change="handleProductChange"
+                    placeholder="请选择"
+                />
+              </div>
+              <div class="thirdTimeSelect">
+                <p class="thirdTab_title">时间范围:</p>
+                <el-date-picker
+                    v-model="timeFrame"
+                    type="daterange"
+                    unlink-panels
+                    range-separator="To"
+                    start-placeholder="Start date"
+                    end-placeholder="End date"
+                    :shortcuts="shortcuts"
+                    :size="'default'"
+                />
+              </div>
+              <div class="smallQueryBox">
+                <el-button class="queryButton" type="success" plain @click="handleQueryP4">查询</el-button>
+              </div>
             </div>
             <div class="content">
             <div class="overView">
@@ -782,29 +1140,42 @@ const options_province = [
         </el-tab-pane>
         <el-tab-pane label="单一品种多地区对比" name="fifth" >
             <div class="searchBar">
-                <div class="firstSelect">
-                    批发市场:
-                    <el-cascader
-                        v-model="selectedMarket"
-                        :options="options_market"
-                        :props="props"
-                        @change="handleMarketChange"
-                        placeholder="请选择"
-                    />
-                </div>
-                <div class="firstSelect">
-                    品种名称:
-                    <el-cascader
-                        v-model="selectedProduct"
-                        :options="options_product"
-                        :props="props"
-                        @change="handleProductChange"
-                        placeholder="请选择"
-                    />
-                </div>
-                <div class="queryBox">
-                    <el-button class="queryButton" type="success" plain @click="handleQuery">查询</el-button>
-                </div>
+              <div class="thirdTab">
+                <p class="thirdTab_title">批发市场：</p>
+                <el-cascader
+                    v-model="selectedMarket"
+                    :options="options_market"
+                    :props="props"
+                    @change="handleMarketChange"
+                    placeholder="请选择"
+                />
+              </div>
+              <div class="thirdTab">
+                <p class="thirdTab_title">品种名称：</p>
+                <el-cascader
+                    v-model="selectedProduct"
+                    :options="options_product"
+                    :props="props"
+                    @change="handleProductChange"
+                    placeholder="请选择"
+                />
+              </div>
+              <div class="thirdTimeSelect">
+                <p class="thirdTab_title">时间范围:</p>
+                <el-date-picker
+                    v-model="timeFrame"
+                    type="daterange"
+                    unlink-panels
+                    range-separator="To"
+                    start-placeholder="Start date"
+                    end-placeholder="End date"
+                    :shortcuts="shortcuts"
+                    :size="'default'"
+                />
+              </div>
+              <div class="smallQueryBox">
+                <el-button class="queryButton" type="success" plain @click="handleQueryP5">查询</el-button>
+              </div>
             </div>
             <div class="content">
             <div class="overView">
