@@ -18,25 +18,19 @@ import MarketRadarChart_multiArea from './MarketRadarChart_multiArea.vue'
 import zhexiantu from '@/assets/images/zhexiantu-xianxing.png'
 import zhuzhuangtu from '@/assets/images/stick.png'
 import bingtu from '@/assets/images/tubiao-bingtu.png'
-<<<<<<< HEAD
 import leidatu from '@/assets/images/leidatu.png'
-=======
 import axios from "axios";
 import {baseUrl} from "@/main";
->>>>>>> 653d544a68fabbcbd668dd87c7aa2eb830b75743
 const activeName = ref('first')
 const props = {
   expandTrigger: 'hover'
 };
 const selectedIndex = ref(0); // 默认选中第一个图标
 const selectedIndex_2 = ref(0); // 默认选中第一个图标
-<<<<<<< HEAD
 const selectedIndex_3 = ref(0); // 默认选中第一个图标
 const selectedIndex_4 = ref(0); // 默认选中第一个图标
 const selectedIndex_5 = ref(0); // 默认选中第一个图标
 
-=======
->>>>>>> 653d544a68fabbcbd668dd87c7aa2eb830b75743
 const icons = [
   zhexiantu, // 本地PNG图片的相对路径
   zhuzhuangtu,
@@ -1141,10 +1135,10 @@ onMounted(async () => {
         <el-tab-pane label="单一品种多地区对比" name="fifth" >
             <div class="searchBar">
               <div class="thirdTab">
-                <p class="thirdTab_title">批发市场：</p>
+                <p class="thirdTab_title">地区：</p>
                 <el-cascader
                     v-model="selectedMarket"
-                    :options="options_market"
+                    :options="options_province"
                     :props="props"
                     @change="handleMarketChange"
                     placeholder="请选择"
