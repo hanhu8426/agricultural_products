@@ -3,6 +3,9 @@ import { ref } from 'vue'
 import MarketLineChartVue from './MarketLineChart.vue';
 import MarketStickChart from './MarketStickChart.vue';
 import MarketPieChart from './MarketPieChart.vue';
+import MarketLineChart_area from './MarketLineChart_area.vue';
+import MarketStickChart_area from './MarketStickChart_area.vue';
+import MarketPieChart_area from './MarketPieChart_area.vue';
 import zhexiantu from '@/assets/images/zhexiantu-xianxing.png'
 import zhuzhuangtu from '@/assets/images/stick.png'
 import bingtu from '@/assets/images/tubiao-bingtu.png'
@@ -13,6 +16,7 @@ const props = {
   expandTrigger: 'hover'
 };
 const selectedIndex = ref(0); // 默认选中第一个图标
+const selectedIndex_2 = ref(0); // 默认选中第一个图标
 
 const icons = [
   zhexiantu, // 本地PNG图片的相对路径
@@ -23,6 +27,10 @@ const icons = [
 const selectTable = (index) => {
   // 切换选中状态
   selectedIndex.value = index;
+};
+const selectTable_2 = (index) => {
+  // 切换选中状态
+  selectedIndex_2.value = index;
 };
 const options_product = [
   {
@@ -341,6 +349,51 @@ const handleProductChange = () => {
                 </div>
                 <div class="queryBox">
                     <el-button class="queryButton" type="success" plain @click="handleQuery">查询</el-button>
+                </div>
+            </div>
+            <div class="content">
+                <div class="overView">
+                    <div class="overView_title">查询结果</div>
+                    <div class="overView_item">
+                        <p class="overView_item_title"> <img src="@/assets/images/shijian.png" /> 时间范围 </p>
+                        <p class="overView_item_text">2023/08--2023/09</p>
+                    </div>
+                    <div class="overView_item_larger">
+                        <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格： <span class="font_red">37元</span> </p>
+                        <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
+                        <p class="overView_item_text">2023/08--2023/09</p>
+                    </div>
+                    <div class="overView_item_larger">
+                        <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格 <span class="font_red">37元</span> </p>
+                        <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
+                        <p class="overView_item_text">2023/08--2023/09</p>
+                    </div>
+                </div>
+                <div class="tableArea">
+                    <!-- 根据selectedIndex的值显示对应的表格 -->
+                    <div v-if="selectedIndex_2 === 0" class="tables">
+                        <MarketLineChart_area></MarketLineChart_area>
+                    </div>
+                    <div v-if="selectedIndex_2 === 1" class="tables">
+                        <MarketStickChart_area></MarketStickChart_area>
+                    </div>
+                    <div v-if="selectedIndex_2 === 2" class="tables">
+                        <MarketPieChart_area></MarketPieChart_area>
+                    </div>
+                    <div class="icon_container">
+                        <!-- 使用ref来引用图标元素 -->
+                        <img class="tableImg"
+                            v-for="(icon, index) in icons"
+                            :key="index"
+                            :src="icon"
+                            :ref="`iconRef${index}`"
+                            @click="selectTable_2(index)"
+                            :style="{ 
+                                filter: selectedIndex_2 === index ? 'none' : 'brightness(3) grayscale(100%)' ,
+                                cursor: 'pointer'
+                                }"
+                        />
+                    </div>
                 </div>
             </div>
         </el-tab-pane>

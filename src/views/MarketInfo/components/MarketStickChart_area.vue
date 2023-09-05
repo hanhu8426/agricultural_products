@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div id="chart-container" style="width: 842px; height: 494px;"></div>
+      <div id="chart-container2" style="width: 842px; height: 494px;"></div>
     </div>
   </template>
   
@@ -13,7 +13,7 @@
   onMounted(()=>{
     {
       // 使用ECharts初始化图表
-      const chartContainer = document.getElementById('chart-container');
+      const chartContainer = document.getElementById('chart-container2');
       const chart = echarts.init(chartContainer, 'vintage'); // 使用vintage主题
       const data = [120, 200, 150, 80, 70, 110, 130];
       const maxIndex = data.indexOf(Math.max(...data)); // 找到最大值的索引

@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div id="chart-container" style="width: 842px; height: 494px;"></div>
+      <div id="chart-container2" style="width: 842px; height: 494px;"></div>
     </div>
   </template>
   
@@ -13,7 +13,7 @@
   onMounted(()=>{
     {
       // 使用ECharts初始化图表
-      const chartContainer = document.getElementById('chart-container');
+      const chartContainer = document.getElementById('chart-container2');
       const chart = echarts.init(chartContainer, 'vintage'); // 使用vintage主题
   
       // 设置ECharts配置选项
@@ -100,8 +100,7 @@
   
   </script>
 
-  <style>
+  <style scoped>
   /* 可以在这里添加样式，自定义图表容器的样式 */
-
   </style>
   
