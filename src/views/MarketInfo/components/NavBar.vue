@@ -817,7 +817,7 @@ const handleQueryP2 = () => {
         lowestTime_p2.value = response.data.data.bottomPriceDate;
         refDate_p2.value = content_p2.value.map(item => item.collectDate);
         refPrice_p2.value = content_p2.value.map(item => item.averagePrice);
-        combinedData_p2.value = content_p1.value.map(item => ({
+        combinedData_p2.value = content_p2.value.map(item => ({
           value: item.averagePrice,
           name: item.collectDate
         }));
@@ -1122,14 +1122,30 @@ onMounted(async () => {
                 <p class="overView_item_text">2023/08--2023/09</p>
               </div>
               <div class="overView_item_larger">
-                <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格： <span class="font_red">37元</span> </p>
-                <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
-                <p class="overView_item_text">2023/08--2023/09</p>
+                <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格： </p>
+                <div class="select_name">
+                  <span class="name_box">牛肉</span>
+                  <span class="name_box">羊肉</span>
+                  <span class="name_box">猪肉</span>
+                </div>
+                <div class="price_high">
+                  <span class="price_box">37元</span>
+                  <span class="price_box">30元</span>
+                  <span class="price_box">15元</span>
+                </div>
               </div>
               <div class="overView_item_larger">
-                <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格： <span class="font_red">37元</span> </p>
-                <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
-                <p class="overView_item_text">2023/08--2023/09</p>
+                <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格：  </p>
+                <div class="select_name">
+                  <span class="name_box">牛肉</span>
+                  <span class="name_box">羊肉</span>
+                  <span class="name_box">猪肉</span>
+                </div>
+                <div class="price_high">
+                  <span class="price_box">37元</span>
+                  <span class="price_box">30元</span>
+                  <span class="price_box">15元</span>
+                </div>
               </div>
             </div>
             <div class="tableArea">
@@ -1207,14 +1223,30 @@ onMounted(async () => {
                 <p class="overView_item_text">2023/08--2023/09</p>
               </div>
               <div class="overView_item_larger">
-                <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格： <span class="font_red">37元</span> </p>
-                <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
-                <p class="overView_item_text">2023/08--2023/09</p>
+                <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格：  </p>
+                <div class="select_name">
+                  <span class="name_box">牛肉</span>
+                  <span class="name_box">羊肉</span>
+                  <span class="name_box">猪肉</span>
+                </div>
+                <div class="price_high">
+                  <span class="price_box">37元</span>
+                  <span class="price_box">30元</span>
+                  <span class="price_box">15元</span>
+                </div>
               </div>
               <div class="overView_item_larger">
-                <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格： <span class="font_red">37元</span> </p>
-                <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
-                <p class="overView_item_text">2023/08--2023/09</p>
+                <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格：  </p>
+                <div class="select_name">
+                  <span class="name_box">牛肉</span>
+                  <span class="name_box">羊肉</span>
+                  <span class="name_box">猪肉</span>
+                </div>
+                <div class="price_high">
+                  <span class="price_box">37元</span>
+                  <span class="price_box">30元</span>
+                  <span class="price_box">15元</span>
+                </div>
               </div>
             </div>
             <div class="tableArea">
@@ -1292,14 +1324,30 @@ onMounted(async () => {
                 <p class="overView_item_text">2023/08--2023/09</p>
               </div>
               <div class="overView_item_larger">
-                <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格： <span class="font_red">37元</span> </p>
-                <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
-                <p class="overView_item_text">2023/08--2023/09</p>
+                <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格：  </p>
+                <div class="select_name">
+                  <span class="name_box">牛肉</span>
+                  <span class="name_box">羊肉</span>
+                  <span class="name_box">猪肉</span>
+                </div>
+                <div class="price_high">
+                  <span class="price_box">37元</span>
+                  <span class="price_box">30元</span>
+                  <span class="price_box">15元</span>
+                </div>
               </div>
               <div class="overView_item_larger">
-                <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格： <span class="font_red">37元</span> </p>
-                <p class="overView_item_text">新疆焉耆县光明农副产品综合批发市场</p>
-                <p class="overView_item_text">2023/08--2023/09</p>
+                <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格：  </p>
+                <div class="select_name">
+                  <span class="name_box">牛肉</span>
+                  <span class="name_box">羊肉</span>
+                  <span class="name_box">猪肉</span>
+                </div>
+                <div class="price_high">
+                  <span class="price_box">37元</span>
+                  <span class="price_box">30元</span>
+                  <span class="price_box">15元</span>
+                </div>
               </div>
             </div>
             <div class="tableArea">
@@ -1425,6 +1473,38 @@ p img {
 .font_red{
     font-size: 22px;
     color: #c50b03;
+}
+.select_name{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.price_high{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.name_box{
+  color: #777;
+    display: block;
+    width: 110px;
+    height: 24px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+    line-height: 24px;
+}
+.price_box{
+    line-height: 50px;
+    font-size: 14px;
+    color: #777;
+    text-align: center;
+    display: block;
+    width: 110px;
+    text-overflow: ellipsis;
 }
 .tableArea{
     position: relative;
