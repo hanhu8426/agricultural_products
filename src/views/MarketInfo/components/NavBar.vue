@@ -79,7 +79,7 @@ function formatDates(dateStrings) {
 
 const timeFrame_p3 = ref('')
 const timeFrame_p4 = ref('')
-const timeFrame_p5 = ref('')
+
 // 设置时间选择时的快捷键
 const shortcuts = [
   {
@@ -152,6 +152,10 @@ const lastLevelItems_p3 = ref([]);
 const time_start_p3 = ref('');
 const time_end_p3 = ref('');
 const allProductInfo = ref([]);
+const item_name = ref('');
+const highestPrice = ref('');
+const bottomPrice = ref('');
+const ItemArray_p3 = ref([]);  // 用来存放每一个多选的对象属性
 async function fetchProduct_p3 () {
   // 获得选中的大类名称
   const encodedValue = encodeURIComponent(selectedProduct_p3.value[1]);
@@ -164,9 +168,13 @@ async function fetchProduct_p3 () {
     console.error('获取子项数据失败', error);
   }
 }
-
 // 向后端获取多选框中的每一项对应的数据
 async function fetchProductPrice (item) {
+  const instanceItem = {
+    item_name,
+    highestPrice,
+    bottomPrice,
+  }
   try {
     // 在这里执行查询操作，发送选中的值到后端
     const time = formatDates(timeFrame_p3.value);
@@ -174,6 +182,10 @@ async function fetchProductPrice (item) {
     time_end_p3.value = time[1];
     const selectedMarket = selectedMarket_p3.value[1];
     const response = await axios.get(`${baseUrl}/priceQuery/marketAveragePrices/${selectedMarket}/${item}/${time_start_p3.value}/${time_end_p3.value}`);
+    instanceItem.item_name = item;
+    instanceItem.highestPrice = response.data.data.highestPrice;
+    instanceItem.bottomPrice = response.data.data.bottomPrice;
+    ItemArray_p3.value.push(instanceItem);
     allProductInfo.value.push(response.data.data);
   } catch(error) {
     // 处理请求错误
@@ -540,6 +552,12 @@ const options_product_p3 = ref([
     ],
   },
 ])  // 第三标签页特制产品数组
+const allMarketInfo = ref([]);
+const time_start_p4 = ref('');
+const time_end_p4 = ref('');
+const ItemArray_p4 = ref([]);
+const market = ref('');
+// 获取多选框中内容
 async function fetchMarket_p4 () {
   // 获得选中的省市名称
   const encodedValue = encodeURIComponent(selectedProvince_p4.value);
@@ -549,6 +567,30 @@ async function fetchMarket_p4 () {
     lastLevelItems_p4.value = response.data.data;
   } catch (error) {
     console.error('获取子项数据失败', error);
+  }
+}
+
+async function fetchMarketPrice (item) {
+  const instanceItem = {
+    market,
+    highestPrice,
+    bottomPrice,
+  }
+  try {
+    // 在这里执行查询操作，发送选中的值到后端
+    const time = formatDates(timeFrame_p4.value);
+    time_start_p4.value = time[0];
+    time_end_p4.value = time[1];
+    const selectedProduct = selectedProduct_p4.value[2];
+    const response = await axios.get(`${baseUrl}/priceQuery/marketAveragePrices/${item}/${selectedProduct}/${time_start_p4.value}/${time_end_p4.value}`);
+    instanceItem.market = item;
+    instanceItem.highestPrice = response.data.data.highestPrice;
+    instanceItem.bottomPrice = response.data.data.bottomPrice;
+    ItemArray_p4.value.push(instanceItem);
+    allMarketInfo.value.push(response.data.data);
+  } catch(error) {
+    // 处理请求错误
+    console.error('请求失败', error);
   }
 }
 
@@ -1126,6 +1168,39 @@ const options_province = [
     label: '澳门特别行政区',
   },
 ] // 第二个标签页中固定的省市数组
+const timeFrame_p5 = ref('')
+const time_start_p5 = ref('');
+const time_end_p5 = ref('');
+const highestMarket = ref('');
+const bottomMarket = ref('');
+const ItemArray_p5 = ref([]);
+async function fetchProvincePrice (item) {
+  const instanceItem = {
+    highestMarket,
+    bottomMarket,
+    highestPrice,
+    bottomPrice,
+  }
+  try {
+    // 在这里执行查询操作，发送选中的值到后端
+    const time = formatDates(timeFrame_p5.value);
+    time_start_p5.value = time[0];
+    time_end_p5.value = time[1];
+    const selectedProduct = selectedProduct_p5.value[2];
+    const response = await axios.get(`${baseUrl}/marketSituation/regionalAveragePrices/${item}/${selectedProduct}/${time_start_p5.value}/${time_end_p5.value}`);
+    instanceItem.highestMarket = response.data.data.highestPriceMarket;
+    instanceItem.bottomMarket = response.data.data.bottomPriceMarket;
+    instanceItem.highestPrice = response.data.data.highestPrice;
+    instanceItem.bottomPrice = response.data.data.bottomPrice;
+    ItemArray_p5.value.push(instanceItem);
+    allMarketInfo.value.push(response.data.data);
+  } catch(error) {
+    // 处理请求错误
+    console.error('请求失败', error);
+  }
+}
+
+// 点击变换时的函数
 const handleMarketChange = () => {
 }
 const handleProductChange = () => {
@@ -1232,53 +1307,24 @@ const handleQueryP2 = () => {
       });
 };
 const handleQueryP3 = async () => {
+  // 在这里执行查询操作，发送选中的值到后端
+  ItemArray_p3.value = [];  // 每次查询前清空，不然展示过多；
   const selectedProductValue = selectedItems_p3.value;
   const fetchPromises = selectedProductValue.map(item => fetchProductPrice(item));
   await Promise.all(fetchPromises);
 };
-const handleQueryP4 = () => {
-  // 在这里执行查询操作，发送选中的值到后端
-  const selectedMarketValue = selectedMarket.value[1];
-  const selectedProductValue = selectedProduct.value[2];
-  // 发送请求到后端，传递选中的值
-  // 可以使用axios或其他方式发送HTTP请求
-  axios.get(`${baseUrl}/priceQuery/PriceData`, {
-    params: {
-      market: selectedMarketValue,
-      variety: selectedProductValue,
-    },
-  })
-      .then((response) => {
-        // 处理从后端返回的数据
-        // 更新组件中的数据以供模板使用
-        priceTable.value = response.data.data;
-      })
-      .catch((error) => {
-        // 处理请求错误
-        console.error('请求失败', error);
-      });
+
+const handleQueryP4 = async () => {
+  ItemArray_p4.value = [];
+  const selectedMarketValue = selectedItems_p4.value;
+  const fetchPromises = selectedMarketValue.map(item => fetchMarketPrice(item));
+  await Promise.all(fetchPromises);
 };
-const handleQueryP5 = () => {
-  // 在这里执行查询操作，发送选中的值到后端
-  const selectedMarketValue = selectedMarket.value[1];
-  const selectedProductValue = selectedProduct.value[2];
-  // 发送请求到后端，传递选中的值
-  // 可以使用axios或其他方式发送HTTP请求
-  axios.get(`${baseUrl}/priceQuery/PriceData`, {
-    params: {
-      market: selectedMarketValue,
-      variety: selectedProductValue,
-    },
-  })
-      .then((response) => {
-        // 处理从后端返回的数据
-        // 更新组件中的数据以供模板使用
-        priceTable.value = response.data.data;
-      })
-      .catch((error) => {
-        // 处理请求错误
-        console.error('请求失败', error);
-      });
+const handleQueryP5 = async () => {
+  ItemArray_p5.value =[];
+  const selectedProvinceValue = selectedItems_p5.value;
+  const fetchPromises = selectedProvinceValue.map(item => fetchProvincePrice(item));
+  await Promise.all(fetchPromises);
 };
 
 
@@ -1529,32 +1575,24 @@ onMounted(async () => {
               <div class="overView_title">查询结果</div>
               <div class="overView_item">
                 <p class="overView_item_title"> <img src="@/assets/images/shijian.png" /> 时间范围 </p>
-                <p class="overView_item_text">2023/08--2023/09</p>
+                <p class="overView_item_text">{{ time_start_p3 }}--{{time_end_p3}}</p>
               </div>
               <div class="overView_item_larger">
                 <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格： </p>
                 <div class="select_name">
-                  <span class="name_box">牛肉</span>
-                  <span class="name_box">羊肉</span>
-                  <span class="name_box">猪肉</span>
+                  <span class="name_box" v-for="(item,index) in ItemArray_p3" :key="index">{{ item.item_name }}</span>
                 </div>
                 <div class="price_high">
-                  <span class="price_box">37元</span>
-                  <span class="price_box">30元</span>
-                  <span class="price_box">15元</span>
+                  <span class="price_box" v-for="(item,index) in ItemArray_p3" :key="index">{{item.highestPrice}}</span>
                 </div>
               </div>
               <div class="overView_item_larger">
                 <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格：  </p>
                 <div class="select_name">
-                  <span class="name_box">牛肉</span>
-                  <span class="name_box">羊肉</span>
-                  <span class="name_box">猪肉</span>
+                  <span class="name_box" v-for="(item,index) in ItemArray_p3" :key="index">{{ item.item_name }}</span>
                 </div>
                 <div class="price_high">
-                  <span class="price_box">37元</span>
-                  <span class="price_box">30元</span>
-                  <span class="price_box">15元</span>
+                  <span class="price_box" v-for="(item,index) in ItemArray_p3" :key="index">{{item.bottomPrice}}</span>
                 </div>
               </div>
             </div>
@@ -1644,7 +1682,7 @@ onMounted(async () => {
                 />
               </div>
               <div class="smallQueryBox">
-                <el-button class="queryButton" type="success" plain @click="handleQueryP3">查询</el-button>
+                <el-button class="queryButton" type="success" plain @click="handleQueryP4">查询</el-button>
               </div>
             </div>
           </div>
@@ -1653,32 +1691,24 @@ onMounted(async () => {
               <div class="overView_title">查询结果</div>
               <div class="overView_item">
                 <p class="overView_item_title"> <img src="@/assets/images/shijian.png" /> 时间范围 </p>
-                <p class="overView_item_text">2023/08--2023/09</p>
+                <p class="overView_item_text">{{ time_start_p4 }}--{{time_end_p4}}</p>
               </div>
               <div class="overView_item_larger">
                 <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格：  </p>
                 <div class="select_name">
-                  <span class="name_box">牛肉</span>
-                  <span class="name_box">羊肉</span>
-                  <span class="name_box">猪肉</span>
+                  <span class="name_box" v-for="(item,index) in ItemArray_p4" :key="index">{{ item.market }}</span>
                 </div>
                 <div class="price_high">
-                  <span class="price_box">37元</span>
-                  <span class="price_box">30元</span>
-                  <span class="price_box">15元</span>
+                  <span class="price_box" v-for="(item,index) in ItemArray_p4" :key="index">{{ item.highestPrice }}</span>
                 </div>
               </div>
               <div class="overView_item_larger">
                 <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格：  </p>
                 <div class="select_name">
-                  <span class="name_box">牛肉</span>
-                  <span class="name_box">羊肉</span>
-                  <span class="name_box">猪肉</span>
+                  <span class="name_box" v-for="(item,index) in ItemArray_p4" :key="index">{{ item.market }}</span>
                 </div>
                 <div class="price_high">
-                  <span class="price_box">37元</span>
-                  <span class="price_box">30元</span>
-                  <span class="price_box">15元</span>
+                  <span class="price_box" v-for="(item,index) in ItemArray_p4" :key="index">{{ item.bottomPrice }}</span>
                 </div>
               </div>
             </div>
@@ -1721,7 +1751,7 @@ onMounted(async () => {
                     collapse-tags-tooltip
                     multiple-limit="3"
                     placeholder="可多选"
-                    style="width: 180px"
+                    style="width: 180px; height: 33px"
                 >
                   <el-option
                       v-for="item in options_province"
@@ -1763,32 +1793,24 @@ onMounted(async () => {
               <div class="overView_title">查询结果</div>
               <div class="overView_item">
                 <p class="overView_item_title"> <img src="@/assets/images/shijian.png" /> 时间范围 </p>
-                <p class="overView_item_text">2023/08--2023/09</p>
+                <p class="overView_item_text">{{ time_start_p5 }}--{{time_end_p5}}</p>
               </div>
               <div class="overView_item_larger">
                 <p class="overView_item_title"> <img src="@/assets/images/shangsheng.png" /> 最高价格：  </p>
                 <div class="select_name">
-                  <span class="name_box">牛肉</span>
-                  <span class="name_box">羊肉</span>
-                  <span class="name_box">猪肉</span>
+                  <span class="name_box" v-for="(item,index) in ItemArray_p5" :key="index">{{ item.highestMarket }}</span>
                 </div>
                 <div class="price_high">
-                  <span class="price_box">37元</span>
-                  <span class="price_box">30元</span>
-                  <span class="price_box">15元</span>
+                  <span class="price_box" v-for="(item,index) in ItemArray_p5" :key="index">{{ item.highestPrice }}</span>
                 </div>
               </div>
               <div class="overView_item_larger">
                 <p class="overView_item_title"> <img src="@/assets/images/xiajiang.png" /> 最低价格：  </p>
                 <div class="select_name">
-                  <span class="name_box">牛肉</span>
-                  <span class="name_box">羊肉</span>
-                  <span class="name_box">猪肉</span>
+                  <span class="name_box" v-for="(item,index) in ItemArray_p5" :key="index">{{ item.bottomMarket }}</span>
                 </div>
                 <div class="price_high">
-                  <span class="price_box">37元</span>
-                  <span class="price_box">30元</span>
-                  <span class="price_box">15元</span>
+                  <span class="price_box" v-for="(item,index) in ItemArray_p5" :key="index">{{ item.bottomPrice }}</span>
                 </div>
               </div>
             </div>
