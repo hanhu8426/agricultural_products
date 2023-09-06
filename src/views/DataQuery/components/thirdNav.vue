@@ -678,10 +678,10 @@ onMounted(async () => {
             </p>
           </div>
 
-          <div v-if="activeButton === '日度'">
+          <div v-if="activeButton === '日度'" style="width: 90%;margin: 0 auto;">
             <trendChart :refProductExponent="refProductExponent" :refVegetableBasketExponent="refVegetableBasketExponent" :refGrainOilExponent="refGrainOilExponent" />
           </div>
-          <div v-else-if="activeButton === '月度'">
+          <div v-else-if="activeButton === '月度'" style="width: 90%;margin: 0 auto;">
             <MonthlyChart :refProductExponent="refProductExponent" :refVegetableBasketExponent="refVegetableBasketExponent" :refGrainOilExponent="refGrainOilExponent"></MonthlyChart>
           </div>
         </div>

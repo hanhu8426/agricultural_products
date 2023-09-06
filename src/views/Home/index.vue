@@ -1,7 +1,10 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import {baseUrl} from '@/main'
 import axios from "axios";
+import DailyChart from '../DataQuery/components/DailyChart.vue';
+import MonthlyChart from '../DataQuery/components/MonthlyChart.vue';
+
 const currentDate = ref(new Date());
 const formattedDate = ref(formatDate(currentDate.value));
 function formatDate(date) {
@@ -59,6 +62,10 @@ const getMonthlyExponent = async () => {
   } catch (error) {
     console.error('Error fetching data:', error);
   }
+
+  onMounted(() => {
+  getDailyExponent();
+});
 };
 </script>
 
@@ -108,7 +115,60 @@ const getMonthlyExponent = async () => {
                 </div>
             </div>
             <div class="exponent_chart_line">
-
+                <div v-if="activeButton === '日度'">
+                    <DailyChart :refProductExponent="refProductExponent" :refVegetableBasketExponent="refVegetableBasketExponent" :refGrainOilExponent="refGrainOilExponent" />
+                </div>
+                <div v-else-if="activeButton === '月度'">
+                    <MonthlyChart :refProductExponent="refProductExponent" :refVegetableBasketExponent="refVegetableBasketExponent" :refGrainOilExponent="refGrainOilExponent"></MonthlyChart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Analysis">
+        <div class="exponent_box">
+            <div class="exponent_box_title">
+                <img src="../../assets/images/exponent_pic.png" alt="" style="width: 30px;height: 30px;">
+                <span style="margin-left: 10px;font-size: 22px;font-weight: 700;">农产品批发价格200指数</span>
+            </div>
+            <p class="exponent_box_date">{{ formattedDate }}</p>
+            <div class="exponent_box_pic">
+                <div class="line_all"></div>
+                <div class="line_dis"></div>
+                <div class="line1_text">
+                    <span style="display: block;">“菜篮子”产品批发</span>
+                    <span style="display: block;text-align: center;">
+                        价格指数
+                        
+                    </span>
+                </div>
+                <div class="line1_data">122.39</div>
+                <div class="line2_text">
+                    <span style="display: block;">粮油产品批发</span>
+                    <span style="display: block;text-align: center;">
+                        价格指数
+                        
+                    </span>
+                </div>
+                <div class="line2_data">120.18</div>
+                <div class="line0_text">
+                    <span class="line0_text_200">200</span>
+                    <span class="line0_text_index">指数</span>
+                </div>
+                <div class="line0_data"><span class="line0_data_number">122.07</span></div>
+            </div>
+        </div>
+        <div class="exponent_chart">
+            <div class="exponent_chart_title">
+                <div style="display: flex;-webkit-box-align: center;align-items: center;">
+                    <img src="../../assets/images/exponent_pic.png" alt="" style="width: 30px;height: 30px;">
+                    <span style="margin-left: 10px;font-size: 22px;font-weight: 700;">农产品批发价格200指数</span>
+                </div>
+                <div>
+                    <el-button type="success" plain @click="handleButtonClick('日度')" :active="activeButton === '日度'">日度</el-button>
+                    <el-button type="success" plain @click="handleButtonClick('月度')" :active="activeButton === '月度'">月度</el-button>
+                </div>
+            </div>
+            <div class="exponent_chart_line">
             </div>
         </div>
     </div>
@@ -294,5 +354,15 @@ const getMonthlyExponent = async () => {
     border-radius: 4px 4px 0 0;
     background: url(../../assets/images/home_chart_title.png) no-repeat;
     background-size: 100% 100%;
+}
+.Analysis{
+    width: 1240px;
+    padding: 0 18px;
+    padding-top: 20px;
+    height: 486px;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: center;
+    background-color: white;
 }
 </style>

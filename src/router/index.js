@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '@/views/Login/index.vue'
+import Manage from '@/views/manager/index.vue'
 import Layout from '@/views/Layout/index.vue'
 import Home from '@/views/Home/index.vue'
 import DataQuery from '@/views/DataQuery/index.vue'
@@ -34,6 +35,10 @@ const router = createRouter({
     {
       path:'/login',
       component: Login,
+    },
+    {
+      path:'/manage',
+      component: Manage,
     }
   ]
 })

@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div id="chart-container" style="width: 90%; height: 400px; margin: 0 auto;"></div>
+      <div id="chart-container" style="width: 100%; height: 416px; margin: 0 auto;"></div>
     </div>
   </template>
   
