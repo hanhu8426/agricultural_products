@@ -25,6 +25,9 @@ const activeName = ref('first')
 const props = {
   expandTrigger: 'hover'
 };
+const props_p3 ={
+  expandTrigger: 'hover',
+}
 const selectedIndex = ref(0); // 默认选中第一个图标
 const selectedIndex_2 = ref(0); // 默认选中第一个图标
 const selectedIndex_3 = ref(0); // 默认选中第一个图标
@@ -136,13 +139,395 @@ const content_p2 = ref([]); // 接收后端返回数组
 // 第三标签页中的批发市场，多选产品
 const selectedMarket_p3 = ref([]);
 const selectedProduct_p3 = ref([]);
-// 第四个标签页中的多选市场，单选产品
-const selectedMarket_p4 = ref([]);
-const selectedProduct_p4 = ref([]);
-// 第五个标签页中的多选省市，单选产品
-const selectedProvince_p5 = ref([]);
-const selectedProduct_p5 = ref([]);
+const selectedItems_p3 = ref([]);
+const lastLevelItems_p3 = ref([]);
+async function fetchProduct_p3 () {
+  // 获得选中的大类名称
+  const encodedValue = encodeURIComponent(selectedProduct_p3.value[1]);
+  // 发送异步请求到后端获取子项数据
+  try {
+    const response = await axios.get(`${baseUrl}/dropDownBox/varietis?secondVariety=${encodedValue}`);
+    console.log(response);
+    lastLevelItems_p3.value = response.data.data;
+  } catch (error) {
+    console.error('获取子项数据失败', error);
+  }
+}
 
+// 第四个标签页中的多选市场，单选产品
+const selectedProduct_p4 = ref([]);
+const selectedProvince_p4 = ref('');
+const options_province_p4 = ref([
+  {
+    value: '北京市',
+    label: '北京市',
+  },
+  {
+    value: '天津市',
+    label: '天津市',
+  },
+  {
+    value: '河北省',
+    label: '河北省',
+  },
+  {
+    value: '山西省',
+    label: '山西省',
+  },
+  {
+    value: '内蒙古自治区',
+    label: '内蒙古自治区',
+  },
+  {
+    value: '辽宁省',
+    label: '辽宁省',
+  },
+  {
+    value: '吉林省',
+    label: '吉林省',
+  },
+  {
+    value: '黑龙江省',
+    label: '黑龙江省',
+  },
+  {
+    value: '上海市',
+    label: '上海市',
+  },
+  {
+    value: '江苏省',
+    label: '江苏省',
+  },
+  {
+    value: '浙江省',
+    label: '浙江省',
+  },
+  {
+    value: '安徽省',
+    label: '安徽省',
+  },
+  {
+    value: '福建省',
+    label: '福建省',
+  },
+  {
+    value: '江西省',
+    label: '江西省',
+  },
+  {
+    value: '山东省',
+    label: '山东省',
+  },
+  {
+    value: '河南省',
+    label: '河南省',
+  },
+  {
+    value: '湖南省',
+    label: '湖南省',
+  },
+  {
+    value: '广东省',
+    label: '广东省',
+  },
+  {
+    value: '湖北省',
+    label: '湖北省',
+  },
+  {
+    value: '广东省',
+    label: '广东省',
+  },
+  {
+    value: '广西壮族自治区',
+    label: '广西壮族自治区',
+  },
+  {
+    value: '海南省',
+    label: '海南省',
+  },
+  {
+    value: '重庆市',
+    label: '重庆市',
+  },
+  {
+    value: '四川省',
+    label: '四川省',
+  },
+  {
+    value: '贵州省',
+    label: '贵州省',
+  },
+  {
+    value: '云南省',
+    label: '云南省',
+  },
+  {
+    value: '西藏自治区',
+    label: '西藏自治区',
+  },
+  {
+    value: '陕西省',
+    label: '陕西省',
+  },
+  {
+    value: '甘肃省',
+    label: '甘肃省',
+  },
+  {
+    value: '青海省',
+    label: '青海省',
+  },
+  {
+    value: '宁夏回族自治区',
+    label: '宁夏回族自治区',
+  },
+  {
+    value: '新疆维吾尔自治区',
+    label: '新疆维吾尔自治区',
+  },
+  {
+    value: '台湾',
+    label: '台湾',
+  },
+  {
+    value: '香港特别行政区',
+    label: '香港特别行政区',
+  },
+  {
+    value: '澳门特别行政区',
+    label: '澳门特别行政区',
+  },
+]); // 第四标签页特制省市数组
+const selectedItems_p4 = ref([]); // 多选选中的市场
+const lastLevelItems_p4 = ref([]);// 后端传过来每个省市对应的市场数组
+const options_product_p3 = ref([
+  {
+    value: '粮食',
+    label: '粮食 ',
+    children: [
+      {
+        value: '谷物',
+        label: '谷物',
+      },
+      {
+        value: '豆类',
+        label: '豆类',
+      },
+      {
+        value: '薯类',
+        label: '薯类',
+      },
+      {
+        value: '其他粮食',
+        label: '其他粮食',
+      },
+    ],
+  },
+  {
+    value: '油料',
+    label: '油料',
+    children: [
+      {
+        value: '食用油籽',
+        label: '食用油籽',
+      },
+      {
+        value: '非食用油籽',
+        label: '非食用油籽',
+      },
+    ],
+  },
+  {
+    value: '糖烟茶',
+    label: '糖烟茶',
+    children: [
+      {
+        value: '糖类',
+        label: '糖类',
+      },
+    ],
+  },
+  {
+    value: '蔬菜',
+    label: '蔬菜',
+    children: [
+      {
+        value: '叶菜类',
+        label: '叶菜类',
+      },
+      {
+        value: '根和根茎类',
+        label: '根和根茎类',
+      },
+      {
+        value: '芽、花类',
+        label: '芽、花类',
+      },
+      {
+        value: '瓜果类',
+        label: '瓜果类',
+      },
+      {
+        value: '食用菌类',
+        label: '食用菌类',
+      },
+      {
+        value: '其他蔬菜类',
+        label: '其他蔬菜类',
+      },
+    ],
+  },
+  {
+    value: '果品',
+    label: '果品',
+    children: [
+      {
+        value: '仁果类',
+        label: '仁果类',
+      },
+      {
+        value: '浆果类',
+        label: '浆果类',
+      },
+      {
+        value: '核果类',
+        label: '核果类',
+      },
+      {
+        value: '坚果类',
+        label: '坚果类',
+      },
+      {
+        value: '柑果类',
+        label: '柑果类',
+      },
+      {
+        value: '热带及亚热带水果',
+        label: '热带及亚热带水果',
+      },
+      {
+        value: '瓜类水果',
+        label: '瓜类水果',
+      },
+      {
+        value: '其他果品',
+        label: '其他果品',
+      },
+    ],
+  },
+  {
+    value: '药材',
+    label: '药材',
+    children: [
+      {
+        value: '种子果实类',
+        label: '种子果实类',
+      },
+      {
+        value: '其他果实类',
+        label: '其他果实类',
+      },
+    ],
+  },
+  {
+    value: '植物油',
+    label: '植物油',
+    children: [
+      {
+        value: '食用植物油',
+        label: '食用植物油',
+      },
+      {
+        value: '非食用植物油',
+        label: '非食用植物油',
+      },
+    ],
+  },
+  {
+    value: '畜禽产品',
+    label: '畜禽产品',
+    children: [
+      {
+        value: '家畜',
+        label: '家畜',
+      },
+      {
+        value: '家禽',
+        label: '家禽',
+      },
+      {
+        value: '特种养殖动物',
+        label: '特种养殖动物',
+      },
+      {
+        value: '禽蛋',
+        label: '禽蛋',
+      },
+      {
+        value: '动物皮毛',
+        label: '动物皮毛',
+      },
+      {
+        value: '其他畜禽产品',
+        label: '其他畜禽产品',
+      },
+    ],
+  },
+  {
+    value: '水产品',
+    label: '水产品',
+    children: [
+      {
+        value: '淡水鱼',
+        label: '淡水鱼',
+      },
+      {
+        value: '海水鱼',
+        label: '海水鱼',
+      },
+      {
+        value: '虾蟹及两栖类',
+        label: '虾蟹及两栖类',
+      },
+      {
+        value: '螺贝及软体类',
+        label: '螺贝及软体类',
+      },
+      {
+        value: '海水植物',
+        label: '海水植物',
+      },
+      {
+        value: '水产加工品',
+        label: '水产加工品',
+      },
+      {
+        value: '加工副产品',
+        label: '加工副产品',
+      },
+      {
+        value: '其他水产品',
+        label: '其他水产品',
+      },
+    ],
+  },
+])  // 第三标签页特制产品数组
+async function fetchMarket_p4 () {
+  // 获得选中的省市名称
+  const encodedValue = encodeURIComponent(selectedProvince_p4.value);
+  // 发送异步请求到后端获取子项数据
+  try {
+    const response = await axios.get(`${baseUrl}/dropDownBox/markets?province=${encodedValue}`);
+    lastLevelItems_p4.value = response.data.data;
+  } catch (error) {
+    console.error('获取子项数据失败', error);
+  }
+}
+
+// 第五个标签页中的多选省市，单选产品
+const selectedItems_p5 = ref([]);
+const selectedProduct_p5 = ref([]);
 // 创建ref数组接收后端数据
 const options_product = ref([
   {
@@ -809,20 +1194,24 @@ const handleQueryP2 = () => {
 };
 const handleQueryP3 = () => {
   // 在这里执行查询操作，发送选中的值到后端
-  const selectedMarketValue = selectedMarket.value[1];
-  const selectedProductValue = selectedProduct.value[2];
+  const time = formatDates(timeFrame_p2.value);
+  const province = selectedProvince_p2.value;
+  const selectedProductValue = selectedProduct_p2.value[2];
+  time_start_p2.value = time[0];
+  time_end_p2.value = time[1];
   // 发送请求到后端，传递选中的值
   // 可以使用axios或其他方式发送HTTP请求
-  axios.get(`${baseUrl}/priceQuery/PriceData`, {
-    params: {
-      market: selectedMarketValue,
-      variety: selectedProductValue,
-    },
-  })
+  axios.get(`${baseUrl}/marketSituation/regionalAveragePrices/${province}/${selectedProductValue}/${time_start_p2.value}/${time_end_p2.value}`)
       .then((response) => {
         // 处理从后端返回的数据
         // 更新组件中的数据以供模板使用
-        priceTable.value = response.data.data;
+        content_p2.value = response.data.data.varietyRegionalAverageList;
+        highestPrice_p2.value = response.data.data.highestPrice;
+        highestMarket_p2.value = response.data.data.highestPriceMarket;
+        highestTime_p2.value = response.data.data.highestPriceDate;
+        lowestPrice_p2.value = response.data.data.bottomPrice;
+        lowestMarket_p2.value = response.data.data.bottomPriceMarket;
+        lowestTime_p2.value = response.data.data.bottomPriceDate;
       })
       .catch((error) => {
         // 处理请求错误
@@ -1056,8 +1445,9 @@ onMounted(async () => {
             </div>
         </el-tab-pane>
         <el-tab-pane label="单一市场多品种对比" name="third" >
-            <div class="searchBar">
-                <div class="thirdTab">
+            <div class="searchBar_p3">
+                <div class="thirdTab_search_1">
+                  <div class="thirdTab">
                     <p class="thirdTab_title">批发市场：</p>
                     <el-cascader
                         v-model="selectedMarket_p3"
@@ -1066,32 +1456,54 @@ onMounted(async () => {
                         @change="handleMarketChange"
                         placeholder="请选择"
                     />
-                </div>
-                <div class="thirdTab">
-                  <p class="thirdTab_title">品种名称：</p>
+                  </div>
+                  <div class="thirdTab">
+                    <p class="thirdTab_title">品种大类：</p>
                     <el-cascader
                         v-model="selectedProduct_p3"
-                        :options="options_product"
-                        :props="props"
-                        @change="handleProductChange"
-                        placeholder="请选择（可多选）"
+                        :options="options_product_p3"
+                        :props="props_p3"
+                        placeholder="请选择"
+                        @change="fetchProduct_p3"
                     />
+                  </div>
+                  <div class="thirdTab">
+                    <p class="thirdTab_title">品种小类：</p>
+                    <el-select
+                        v-model="selectedItems_p3"
+                        multiple
+                        collapse-tags
+                        collapse-tags-tooltip
+                        multiple-limit="3"
+                        placeholder="可多选"
+                        style="width: 240px"
+                    >
+                      <el-option
+                          v-for="item in lastLevelItems_p3"
+                          :key="item"
+                          :label="item"
+                          :value="item"
+                      />
+                    </el-select>
+                  </div>
                 </div>
-                <div class="thirdTimeSelect">
-                  <p class="thirdTab_title">时间范围:</p>
-                  <el-date-picker
-                      v-model="timeFrame_p3"
-                      type="daterange"
-                      unlink-panels
-                      range-separator="To"
-                      start-placeholder="Start date"
-                      end-placeholder="End date"
-                      :shortcuts="shortcuts"
-                      :size="'default'"
-                  />
-                </div>
-                <div class="smallQueryBox">
+                <div class="thirdTab_search_2">
+                  <div class="thirdTimeSelect">
+                    <p class="thirdTab_title">时间范围:</p>
+                    <el-date-picker
+                        v-model="timeFrame_p3"
+                        type="daterange"
+                        unlink-panels
+                        range-separator="To"
+                        start-placeholder="Start date"
+                        end-placeholder="End date"
+                        :shortcuts="shortcuts"
+                        :size="'default'"
+                    />
+                  </div>
+                  <div class="smallQueryBox">
                     <el-button class="queryButton" type="success" plain @click="handleQueryP3">查询</el-button>
+                  </div>
                 </div>
             </div>
             <div class="content">
@@ -1141,19 +1553,10 @@ onMounted(async () => {
           </div>
         </el-tab-pane>
         <el-tab-pane label="单一品种多市场对比" name="forth" >
-            <div class="searchBar">
+          <div class="searchBar_p3">
+            <div class="thirdTab_search_1">
               <div class="thirdTab">
-                <p class="thirdTab_title">批发市场：</p>
-                <el-cascader
-                    v-model="selectedMarket_p4"
-                    :options="options_market"
-                    :props="props"
-                    @change="handleMarketChange"
-                    placeholder="请选择（可多选）"
-                />
-              </div>
-              <div class="thirdTab">
-                <p class="thirdTab_title">品种名称：</p>
+                <p class="thirdTab_title">品种类别：</p>
                 <el-cascader
                     v-model="selectedProduct_p4"
                     :options="options_product"
@@ -1162,6 +1565,37 @@ onMounted(async () => {
                     placeholder="请选择"
                 />
               </div>
+              <div class="thirdTab">
+                <p class="thirdTab_title">地区：</p>
+                <el-cascader
+                    v-model="selectedProvince_p4"
+                    :options="options_province_p4"
+                    :props="props"
+                    placeholder="请选择"
+                    @change="fetchMarket_p4"
+                />
+              </div>
+              <div class="thirdTab">
+                <p class="thirdTab_title">批发市场：</p>
+                <el-select
+                    v-model="selectedItems_p4"
+                    multiple
+                    collapse-tags
+                    collapse-tags-tooltip
+                    multiple-limit="3"
+                    placeholder="可多选"
+                    style="width: 240px"
+                >
+                  <el-option
+                      v-for="item in lastLevelItems_p4"
+                      :key="item"
+                      :label="item"
+                      :value="item"
+                  />
+                </el-select>
+              </div>
+            </div>
+            <div class="thirdTab_search_2">
               <div class="thirdTimeSelect">
                 <p class="thirdTab_title">时间范围:</p>
                 <el-date-picker
@@ -1176,9 +1610,10 @@ onMounted(async () => {
                 />
               </div>
               <div class="smallQueryBox">
-                <el-button class="queryButton" type="success" plain @click="handleQueryP4">查询</el-button>
+                <el-button class="queryButton" type="success" plain @click="handleQueryP3">查询</el-button>
               </div>
             </div>
+          </div>
             <div class="content">
             <div class="overView">
               <div class="overView_title">查询结果</div>
@@ -1229,13 +1664,22 @@ onMounted(async () => {
             <div class="searchBar">
               <div class="thirdTab">
                 <p class="thirdTab_title">地区：</p>
-                <el-cascader
-                    v-model="selectedProvince_p5"
-                    :options="options_province"
-                    :props="props"
-                    @change="handleMarketChange"
-                    placeholder="请选择（可多选）"
-                />
+                <el-select
+                    v-model="selectedItems_p5"
+                    multiple
+                    collapse-tags
+                    collapse-tags-tooltip
+                    multiple-limit="3"
+                    placeholder="可多选"
+                    style="width: 180px"
+                >
+                  <el-option
+                      v-for="item in options_province"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                  />
+                </el-select>
               </div>
               <div class="thirdTab">
                 <p class="thirdTab_title">品种名称：</p>
@@ -1521,4 +1965,20 @@ p img {
   color: #615551;
   margin-left: 10px;
 }
+.thirdTab_search_1{
+  display: flex;
+  justify-content: center;
+}
+.thirdTab_search_2{
+  display: flex;
+  justify-content: center;
+}
+.searchBar_p3{
+  display: flex;
+  flex-direction: column; /* 垂直方向排列子元素 */
+  justify-content: center; /* 在垂直方向上居中对齐子元素 */
+  align-content: center;
+}
+
+
 </style>

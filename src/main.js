@@ -20,4 +20,4 @@ app.use(router)
 
 app.mount('#app')
 
-export const baseUrl = 'http://10.203.242.245:8081';
+export const baseUrl = 'http://10.203.248.156:8081';
