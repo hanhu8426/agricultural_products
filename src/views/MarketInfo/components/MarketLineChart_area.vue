@@ -10,6 +10,12 @@
   // 引入ECharts主题文件
   import 'echarts/theme/vintage'; // 假设你要引入vintage主题
   
+  const { selectedProductValue_p2, refDate_p2, refPrice_p2 } = defineProps([
+  'selectedProductValue_p2',
+  'refDate_p2',
+  'refPrice_p2'
+]);
+
   onMounted(()=>{
     {
       // 使用ECharts初始化图表
@@ -35,7 +41,7 @@
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            data: refDate_p2
         },
         yAxis: {
             type: 'value',
@@ -44,46 +50,26 @@
             }
         },
         series: [
-            {
-            name: 'Highest',
-            type: 'line',
-            data: [10, 11, 13, 11, 12, 12, 9],
-            markPoint: {
-                data: [
-                { type: 'max', name: 'Max' },
-                { type: 'min', name: 'Min' }
-                ]
-            },
-            markLine: {
-                data: [{ type: 'average', name: 'Avg' }],
-                label: {
-                show: true,
-                position: 'end',
-                offset: [10, 0],
-                },
-            }
-            },
-            {
-            name: 'Lowest',
-            type: 'line',
-            data: [1, -2, 2, 5, 3, 2, 0],
-            markPoint: {
-                data: [
-                { type: 'max', name: 'Max' },
-                { type: 'min', name: 'Min' }
-                ]
-            },
-            markLine: {
-                data: [
-                { type: 'average', name: 'Avg' }
-                ],
-                label: {
-                show: true,
-                position: 'end',
-                offset: [10, 0],
-                },
-            }
-        }]
+          {
+          name: selectedProductValue_p2,
+          type: 'line',
+          data: refPrice_p2,
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          },
+        ]
       };
 
   

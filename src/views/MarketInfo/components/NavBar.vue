@@ -123,6 +123,7 @@ const lowestTime_p1 = ref('');
 const content_p1 = ref([]); // 接收后端返回的varietyNationalAverageList
 const refDate_p1 = ref([]);
 const refPrice_p1 = ref([]);
+const combinedData = ref([]);
 // 第二标签页中的地区，品种类别
 const selectedProvince_p2 = ref('');
 const selectedProduct_p2 = ref([]);
@@ -139,7 +140,7 @@ const lowestTime_p2 = ref('');
 const content_p2 = ref([]); // 接收后端返回数组
 const refDate_p2 = ref([]);
 const refPrice_p2 = ref([]);
-const combinedData = ref([]);
+const combinedData_p2 = ref([]);
 // 第三标签页中的批发市场，多选产品
 const selectedMarket_p3 = ref([]);
 const selectedProduct_p3 = ref([]);
@@ -816,6 +817,10 @@ const handleQueryP2 = () => {
         lowestTime_p2.value = response.data.data.bottomPriceDate;
         refDate_p2.value = content_p2.value.map(item => item.collectDate);
         refPrice_p2.value = content_p2.value.map(item => item.averagePrice);
+        combinedData_p2.value = content_p1.value.map(item => ({
+          value: item.averagePrice,
+          name: item.collectDate
+        }));
       })
       .catch((error) => {
         // 处理请求错误
@@ -1048,10 +1053,10 @@ onMounted(async () => {
                         <MarketLineChart_area :selectedProductValue_p2="selectedProductValue_p2" :refDate_p2="refDate_p2" :refPrice_p2="refPrice_p2"></MarketLineChart_area>
                     </div>
                     <div v-if="selectedIndex_2 === 1" class="tables">
-                        <MarketStickChart_area></MarketStickChart_area>
+                        <MarketStickChart_area :selectedProductValue_p2="selectedProductValue_p2" :refDate_p2="refDate_p2" :refPrice_p2="refPrice_p2"></MarketStickChart_area>
                     </div>
                     <div v-if="selectedIndex_2 === 2" class="tables">
-                        <MarketPieChart_area></MarketPieChart_area>
+                        <MarketPieChart_area :selectedProductValue_p2="selectedProductValue_p2" :combinedData_p2="combinedData_p2"></MarketPieChart_area>
                     </div>
                     <div class="icon_container">
                         <!-- 使用ref来引用图标元素 -->

@@ -10,6 +10,11 @@
   // 引入ECharts主题文件
   import 'echarts/theme/vintage'; // 假设你要引入vintage主题
   
+  const { selectedProductValue_p2, combinedData_p2 } = defineProps([
+  'selectedProductValue_p2',
+  'combinedData_p2'
+]);
+
   onMounted(()=>{
     {
       // 使用ECharts初始化图表
@@ -28,7 +33,7 @@
         },
         series: [
             {
-            name: 'Nightingale Chart',
+            name: selectedProductValue_p2,
             type: 'pie',
             radius: [0, '70%'],
             center: ['50%', '50%'],
@@ -36,16 +41,7 @@
             itemStyle: {
                 borderRadius: 8
             },
-            data: [
-                { value: 40, name: 'rose 1' },
-                { value: 38, name: 'rose 2' },
-                { value: 32, name: 'rose 3' },
-                { value: 30, name: 'rose 4' },
-                { value: 28, name: 'rose 5' },
-                { value: 26, name: 'rose 6' },
-                { value: 22, name: 'rose 7' },
-                { value: 18, name: 'rose 8' }
-            ]
+            data: combinedData_p2,
             }
         ]
         };

@@ -10,12 +10,18 @@
   // 引入ECharts主题文件
   import 'echarts/theme/vintage'; // 假设你要引入vintage主题
   
+  const { selectedProductValue_p2, refDate_p2, refPrice_p2 } = defineProps([
+  'selectedProductValue_p2',
+  'refDate_p2',
+  'refPrice_p2'
+]);
+
   onMounted(()=>{
     {
       // 使用ECharts初始化图表
       const chartContainer = document.getElementById('chart-container2');
       const chart = echarts.init(chartContainer, 'vintage'); // 使用vintage主题
-      const data = [120, 200, 150, 80, 70, 110, 130];
+      const data = refPrice_p2;
       const maxIndex = data.indexOf(Math.max(...data)); // 找到最大值的索引
       const minIndex = data.indexOf(Math.min(...data)); // 找到最小值的索引
       // 设置ECharts配置选项
@@ -28,13 +34,14 @@
         },
         xAxis: {
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            data: refDate_p2
         },
         yAxis: {
             type: 'value'
         },
         series: [
         {
+            name: selectedProductValue_p2,
             data: data,
             type: 'bar',
             itemStyle: {

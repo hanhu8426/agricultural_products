@@ -22,6 +22,8 @@
       const chartContainer = document.getElementById('chart-container');
       const chart = echarts.init(chartContainer, 'vintage'); // 使用vintage主题
       const data = refPrice_p1;
+      const maxIndex = data.indexOf(Math.max(...data)); // 找到最大值的索引
+      const minIndex = data.indexOf(Math.min(...data)); // 找到最小值的索引
       // 设置ECharts配置选项
       const option = {
         toolbox: {
@@ -42,18 +44,18 @@
             name: selectedProductValue_p1,
             data: data,
             type: 'bar',
-            // itemStyle: {
-            //     color: (params) => {
-            //     // 根据索引设置颜色，最大值的柱子为#d87c7c，最小值的柱子为#919e8b
-            //     if (params.dataIndex === maxIndex) {
-            //     return '#d87c7c';
-            //     } else if (params.dataIndex === minIndex) {
-            //     return '#919e8b';
-            //     } else {
-            //     return '#6e7074';
-            //     }
-            // }
-            // }
+            itemStyle: {
+                color: (params) => {
+                // 根据索引设置颜色，最大值的柱子为#d87c7c，最小值的柱子为#919e8b
+                if (params.dataIndex === maxIndex) {
+                return '#d87c7c';
+                } else if (params.dataIndex === minIndex) {
+                return '#919e8b';
+                } else {
+                return '#6e7074';
+                }
+            }
+            }
         }
         ]
         };
