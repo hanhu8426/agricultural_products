@@ -149,6 +149,9 @@ const selectedMarket_p3 = ref([]);
 const selectedProduct_p3 = ref([]);
 const selectedItems_p3 = ref([]);
 const lastLevelItems_p3 = ref([]);
+const time_start_p3 = ref('');
+const time_end_p3 = ref('');
+const allProductInfo = ref([]);
 async function fetchProduct_p3 () {
   // 获得选中的大类名称
   const encodedValue = encodeURIComponent(selectedProduct_p3.value[1]);
@@ -159,6 +162,22 @@ async function fetchProduct_p3 () {
     lastLevelItems_p3.value = response.data.data;
   } catch (error) {
     console.error('获取子项数据失败', error);
+  }
+}
+
+// 向后端获取多选框中的每一项对应的数据
+async function fetchProductPrice (item) {
+  try {
+    // 在这里执行查询操作，发送选中的值到后端
+    const time = formatDates(timeFrame_p3.value);
+    time_start_p3.value = time[0];
+    time_end_p3.value = time[1];
+    const selectedMarket = selectedMarket_p3.value[1];
+    const response = await axios.get(`${baseUrl}/priceQuery/marketAveragePrices/${selectedMarket}/${item}/${time_start_p3.value}/${time_end_p3.value}`);
+    allProductInfo.value.push(response.data.data);
+  } catch(error) {
+    // 处理请求错误
+    console.error('请求失败', error);
   }
 }
 
@@ -1212,31 +1231,10 @@ const handleQueryP2 = () => {
         console.error('请求失败', error);
       });
 };
-const handleQueryP3 = () => {
-  // 在这里执行查询操作，发送选中的值到后端
-  const time = formatDates(timeFrame_p2.value);
-  const province = selectedProvince_p2.value;
-  const selectedProductValue = selectedProduct_p2.value[2];
-  time_start_p2.value = time[0];
-  time_end_p2.value = time[1];
-  // 发送请求到后端，传递选中的值
-  // 可以使用axios或其他方式发送HTTP请求
-  axios.get(`${baseUrl}/marketSituation/regionalAveragePrices/${province}/${selectedProductValue}/${time_start_p2.value}/${time_end_p2.value}`)
-      .then((response) => {
-        // 处理从后端返回的数据
-        // 更新组件中的数据以供模板使用
-        content_p2.value = response.data.data.varietyRegionalAverageList;
-        highestPrice_p2.value = response.data.data.highestPrice;
-        highestMarket_p2.value = response.data.data.highestPriceMarket;
-        highestTime_p2.value = response.data.data.highestPriceDate;
-        lowestPrice_p2.value = response.data.data.bottomPrice;
-        lowestMarket_p2.value = response.data.data.bottomPriceMarket;
-        lowestTime_p2.value = response.data.data.bottomPriceDate;
-      })
-      .catch((error) => {
-        // 处理请求错误
-        console.error('请求失败', error);
-      });
+const handleQueryP3 = async () => {
+  const selectedProductValue = selectedItems_p3.value;
+  const fetchPromises = selectedProductValue.map(item => fetchProductPrice(item));
+  await Promise.all(fetchPromises);
 };
 const handleQueryP4 = () => {
   // 在这里执行查询操作，发送选中的值到后端
