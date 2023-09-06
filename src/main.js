@@ -17,7 +17,6 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
-
 app.mount('#app')
 
 export const baseUrl = 'http://192.168.140.109:8081';
