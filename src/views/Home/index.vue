@@ -116,10 +116,10 @@ const getMonthlyExponent = async () => {
             </div>
             <div class="exponent_chart_line">
                 <div v-if="activeButton === '日度'">
-                    <DailyChart :refProductExponent="refProductExponent" :refVegetableBasketExponent="refVegetableBasketExponent" :refGrainOilExponent="refGrainOilExponent" />
+                    <DailyChart  />
                 </div>
                 <div v-else-if="activeButton === '月度'">
-                    <MonthlyChart :refProductExponent="refProductExponent" :refVegetableBasketExponent="refVegetableBasketExponent" :refGrainOilExponent="refGrainOilExponent"></MonthlyChart>
+                    <MonthlyChart ></MonthlyChart>
                 </div>
             </div>
         </div>

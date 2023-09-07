@@ -1,99 +1,143 @@
 <template>
-  <div>
-    <div id="chart-container" style="width: 100%; height: 416px; margin: 0 auto;"></div>
-  </div>
-</template>
+    <div>
+      <div id="chart-container" style="width: 100%; height: 416px;"></div>
+    </div>
+  </template>
+  
+  <script setup>
+  import * as echarts from 'echarts';
+  import axios from 'axios';
+  import {baseUrl} from '@/main'
+  import {ref,onMounted,watch} from "vue";
+  // 引入ECharts主题文件
+  import 'echarts/theme/essos'; 
 
-<script>
-import Highcharts from 'highcharts';
+  const date = ref([]);
+  const productExponent = ref([]);
+  const vegetableBasketExponent =ref([]);
+  const grainOilExponent = ref([]);
 
-export default {
-  props:{
-      refProductExponent: Array,
-      refVegetableBasketExponent: Array,
-      refGrainOilExponent: Array,
-  },
-  mounted() {
-    Highcharts.chart('chart-container', {
-      title:{
-          text: '注：定基指数，以2015年为100计算',
-          align: 'right',
-          style: {
-              fontSize: '12px', // 设置标题的大小
-              fontWeight:  'normal'
-          }
-      },
-      tooltip: {
-        formatter: function () {
-          // 只展示数据点的和值
-          return '</b> ' + this.y;
-        },
-      },
-      yAxis: {
-          title: {
-              enabled: false
-          }
-      },
-
-      xAxis: {
-          type: 'datetime',
-          dateTimeLabelFormats: {
-              month: '%Y-%m' // 日期格式为年月（例如：2022年01月）
-          },
-      },
-
-      legend: {
-          layout: 'horizontal',
-          align: 'center', // 居中对齐
-          verticalAlign: 'top'
-      },
-
-      plotOptions: {
-          series: {
-              label: {
-                  connectorAllowed: false
-              },
-              pointStart: Date.parse('2022-11'), // 设置起始日期
-              pointInterval: 30 * 24 * 3600 * 1000
-          }
-      },
-
-      series: [{
-          name: '农产品批发价格200指数',
-          data: this.refProductExponent
-      }
-       , {
-           name: '‘菜篮子’产品批发价格200指数',
-           data: this.refVegetableBasketExponent
-       }, {
-           name: '粮油产品批发价格200指数',
-           data: this.refGrainOilExponent
-       }
-      ],
-      
-
-      responsive: {
-          rules: [{
-              condition: {
-                  maxWidth: 500
-              },
-              chartOptions: {
-                  legend: {
-                      layout: 'horizontal',
-                      align: 'center',
-                      verticalAlign: 'bottom'
-                  }
-              }
-          }]
-      },
-      credits: {
-          enabled: false
-      },
-      chart: {
-          backgroundColor: '#f5fdfb' // 设置图表的背景颜色为浅蓝色
-},
-  });
+  const getDate = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/exponent/dailyExponent/date`); // 发起请求获取数据
+    date.value = response.data.data; // 更新tableData变量
+    console.log('调用')
+  } catch (error) {
+    console.error('Error fetching data:', error);
   }
-}
-</script>
+};
 
+const getProduct = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/exponent/dailyExponent/Product`); // 发起请求获取数据
+    productExponent.value = response.data.data; // 更新tableData变量
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
+const getVegetable = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/exponent/dailyExponent/VegetableBasket`); // 发起请求获取数据
+    vegetableBasketExponent.value = response.data.data; // 更新tableData变量
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
+const getOil = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/exponent/dailyExponent/GrainOil`); // 发起请求获取数据
+    grainOilExponent.value = response.data.data; // 更新tableData变量
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
+const renderChart = () => {
+  const chartContainer = document.getElementById('chart-container');
+  const chart = echarts.init(chartContainer, 'essos');
+
+  const option = {
+        // Make gradient line here
+        visualMap: [
+            {
+            show: false,
+            type: 'continuous',
+            seriesIndex: 0,
+            min: 0,
+            max: 400
+            }
+        ],
+        title: [
+        ],
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend:{
+            show: true
+        },
+        xAxis: [
+            {
+            data: date.value
+            }
+        ],
+        yAxis: [
+            {
+            type: 'value',
+            axisLabel: {
+                interval: 'auto', // 自动计算刻度标签间隔
+                formatter: '{value}', // 刻度标签的格式化方式
+            },
+            min: 115, // 设置刻度的最小值为数据的最小值
+            max: 125,
+        }
+        ],
+        series: [
+            {
+                name: '农产品批发价格200指数',
+                type: 'line',
+                showSymbol: false,
+                data: productExponent.value
+            },
+            {
+                name: '‘菜篮子’产品批发价格200指数',
+                type: 'line',
+                showSymbol: false,
+                data: vegetableBasketExponent.value
+            },
+            {
+                name: '粮油产品批发价格200指数',
+                type: 'line',
+                showSymbol: false,
+                data: grainOilExponent.value
+            }
+        ]
+        };
+
+  chart.setOption(option);
+};
+
+watch([date, productExponent, vegetableBasketExponent, grainOilExponent], () => {
+    renderChart();
+});
+ 
+  
+  onMounted( async ()=>{
+    {
+          getDate();
+          getProduct();
+          getVegetable();
+          getOil();
+        renderChart();
+        
+    }
+  })
+  
+  
+  </script>
+  
+  <style scoped>
+  /* 可以在这里添加样式，自定义图表容器的样式 */
+  </style>
+  
