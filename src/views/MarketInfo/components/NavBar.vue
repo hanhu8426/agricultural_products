@@ -152,16 +152,13 @@ const lastLevelItems_p3 = ref([]);
 const time_start_p3 = ref('');
 const time_end_p3 = ref('');
 const allProductInfo = ref([]);
-<<<<<<< HEAD
-const allPriceInfo = ref([]);
-const LineChartInfo = ref([]);
+const nameInfo = ref([]);
+const priceInfo = ref([]);
 const refDate_p3 = ref([]);
-=======
 const item_name = ref('');
 const highestPrice = ref('');
 const bottomPrice = ref('');
 const ItemArray_p3 = ref([]);  // 用来存放每一个多选的对象属性
->>>>>>> 85f4b7a64ace8816a8bca62541ee08e24259fade
 async function fetchProduct_p3 () {
   // 获得选中的大类名称
   const encodedValue = encodeURIComponent(selectedProduct_p3.value[1]);
@@ -191,6 +188,10 @@ async function fetchProductPrice (item) {
     instanceItem.item_name = item;
     instanceItem.highestPrice = response.data.data.highestPrice;
     instanceItem.bottomPrice = response.data.data.bottomPrice;
+    const mainData = response.data.data.priceDataList;
+    nameInfo.value.push(item);
+    refDate_p3.value = (mainData.map(item => item.collectDate));
+    priceInfo.value.push(mainData.map(item => item.bulkPrice));
     ItemArray_p3.value.push(instanceItem);
     allProductInfo.value.push(response.data.data);
   } catch(error) {
@@ -563,6 +564,9 @@ const time_start_p4 = ref('');
 const time_end_p4 = ref('');
 const ItemArray_p4 = ref([]);
 const market = ref('');
+const nameInfo_p4 = ref([]);
+const priceInfo_p4 = ref([]);
+const refDate_p4 = ref([]);
 // 获取多选框中内容
 async function fetchMarket_p4 () {
   // 获得选中的省市名称
@@ -592,6 +596,10 @@ async function fetchMarketPrice (item) {
     instanceItem.market = item;
     instanceItem.highestPrice = response.data.data.highestPrice;
     instanceItem.bottomPrice = response.data.data.bottomPrice;
+    const mainData = response.data.data.priceDataList;
+    nameInfo_p4.value.push(item);
+    refDate_p4.value = (mainData.map(item => item.collectDate));
+    priceInfo_p4.value.push(mainData.map(item => item.bulkPrice));
     ItemArray_p4.value.push(instanceItem);
     allMarketInfo.value.push(response.data.data);
   } catch(error) {
@@ -1180,6 +1188,9 @@ const time_end_p5 = ref('');
 const highestMarket = ref('');
 const bottomMarket = ref('');
 const ItemArray_p5 = ref([]);
+const nameInfo_p5 = ref([]);
+const priceInfo_p5 = ref([]);
+const refDate_p5 = ref([]);
 async function fetchProvincePrice (item) {
   const instanceItem = {
     highestMarket,
@@ -1198,6 +1209,10 @@ async function fetchProvincePrice (item) {
     instanceItem.bottomMarket = response.data.data.bottomPriceMarket;
     instanceItem.highestPrice = response.data.data.highestPrice;
     instanceItem.bottomPrice = response.data.data.bottomPrice;
+    const mainData = response.data.data.varietyRegionalAverageList;
+    nameInfo_p5.value.push(item);
+    refDate_p5.value = (mainData.map(item => item.collectDate));
+    priceInfo_p5.value.push(mainData.map(item => item.averagePrice));
     ItemArray_p5.value.push(instanceItem);
     allMarketInfo.value.push(response.data.data);
   } catch(error) {
@@ -1315,43 +1330,28 @@ const handleQueryP2 = () => {
 const handleQueryP3 = async () => {
   // 在这里执行查询操作，发送选中的值到后端
   ItemArray_p3.value = [];  // 每次查询前清空，不然展示过多；
+  nameInfo.value = [];
+  refDate_p3.value = [];
+  priceInfo.value = [];
   const selectedProductValue = selectedItems_p3.value;
   const fetchPromises = selectedProductValue.map(item => fetchProductPrice(item));
   await Promise.all(fetchPromises);
-  allPriceInfo.value = allProductInfo.value.map(item => item.priceDataList);
-  LineChartInfo.value = allPriceInfo.value.map(itemValue => (
-      {
-          name: itemValue.variety[0],
-          type: 'line',
-          data: itemValue.bulkPrice,
-          markPoint: {
-              data: [
-              { type: 'max', name: 'Max' },
-              { type: 'min', name: 'Min' }
-              ]
-          },
-          markLine: {
-              data: [{ type: 'average', name: 'Avg' }],
-              label: {
-              show: true,
-              position: 'end',
-              offset: [10, 0],
-              },
-          }
-          
-      }
-        ));
-  refDate_p3.value = allPriceInfo.value.map(itemValue => itemValue.collectDate);
 };
 
 const handleQueryP4 = async () => {
   ItemArray_p4.value = [];
+  nameInfo_p4.value = [];
+  refDate_p4.value = [];
+  priceInfo_p4.value = [];
   const selectedMarketValue = selectedItems_p4.value;
   const fetchPromises = selectedMarketValue.map(item => fetchMarketPrice(item));
   await Promise.all(fetchPromises);
 };
 const handleQueryP5 = async () => {
   ItemArray_p5.value =[];
+  nameInfo_p5.value = [];
+  refDate_p5.value = [];
+  priceInfo_p5.value = [];
   const selectedProvinceValue = selectedItems_p5.value;
   const fetchPromises = selectedProvinceValue.map(item => fetchProvincePrice(item));
   await Promise.all(fetchPromises);
@@ -1629,13 +1629,13 @@ onMounted(async () => {
             <div class="tableArea">
               <!-- 根据selectedIndex的值显示对应的表格 -->
               <div v-if="selectedIndex_3 === 0" class="tables">
-                <MarketLineChart_multiCategory :LineChartInfo="LineChartInfo" :refDate_p3="refDate_p3"></MarketLineChart_multiCategory>
+                <MarketLineChart_multiCategory :nameInfo="nameInfo" :refDate_p3="refDate_p3" :priceInfo="priceInfo"></MarketLineChart_multiCategory>
               </div>
               <div v-if="selectedIndex_3 === 1" class="tables">
-                <MarketStickChart_multiCategory></MarketStickChart_multiCategory>
+                <MarketStickChart_multiCategory :nameInfo="nameInfo" :refDate_p3="refDate_p3" :priceInfo="priceInfo"></MarketStickChart_multiCategory>
               </div>
               <div v-if="selectedIndex_3 === 2" class="tables">
-                <MarketRadarChart_multiCategory></MarketRadarChart_multiCategory>
+                <MarketRadarChart_multiCategory :nameInfo="nameInfo" :refDate_p3="refDate_p3" :priceInfo="priceInfo"></MarketRadarChart_multiCategory>
               </div>
               <div class="icon_container">
                 <!-- 使用ref来引用图标元素 -->
@@ -1745,13 +1745,13 @@ onMounted(async () => {
             <div class="tableArea">
               <!-- 根据selectedIndex的值显示对应的表格 -->
               <div v-if="selectedIndex_4 === 0" class="tables">
-                <MarketLineChart_multiMarket></MarketLineChart_multiMarket>
+                <MarketLineChart_multiMarket :nameInfo_p4="nameInfo_p4" :refDate_p4="refDate_p4" :priceInfo_p4="priceInfo_p4"></MarketLineChart_multiMarket>
               </div>
               <div v-if="selectedIndex_4 === 1" class="tables">
-                <MarketStickChart_multiMarket></MarketStickChart_multiMarket>
+                <MarketStickChart_multiMarket :nameInfo_p4="nameInfo_p4" :refDate_p4="refDate_p4" :priceInfo_p4="priceInfo_p4"></MarketStickChart_multiMarket>
               </div>
               <div v-if="selectedIndex_4 === 2" class="tables">
-                <MarketRadarChart_multiMarket></MarketRadarChart_multiMarket>
+                <MarketRadarChart_multiMarket :nameInfo_p4="nameInfo_p4" :refDate_p4="refDate_p4" :priceInfo_p4="priceInfo_p4"></MarketRadarChart_multiMarket>
               </div>
               <div class="icon_container">
                 <!-- 使用ref来引用图标元素 -->
@@ -1847,13 +1847,13 @@ onMounted(async () => {
             <div class="tableArea">
               <!-- 根据selectedIndex的值显示对应的表格 -->
               <div v-if="selectedIndex_5 === 0" class="tables">
-                <MarketLineChart_multiArea></MarketLineChart_multiArea>
+                <MarketLineChart_multiArea :nameInfo_p5="nameInfo_p5" :refDate_p5="refDate_p5" :priceInfo_p5="priceInfo_p5"></MarketLineChart_multiArea>
               </div>
               <div v-if="selectedIndex_5 === 1" class="tables">
-                <MarketStickChart_multiArea></MarketStickChart_multiArea>
+                <MarketStickChart_multiArea :nameInfo_p5="nameInfo_p5" :refDate_p5="refDate_p5" :priceInfo_p5="priceInfo_p5"></MarketStickChart_multiArea>
               </div>
               <div v-if="selectedIndex_5 === 2" class="tables">
-                <MarketRadarChart_multiArea></MarketRadarChart_multiArea>
+                <MarketRadarChart_multiArea :nameInfo_p5="nameInfo_p5" :refDate_p5="refDate_p5" :priceInfo_p5="priceInfo_p5"></MarketRadarChart_multiArea>
               </div>
               <div class="icon_container">
                 <!-- 使用ref来引用图标元素 -->

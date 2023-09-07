@@ -39,6 +39,12 @@
         yAxis: {
             type: 'value'
         },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend:{
+            show: true
+        },
         series: [
         {
             name: selectedProductValue_p1,

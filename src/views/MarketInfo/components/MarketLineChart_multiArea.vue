@@ -6,16 +6,23 @@
 
 <script setup>
 import * as echarts from 'echarts';
-import {onMounted} from "vue";
+import {defineProps,onMounted} from "vue";
 // 引入ECharts主题文件
 import 'echarts/theme/vintage'; // 假设你要引入vintage主题
+
+const { nameInfo_p5, refDate_p5, priceInfo_p5 } = defineProps([
+  'nameInfo_p5',
+  'refDate_p5',
+  'priceInfo_p5'
+]);
+
+
 
 onMounted(()=>{
   {
     // 使用ECharts初始化图表
     const chartContainer = document.getElementById('chart-container5');
     const chart = echarts.init(chartContainer, 'vintage'); // 使用vintage主题
-
     // 设置ECharts配置选项
     const option = {
       title: {
@@ -35,7 +42,7 @@ onMounted(()=>{
       xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          data: refDate_p5
       },
       yAxis: {
           type: 'value',
@@ -45,9 +52,9 @@ onMounted(()=>{
       },
       series: [
           {
-          name: 'Highest',
+          name: nameInfo_p5[0],
           type: 'line',
-          data: [10, 11, 13, 11, 12, 12, 9],
+          data: priceInfo_p5[0],
           markPoint: {
               data: [
               { type: 'max', name: 'Max' },
@@ -64,9 +71,9 @@ onMounted(()=>{
           }
           },
           {
-          name: 'Lowest',
+          name: nameInfo_p5[1],
           type: 'line',
-          data: [1, -2, 2, 5, 3, 2, 0],
+          data: priceInfo_p5[1],
           markPoint: {
               data: [
               { type: 'max', name: 'Max' },
@@ -74,16 +81,34 @@ onMounted(()=>{
               ]
           },
           markLine: {
-              data: [
-              { type: 'average', name: 'Avg' }
-              ],
+              data: [{ type: 'average', name: 'Avg' }],
               label: {
               show: true,
               position: 'end',
               offset: [10, 0],
               },
           }
-      }]
+          },
+          {
+          name: nameInfo_p5[2],
+          type: 'line',
+          data: priceInfo_p5[2],
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          }
+      ]
     };
 
 

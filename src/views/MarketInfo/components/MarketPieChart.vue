@@ -25,6 +25,9 @@
         legend: {
             top: 'bottom'
         },
+        tooltip: {
+          show: true,
+        },
         toolbox: {
             show: true,
             feature: {

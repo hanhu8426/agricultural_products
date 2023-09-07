@@ -10,6 +10,18 @@ import {onMounted} from "vue";
 // 引入ECharts主题文件
 import 'echarts/theme/vintage'; // 假设你要引入vintage主题
 
+const { nameInfo, refDate_p3, priceInfo } = defineProps([
+  'nameInfo',
+  'refDate_p3',
+  'priceInfo'
+]);
+const radarName = [];
+for (const Name of refDate_p3) {
+        radarName.push({
+        name: Name
+      });
+    }
+
 onMounted(()=>{
   {
     // 使用ECharts初始化图表
@@ -19,34 +31,34 @@ onMounted(()=>{
     // 设置ECharts配置选项
     const option = {
       title: {
-        text: 'Basic Radar Chart'
+        text: 'Basic Radar Chart',
+        show: false
       },
       legend: {
-        data: ['Allocated Budget', 'Actual Spending']
+      },
+      tooltip: {
+        show: true
       },
       radar: {
         // shape: 'circle',
-        indicator: [
-          { name: 'Sales', max: 6500 },
-          { name: 'Administration', max: 16000 },
-          { name: 'Information Technology', max: 30000 },
-          { name: 'Customer Support', max: 38000 },
-          { name: 'Development', max: 52000 },
-          { name: 'Marketing', max: 25000 }
-        ]
+        indicator: radarName,
+        showEmpty: false,
       },
       series: [
         {
-          name: 'Budget vs spending',
           type: 'radar',
           data: [
             {
-              value: [4200, 3000, 20000, 35000, 50000, 18000],
-              name: 'Allocated Budget'
+              value: priceInfo[0],
+              name: nameInfo[0]
             },
             {
-              value: [5000, 14000, 28000, 26000, 42000, 21000],
-              name: 'Actual Spending'
+              value: priceInfo[1],
+              name: nameInfo[1]
+            },
+            {
+              value: priceInfo[2],
+              name: nameInfo[2]
             }
           ]
         }

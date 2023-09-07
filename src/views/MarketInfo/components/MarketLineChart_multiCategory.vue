@@ -10,17 +10,19 @@ import {defineProps,onMounted} from "vue";
 // 引入ECharts主题文件
 import 'echarts/theme/vintage'; // 假设你要引入vintage主题
 
-const { LineChartInfo, refDate_p3 } = defineProps([
-  'LineChartInfo',
-  'refDate_p3'
+const { nameInfo, refDate_p3, priceInfo } = defineProps([
+  'nameInfo',
+  'refDate_p3',
+  'priceInfo'
 ]);
+
+
 
 onMounted(()=>{
   {
     // 使用ECharts初始化图表
     const chartContainer = document.getElementById('chart-container3');
     const chart = echarts.init(chartContainer, 'vintage'); // 使用vintage主题
-
     // 设置ECharts配置选项
     const option = {
       title: {
@@ -48,7 +50,65 @@ onMounted(()=>{
           formatter: '{value}'
           }
       },
-      series: LineChartInfo
+      series: [
+          {
+          name: nameInfo[0],
+          type: 'line',
+          data: priceInfo[0],
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          },
+          {
+          name: nameInfo[1],
+          type: 'line',
+          data: priceInfo[1],
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          },
+          {
+          name: nameInfo[2],
+          type: 'line',
+          data: priceInfo[2],
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          }
+      ]
     };
 
 
