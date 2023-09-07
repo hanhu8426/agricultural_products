@@ -1,28 +1,34 @@
-<script>
-export default {
-  data() {
-    return {
-      registerData: {
-        name: '',
-        password: '',
-        email: ''
-      },
-      loginData: {
-        username: '',
-        password: ''
-      },
-      showRegisterForm: false
-    };
-  },
-  methods: {
-    login() {
-      // 实现登录逻辑
-    },
-    toggleForm() {
-      this.showRegisterForm = !this.showRegisterForm;
-    }
-  }
-};
+<script setup>
+import {ref} from 'vue'
+import axios from 'axios';
+import {useRouter} from "vue-router";
+import {baseUrl} from "@/main";
+
+const loginData=  ref({
+  adminID: '',
+  adminPassword: ''
+})
+const router = useRouter(); // 获取Vue Router实例
+const login = () => {
+  axios
+      .post(`${baseUrl}/administratorLogin`,  {
+          adminID: loginData.value.adminID,
+          adminPassword: loginData.value.adminPassword
+        })
+      .then(response => {
+        // 登录成功后的处理
+        if (response.data.Msg === "ok") {
+          // 在这里可以进行跳转到另一个页面的操作，比如使用Vue Router
+          router.push('/manage');
+        } else {
+          // 处理登录失败的情况
+          alert('登录失败，请检查用户名和密码。');
+        }
+      })
+      .catch(error => {
+        console.error('登录请求失败', error);
+      });
+}
 </script>
 
 
@@ -30,8 +36,8 @@ export default {
   <div class="login-page">
     <div class="form">
       <form class="login-form">
-        <input type="text" placeholder="用户名" v-model="loginData.username" />
-        <input type="password" placeholder="密码" v-model="loginData.password" />
+        <input type="text" placeholder="用户名" v-model="loginData.adminID" />
+        <input type="password" placeholder="密码" v-model="loginData.adminPassword" />
         <button @click.prevent="login">登录</button>
       </form>
     </div>

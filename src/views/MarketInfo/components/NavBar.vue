@@ -1583,7 +1583,7 @@ onMounted(async () => {
                   <span class="name_box" v-for="(item,index) in ItemArray_p3" :key="index">{{ item.item_name }}</span>
                 </div>
                 <div class="price_high">
-                  <span class="price_box" v-for="(item,index) in ItemArray_p3" :key="index">{{item.highestPrice}}</span>
+                  <span class="price_box" v-for="(item,index) in ItemArray_p3" :key="index">{{item.highestPrice}}元</span>
                 </div>
               </div>
               <div class="overView_item_larger">
@@ -1592,7 +1592,7 @@ onMounted(async () => {
                   <span class="name_box" v-for="(item,index) in ItemArray_p3" :key="index">{{ item.item_name }}</span>
                 </div>
                 <div class="price_high">
-                  <span class="price_box" v-for="(item,index) in ItemArray_p3" :key="index">{{item.bottomPrice}}</span>
+                  <span class="price_box" v-for="(item,index) in ItemArray_p3" :key="index">{{item.bottomPrice}}元</span>
                 </div>
               </div>
             </div>
@@ -1699,7 +1699,7 @@ onMounted(async () => {
                   <span class="name_box" v-for="(item,index) in ItemArray_p4" :key="index">{{ item.market }}</span>
                 </div>
                 <div class="price_high">
-                  <span class="price_box" v-for="(item,index) in ItemArray_p4" :key="index">{{ item.highestPrice }}</span>
+                  <span class="price_box" v-for="(item,index) in ItemArray_p4" :key="index">{{ item.highestPrice }}元</span>
                 </div>
               </div>
               <div class="overView_item_larger">
@@ -1708,7 +1708,7 @@ onMounted(async () => {
                   <span class="name_box" v-for="(item,index) in ItemArray_p4" :key="index">{{ item.market }}</span>
                 </div>
                 <div class="price_high">
-                  <span class="price_box" v-for="(item,index) in ItemArray_p4" :key="index">{{ item.bottomPrice }}</span>
+                  <span class="price_box" v-for="(item,index) in ItemArray_p4" :key="index">{{ item.bottomPrice }}元</span>
                 </div>
               </div>
             </div>
@@ -1801,7 +1801,7 @@ onMounted(async () => {
                   <span class="name_box" v-for="(item,index) in ItemArray_p5" :key="index">{{ item.highestMarket }}</span>
                 </div>
                 <div class="price_high">
-                  <span class="price_box" v-for="(item,index) in ItemArray_p5" :key="index">{{ item.highestPrice }}</span>
+                  <span class="price_box" v-for="(item,index) in ItemArray_p5" :key="index">{{ item.highestPrice }}元</span>
                 </div>
               </div>
               <div class="overView_item_larger">
@@ -1810,7 +1810,7 @@ onMounted(async () => {
                   <span class="name_box" v-for="(item,index) in ItemArray_p5" :key="index">{{ item.bottomMarket }}</span>
                 </div>
                 <div class="price_high">
-                  <span class="price_box" v-for="(item,index) in ItemArray_p5" :key="index">{{ item.bottomPrice }}</span>
+                  <span class="price_box" v-for="(item,index) in ItemArray_p5" :key="index">{{ item.bottomPrice }}元</span>
                 </div>
               </div>
             </div>
@@ -1950,17 +1950,24 @@ p img {
 }
 .name_box{
   color: #777;
-    display: block;
-    width: 110px;
-    height: 24px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    text-align: center;
-    line-height: 24px;
+  display: block;
+  width: 110px;
+  height: 24px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 24px;
+  transition: max-width 0.3s ease; /* 添加过渡效果，使展开更平滑 */
 }
+.name_box:hover{
+  overflow: visible;
+  white-space: normal; /* 显示全部内容 */
+  max-width: none; /* 移除最大宽度限制 */
+}
+
 .price_box{
     line-height: 50px;
     font-size: 14px;
