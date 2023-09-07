@@ -1,43 +1,308 @@
 <script setup>
 import { ref, onMounted,computed } from 'vue'
+import axios from "axios";
+import {baseUrl} from "@/main";
+const props = {
+  expandTrigger: 'hover'
+};
 const activeName = ref('first')
-
 // 分页展示日周度报告
 const currentPage = ref(1); // 当前页码
 const pageSize = ref(3); // 每页显示数量
-const priceTable = ref([
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-])
 // displayData是获取到每一页的展示数据
 const displayedData = computed(() => {
   const startIndex = (currentPage.value - 1) * pageSize.value;
   const endIndex = startIndex + pageSize.value;
-  return priceTable.value.slice(startIndex, endIndex);
+  return allDailyReport.value.slice(startIndex, endIndex);
 });
+
+// 获取全部日报内容
+const allDailyReport = ref([]);
+async function fetchDailyReport () {
+  try {
+    const response = await axios.get(`${baseUrl}/dailyPaper/all`);
+    allDailyReport.value = response.data.data;
+  } catch (error) {
+    console.error('获取日报数据失败', error);
+  }
+}
+// 处理传过来的时间
+function formatDate(dateString) {
+  const parts = dateString.split('-'); // 使用 "-" 分割字符串
+  const year = parseInt(parts[0], 10); // 提取并解析年份为整数
+  const month = parseInt(parts[1], 10).toString().padStart(2,'0'); // 提取并解析月份为整数
+  const day = parseInt(parts[2], 10).toString().padStart(2,'0');
+  const yearAndMonth = `${year}/${month}`;
+  return [yearAndMonth,day];
+}
+// 将内容完整展示
+const isPopupVisible = ref(false);
+
+const options_province = [
+  {
+    value: '全国',
+    label: '全国',
+  },
+  {
+    value: '北京市',
+    label: '北京市',
+  },
+  {
+    value: '天津市',
+    label: '天津市',
+  },
+  {
+    value: '河北省',
+    label: '河北省',
+  },
+  {
+    value: '山西省',
+    label: '山西省',
+  },
+  {
+    value: '内蒙古自治区',
+    label: '内蒙古自治区',
+  },
+  {
+    value: '辽宁省',
+    label: '辽宁省',
+  },
+  {
+    value: '吉林省',
+    label: '吉林省',
+  },
+  {
+    value: '黑龙江省',
+    label: '黑龙江省',
+  },
+  {
+    value: '上海市',
+    label: '上海市',
+  },
+  {
+    value: '江苏省',
+    label: '江苏省',
+  },
+  {
+    value: '浙江省',
+    label: '浙江省',
+  },
+  {
+    value: '安徽省',
+    label: '安徽省',
+  },
+  {
+    value: '福建省',
+    label: '福建省',
+  },
+  {
+    value: '江西省',
+    label: '江西省',
+  },
+  {
+    value: '山东省',
+    label: '山东省',
+  },
+  {
+    value: '河南省',
+    label: '河南省',
+  },
+  {
+    value: '湖南省',
+    label: '湖南省',
+  },
+  {
+    value: '广东省',
+    label: '广东省',
+  },
+  {
+    value: '湖北省',
+    label: '湖北省',
+  },
+  {
+    value: '广东省',
+    label: '广东省',
+  },
+  {
+    value: '广西壮族自治区',
+    label: '广西壮族自治区',
+  },
+  {
+    value: '海南省',
+    label: '海南省',
+  },
+  {
+    value: '重庆市',
+    label: '重庆市',
+  },
+  {
+    value: '四川省',
+    label: '四川省',
+  },
+  {
+    value: '贵州省',
+    label: '贵州省',
+  },
+  {
+    value: '云南省',
+    label: '云南省',
+  },
+  {
+    value: '西藏自治区',
+    label: '西藏自治区',
+  },
+  {
+    value: '陕西省',
+    label: '陕西省',
+  },
+  {
+    value: '甘肃省',
+    label: '甘肃省',
+  },
+  {
+    value: '青海省',
+    label: '青海省',
+  },
+  {
+    value: '宁夏回族自治区',
+    label: '宁夏回族自治区',
+  },
+  {
+    value: '新疆维吾尔自治区',
+    label: '新疆维吾尔自治区',
+  },
+  {
+    value: '台湾',
+    label: '台湾',
+  },
+  {
+    value: '香港特别行政区',
+    label: '香港特别行政区',
+  },
+  {
+    value: '澳门特别行政区',
+    label: '澳门特别行政区',
+  },
+]
+const options_product = [
+  {
+    label:'猪肉',
+    value:'猪肉'
+  },
+  {
+    label:'羊肉',
+    value:'羊肉'
+  },
+  {
+    label:'牛肉',
+    value:'牛肉'
+  },
+  {
+    label:'鸡蛋',
+    value:'鸡蛋'
+  },
+  {
+    label:'白条鸡',
+    value:'白条鸡'
+  },
+  {
+    label:'活草鱼',
+    value:'活草鱼'
+  },
+  {
+    label:'活鲫鱼',
+    value:'活鲫鱼'
+  },
+  {
+    label:'活鲤鱼',
+    value:'活鲤鱼'
+  },
+  {
+    label:'白鲢活鱼',
+    value:'白鲢活鱼'
+  },
+  {
+    label:'花鲢活鱼',
+    value:'花鲢活鱼'
+  },
+  {
+    label:'大带鱼',
+    value:'大带鱼'
+  },
+  {
+    label:'大黄花鱼',
+    value:'大黄花鱼'
+  },
+  {
+    label:'菠菜',
+    value:'菠菜'
+  },
+  {
+    label:'莴笋',
+    value:'莴笋'
+  },
+  {
+    label:'韭菜',
+    value:'韭菜'
+  },
+  {
+    label:'菜花',
+    value:'菜花'
+  },
+  {
+    label:'豆角',
+    value:'豆角'
+  },
+  {
+    label:'胡萝卜',
+    value:'胡萝卜'
+  },
+  {
+    label:'油菜',
+    value:'油菜'
+  },
+  {
+    label:'青椒',
+    value:'青椒'
+  },
+  {
+    label:'土豆',
+    value:'土豆'
+  },
+  {
+    label:'西红柿',
+    value:'西红柿'
+  },
+  {
+    label:'富士苹果',
+    value:'富士苹果'
+  },
+  {
+    label:'巨峰葡萄',
+    value:'巨峰葡萄'
+  },
+  {
+    label:'菠萝',
+    value:'菠萝'
+  },
+  {
+    label:'香蕉',
+    value:'香蕉'
+  },
+  {
+    label:'西瓜',
+    value:'西瓜'
+  },
+  {
+    label:'鸭梨',
+    value:'鸭梨'
+  },
+]
 function handlePageChange(newPage) {
   currentPage.value = newPage;
 }
 onMounted(() => {
-
+  fetchDailyReport();
 });
 </script>
 
@@ -47,26 +312,36 @@ onMounted(() => {
       <!--报告的边框-->
       <div class="report_border" v-for="item in displayedData" :key="item.id">
         <!--报告的内容（三条）-->
-        <div class="report_item">
+        <div class="report_item" @click="isPopupVisible = true">
           <!--左侧日历栏 -->
           <div class="date">
-
+            <p class="yearAndMonth">{{formatDate(item.thatDate)[0]}}</p>
+            <p class="day">{{formatDate(item.thatDate)[1]}}</p>
           </div>
           <!-- 右侧标题和内容-->
           <div class="content">
             <div class="content_title">
               <div class="title">
-
+                {{ item.title }}
               </div>
               <div class="source">
-
+                {{item.source}}
               </div>
             </div>
             <div class="content_main">
-
+              {{item.content}}
             </div>
           </div>
+          <el-dialog
+              v-model="isPopupVisible"
+              title="日度报告"
+              width="60%"
+              align-center
+          >
+            <span>{{item.content}}</span>
+          </el-dialog>
         </div>
+
       </div>
 
       <div class="pagination">
@@ -185,7 +460,18 @@ onMounted(() => {
   border-radius: 4px;
 }
 .content{
+  display: flex;
+  flex-direction: column; /* 在垂直方向上排列子元素 */
+  align-items: center; /* 在水平方向上居中对齐 */
   width: calc(100% - 80px);
+  padding-top: 0;
+}
+.day{
+  font-size: 30px;
+  font-weight: 600;
+  color: #c50b03;
+  padding: 0;
+  margin: 0;
 }
 .content_title{
   display: flex;
@@ -196,6 +482,7 @@ onMounted(() => {
   width: 100%;
   color: #333;
   font-size: 14px;
+  font-weight: normal;
   line-height: 22px;
   letter-spacing: 1px;
   overflow: hidden;
@@ -203,6 +490,18 @@ onMounted(() => {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical
 }
+
+// 弹框格式
+.index_dialog .el-dialog__header {
+  height: 54px;
+  background: #00b2b2;
+  border-radius: 10px 10px 0 0;
+  font-weight: 700;
+  color: #fff;
+  line-height: 58px;
+  padding: 0;
+}
+
 .title{
   font-size: 18px;
   font-weight: 600;
