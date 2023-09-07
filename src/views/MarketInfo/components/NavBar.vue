@@ -152,6 +152,9 @@ const lastLevelItems_p3 = ref([]);
 const time_start_p3 = ref('');
 const time_end_p3 = ref('');
 const allProductInfo = ref([]);
+const allPriceInfo = ref([]);
+const LineChartInfo = ref([]);
+const refDate_p3 = ref([]);
 async function fetchProduct_p3 () {
   // 获得选中的大类名称
   const encodedValue = encodeURIComponent(selectedProduct_p3.value[1]);
@@ -1235,6 +1238,30 @@ const handleQueryP3 = async () => {
   const selectedProductValue = selectedItems_p3.value;
   const fetchPromises = selectedProductValue.map(item => fetchProductPrice(item));
   await Promise.all(fetchPromises);
+  allPriceInfo.value = allProductInfo.value.map(item => item.priceDataList);
+  LineChartInfo.value = allPriceInfo.value.map(itemValue => (
+      {
+          name: itemValue.variety[0],
+          type: 'line',
+          data: itemValue.bulkPrice,
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          
+      }
+        ));
+  refDate_p3.value = allPriceInfo.value.map(itemValue => itemValue.collectDate);
 };
 const handleQueryP4 = () => {
   // 在这里执行查询操作，发送选中的值到后端
@@ -1561,7 +1588,7 @@ onMounted(async () => {
             <div class="tableArea">
               <!-- 根据selectedIndex的值显示对应的表格 -->
               <div v-if="selectedIndex_3 === 0" class="tables">
-                <MarketLineChart_multiCategory></MarketLineChart_multiCategory>
+                <MarketLineChart_multiCategory :LineChartInfo="LineChartInfo" :refDate_p3="refDate_p3"></MarketLineChart_multiCategory>
               </div>
               <div v-if="selectedIndex_3 === 1" class="tables">
                 <MarketStickChart_multiCategory></MarketStickChart_multiCategory>

@@ -6,9 +6,14 @@
 
 <script setup>
 import * as echarts from 'echarts';
-import {onMounted} from "vue";
+import {defineProps,onMounted} from "vue";
 // 引入ECharts主题文件
 import 'echarts/theme/vintage'; // 假设你要引入vintage主题
+
+const { LineChartInfo, refDate_p3 } = defineProps([
+  'LineChartInfo',
+  'refDate_p3'
+]);
 
 onMounted(()=>{
   {
@@ -35,7 +40,7 @@ onMounted(()=>{
       xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          data: refDate_p3
       },
       yAxis: {
           type: 'value',
@@ -43,47 +48,7 @@ onMounted(()=>{
           formatter: '{value}'
           }
       },
-      series: [
-          {
-          name: 'Highest',
-          type: 'line',
-          data: [10, 11, 13, 11, 12, 12, 9],
-          markPoint: {
-              data: [
-              { type: 'max', name: 'Max' },
-              { type: 'min', name: 'Min' }
-              ]
-          },
-          markLine: {
-              data: [{ type: 'average', name: 'Avg' }],
-              label: {
-              show: true,
-              position: 'end',
-              offset: [10, 0],
-              },
-          }
-          },
-          {
-          name: 'Lowest',
-          type: 'line',
-          data: [1, -2, 2, 5, 3, 2, 0],
-          markPoint: {
-              data: [
-              { type: 'max', name: 'Max' },
-              { type: 'min', name: 'Min' }
-              ]
-          },
-          markLine: {
-              data: [
-              { type: 'average', name: 'Avg' }
-              ],
-              label: {
-              show: true,
-              position: 'end',
-              offset: [10, 0],
-              },
-          }
-      }]
+      series: LineChartInfo
     };
 
 
