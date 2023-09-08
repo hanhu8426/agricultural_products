@@ -100,52 +100,67 @@ const shortcuts = [
 
 // 接收第一标签页的品种类别
 const selectedProduct_p1 = ref([]);
-const selectedProductValue_p1 = ref([]);
+const selectedProductValue_p1 = ref(['大米']);
 const timeFrame_p1 = ref('') // 接收时间范围的值
-const time_start_p1 = ref('');
-const time_end_p1 = ref('');
-const highestPrice_p1 = ref('');
-const highestMarket_p1 = ref('');
-const highestTime_p1 = ref('');
-const lowestPrice_p1 = ref('');
-const lowestMarket_p1 = ref('');
-const lowestTime_p1 = ref('');
+const time_start_p1 = ref('2023-08-30');
+const time_end_p1 = ref('2023-09-01');
+const highestPrice_p1 = ref('9');
+const highestMarket_p1 = ref('陇西县清吉洋芋批发交易市场有限责任公司');
+const highestTime_p1 = ref('2023-8-30');
+const lowestPrice_p1 = ref('3.3');
+const lowestMarket_p1 = ref('天长市永福农副产品批发市场');
+const lowestTime_p1 = ref('2023-09-01');
 const content_p1 = ref([]); // 接收后端返回的varietyNationalAverageList
-const refDate_p1 = ref([]);
-const refPrice_p1 = ref([]);
-const combinedData = ref([]);
+const refDate_p1 = ref(['2023-08-30','2023-08-31','2023-09-01']);
+const refPrice_p1 = ref([5.52857,5.53571,5.52857]);
+const combinedData = ref([
+  {value: 5.52857,name: '2023-08-30'},
+  {value: 5.53571,name: '2023-08-31'},
+  {value: 5.52857,name: '2023-09-01'}
+]);
 // 第二标签页中的地区，品种类别
-const selectedProvince_p2 = ref('');
+const selectedProvince_p2 = ref('北京市');
 const selectedProduct_p2 = ref([]);
-const selectedProductValue_p2 = ref([]);
+const selectedProductValue_p2 = ref(['大米']);
 const timeFrame_p2 = ref('');
-const time_start_p2 = ref('');
-const time_end_p2 = ref('');
-const highestPrice_p2 = ref('');
-const highestMarket_p2 = ref('');
-const highestTime_p2 = ref('');
-const lowestPrice_p2 = ref('');
-const lowestMarket_p2 = ref('');
-const lowestTime_p2 = ref('');
+const time_start_p2 = ref('2023-08-30');
+const time_end_p2 = ref('2023-09-01');
+const highestPrice_p2 = ref('5.5');
+const highestMarket_p2 = ref('北京新发地农副产品批发市场信息中心');
+const highestTime_p2 = ref('2023-08-30');
+const lowestPrice_p2 = ref('4.5');
+const lowestMarket_p2 = ref('北京朝阳区大洋路综合市场');
+const lowestTime_p2 = ref('2023-08-30');
 const content_p2 = ref([]); // 接收后端返回数组
-const refDate_p2 = ref([]);
-const refPrice_p2 = ref([]);
-const combinedData_p2 = ref([]);
+const refDate_p2 = ref(['2023-08-30','2023-08-31','2023-09-01']);
+const refPrice_p2 = ref([5.06667,5.13333,5.13333]);
+const combinedData_p2 = ref([
+  {value: 5.06667,name: '2023-08-30'},
+  {value: 5.13333,name: '2023-08-31'},
+  {value: 5.13333,name: '2023-09-01'}
+]);
 // 第三标签页中的批发市场，多选产品
 const selectedMarket_p3 = ref([]);
 const selectedProduct_p3 = ref([]);
 const selectedItems_p3 = ref([]);
 const lastLevelItems_p3 = ref([]);
-const time_start_p3 = ref('');
-const time_end_p3 = ref('');
+const time_start_p3 = ref('2023-08-30');
+const time_end_p3 = ref('2023-09-01');
 const allProductInfo = ref([]);
 const nameInfo = ref(['大米']);
-const priceInfo = ref([[4.5,4.3]]);
-const refDate_p3 = ref(['2023-08-31','2023-09-01']);
+const priceInfo = ref([[4.4,4.5,4.3]]);
+const refDate_p3 = ref(['2023-08-30','2023-08-31','2023-09-01']);
 const item_name = ref('');
-const highestPrice = ref('');
-const bottomPrice = ref('');
-const ItemArray_p3 = ref([]);  // 用来存放每一个多选的对象属性
+const highestPrice = ref();
+const bottomPrice = ref();
+const ItemArray_p3 = ref([
+  {
+    item_name:'大米',
+    highestPrice:'4.5',
+    bottomPrice:'4.3',
+  }
+  
+]);  // 用来存放每一个多选的对象属性
 async function fetchProduct_p3 () {
   // 获得选中的大类名称
   const encodedValue = encodeURIComponent(selectedProduct_p3.value[1]);
@@ -547,13 +562,19 @@ const options_product_p3 = ref([
   },
 ])  // 第三标签页特制产品数组
 const allMarketInfo = ref([]);
-const time_start_p4 = ref('');
-const time_end_p4 = ref('');
-const ItemArray_p4 = ref([]);
+const time_start_p4 = ref('2023-08-30');
+const time_end_p4 = ref('2023-09-01');
+const ItemArray_p4 = ref([
+  {
+    market:'北京朝阳区大洋路综合市场',
+    highestPrice:4.5,
+    bottomPrice:4.3,
+  }
+]);
 const market = ref('');
-const nameInfo_p4 = ref([]);
-const priceInfo_p4 = ref([]);
-const refDate_p4 = ref([]);
+const nameInfo_p4 = ref(['北京朝阳区大洋路综合市场']);
+const priceInfo_p4 = ref([[4.4,4.5,4.3]]);
+const refDate_p4 = ref(['2023-08-30','2023-08-31','2023-09-01']);
 // 获取多选框中内容
 async function fetchMarket_p4 () {
   // 获得选中的省市名称
@@ -1170,11 +1191,18 @@ const options_province = [
   },
 ] // 第二个标签页中固定的省市数组
 const timeFrame_p5 = ref('')
-const time_start_p5 = ref('');
-const time_end_p5 = ref('');
+const time_start_p5 = ref('2023-08-30');
+const time_end_p5 = ref('2023-09-01');
 const highestMarket = ref('');
 const bottomMarket = ref('');
-const ItemArray_p5 = ref([]);
+const ItemArray_p5 = ref([
+  {
+    highestMarket:'北京新发地农副产品批发市场信息中心',
+    bottomMarket:'北京朝阳区大洋路综合市场',
+    highestPrice:5.5,
+    bottomPrice:4.5,
+  }
+]);
 const nameInfo_p5 = ref(['北京市']);
 const priceInfo_p5 = ref([[5.06667,5.13333,5.13333]]);
 const refDate_p5 = ref(['2023-08-30','2023-08-31','2023-09-01']);
