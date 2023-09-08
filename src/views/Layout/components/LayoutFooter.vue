@@ -1,3 +1,24 @@
+<script setup>
+import axios from 'axios'
+import {ref, onMounted} from 'vue'
+import {baseUrl} from "@/main";
+
+const links = ref([]);
+async function fetchLink () {
+  try{
+    const response = await axios.get(`${baseUrl}/links`)
+    links.value = response.data.data;
+  } catch (error){
+    console.log("获取相关链接失败",error);
+  }
+}
+
+onMounted(()=>{
+  fetchLink();
+})
+
+</script>
+
 <template>
   <footer class="app_footer">
     
@@ -7,16 +28,11 @@
         
         <!-- 版权信息 -->
         <div class="copyright">
-          <p>
-            <a href="javascript:;">关于我们</a>
-            <a href="javascript:;">帮助中心</a>
-            <a href="javascript:;">售后服务</a>
-            <a href="javascript:;">配送与验收</a>
-            <a href="javascript:;">商务合作</a>
-            <a href="javascript:;">搜索推荐</a>
-            <a href="javascript:;">友情链接</a>
+          <p class="p_item">
+            <a v-for="(item,index) in links" :key="index" :href=item.link>{{ item.linkName }}</a>
           </p>
           <p>CopyRight © 小兔鲜儿</p>
+          <p>暑期项目-13组-怎么放暑假也要打工啊啊啊啊</p>
         </div>
       </div>
     </div>
@@ -57,6 +73,7 @@
       dt {
         line-height: 1;
         font-size: 18px;
+
       }
   
       dd {
@@ -169,8 +186,8 @@
       font-size: 15px;
   
       p {
-        line-height: 1;
-        margin-bottom: 20px;
+        line-height: 1.5;
+        margin-bottom: 10px;
       }
   
       a {
