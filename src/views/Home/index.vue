@@ -286,6 +286,25 @@ const getLatestExponent = async () => {
                     <img src="../../assets/images/tubiao-bingtu.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;background: none;">
                     <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 260px;">批发价格最高排名</span>
                 </div>
+                <div style="display: flex;padding-left: 10px;">
+                    <el-select v-model="value" class="m-2" placeholder="请选择">
+                        <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                        />
+                    </el-select>
+                    <el-select v-model="value" class="m-2" placeholder="请选择">
+                        <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                        />
+                    </el-select>
+                </div>
+                <div id="chart-container" style="width: 330px; height: 300px;"></div>
             </div>
         </div>
     </div>

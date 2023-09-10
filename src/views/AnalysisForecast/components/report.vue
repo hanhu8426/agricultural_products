@@ -1,7 +1,10 @@
 <script setup>
-import { ref, onMounted,computed } from 'vue'
+import { ref, onMounted,computed,watch } from 'vue'
 import axios from "axios";
 import {baseUrl} from "@/main";
+import * as echarts from 'echarts';
+import 'echarts/theme/essos';
+
 const props = {
   expandTrigger: 'hover'
 };
@@ -36,11 +39,6 @@ function formatDate(dateString) {
   return [yearAndMonth,day];
 }
 // 将内容完整展示
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 2aa4de3ee257158f7be17fc00b50c6d0283617dd
 const options_province = [
   {
     value: '全国',
@@ -320,10 +318,10 @@ async function fetchForecastReport () {
 // 预测曲线部分
 const selectedProvince = ref('全国');
 const selectedProduct = ref('猪肉');
-const originPrice = ref([]);
+const originPrice = ref([23.287,23.4636,23.4318,23.135,23.2545,23.7435,23.5958]);
 const originDate = ref([]);
-const predictPrice = ref([]);
-const predictDate = ref([]);
+const predictPrice = ref([23.287,23.4636,23.4318,23.135,23.2545,23.7435,23.5958,23.4431,23.417,23.4134,23.4307,23.4641,23.5065,23.55]);
+const predictDate = ref(["2023-09-01","2023-09-02","2023-09-03","2023-09-04","2023-09-05","2023-09-06","2023-09-07","2023-09-08","2023-09-09","2023-09-10","2023-09-11","2023-09-12","2023-09-13","2023-09-14"]);
 // 1.获取原始七天价格数据
 async function fetchData (province,product){
   try{
@@ -347,10 +345,91 @@ const handleProductChange = () => {
 }
 const handleProvinceChange = () => {
 }
+
+//图表
+const ReportLineChartInit = () => {
+  const chartContainer = document.getElementById('chart-container');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+  // 设置ECharts配置选项
+  const option = {
+      title: {
+          text: 'Temperature Change in the Coming Week',
+          show: false
+      },
+      tooltip: {
+          trigger: 'axis'
+      },
+      legend: {},
+      toolbox: {
+          show: true,
+          feature: {
+          saveAsImage: {}
+          }
+      },
+      xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: predictDate.value
+      },
+      yAxis: {
+          type: 'value',
+          axisLabel: {
+          formatter: '{value}'
+          }
+      },
+      series: [
+          {
+          name: '原始数据',
+          type: 'line',
+          data: originPrice.value,
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          },
+          {
+          name: '预测数据',
+          type: 'line',
+          data: predictPrice.value,
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          }
+      ]
+    };
+
+  chart_p1.setOption(option);
+};
+
 onMounted(() => {
   fetchDailyReport();
   fetchForecastReport();
-  fetchData();
+  ReportLineChartInit();
+  // 监听以重新初始化图表
+  watch([predictDate,originPrice,predictPrice], () => {
+    ReportLineChartInit();
+  });
 });
 </script>
 
@@ -360,11 +439,7 @@ onMounted(() => {
       <!--报告的边框-->
       <div class="report_border" >
         <!--报告的内容（三条）-->
-<<<<<<< HEAD
-        <div class="report_item" @click="item.isPopupVisible = true">
-=======
         <div class="report_item" v-for="item in displayedData" :key="item.id">
->>>>>>> 2aa4de3ee257158f7be17fc00b50c6d0283617dd
           <!--左侧日历栏 -->
           <div class="date">
             <p class="yearAndMonth">{{formatDate(item.thatDate)[0]}}</p>
@@ -461,32 +536,35 @@ onMounted(() => {
         </p>
       </div>
       <div class="forecast_chart_searchBar">
-        <div class="selectOption">
-          省市:
-          <el-cascader
-              v-model="selectedProvince"
-              :options="options_province"
-              :props="props"
-              @change="handleProvinceChange"
-              placeholder="请选择"
-          />
+        <div style="display: flex;">
+          <div class="selectOption">
+            省市:
+            <el-cascader
+                v-model="selectedProvince"
+                :options="options_province"
+                :props="props"
+                @change="handleProvinceChange"
+                placeholder="请选择"
+            />
+          </div>
+          <div class="selectOption">
+            品种:
+            <el-cascader
+                v-model="selectedProduct"
+                :options="options_product"
+                :props="props"
+                @change="handleProductChange"
+                placeholder="请选择"
+            />
+          </div>
         </div>
-        <div class="selectOption">
-          品种:
-          <el-cascader
-              v-model="selectedProduct"
-              :options="options_product"
-              :props="props"
-              @change="handleProductChange"
-              placeholder="请选择"
-          />
-        </div>
+        
         <div class="query">
           <el-button class="queryButton" type="success" plain @click="handleQuery">查询</el-button>
         </div>
       </div>
       <div class="forecast_chart_content">
-
+        <div id="chart-container" style="width: 842px; height: 310px;margin-top: 10px;"></div>
       </div>
     </div>
   </div>
@@ -574,8 +652,8 @@ onMounted(() => {
 .forecast{
   display: flex;
   justify-content:normal;/* 水平对齐 */
-  padding-top: 30px;
-  height:380px;
+  margin-top: 30px;
+  height:400px;
 }
 .forecast_report{
   width: 25%;
@@ -621,13 +699,9 @@ onMounted(() => {
   display: -ms-flexbox;
   display: flex;
 }
-.forecast_chart{
-
-}
 .forecast_chart_searchBar{
   font-size: 15px;
   display: flex;
-  justify-content: space-between;
 }
 
 .selectOption{
@@ -646,7 +720,7 @@ onMounted(() => {
   font-weight: normal;
 }
 .query{
-  margin-left: 30px;
+  padding-left: 30px;
 }
 
 </style>

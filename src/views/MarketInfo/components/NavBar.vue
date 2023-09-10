@@ -1374,18 +1374,7 @@ const handleQueryP5 = async () => {
 
 // 挂载时加载产品三级一级省市二级批发市场
 onMounted(async () => {
-  // 遍历所有的一级下拉框
-  for (const firstLevelOption_market of options_market.value) {
-    // 调用函数获取二级数据
-    await fetchSecondLevelDataMarket(firstLevelOption_market);
-  }
-
-  for (const firstLevelOption_product of options_product.value) {
-    // 调用函数获取第三级数据
-    for (const secondLevelOption_product of firstLevelOption_product.children) {
-      await fetchThirdLevelDataProduct(secondLevelOption_product);
-    }
-  }
+  
   //初始化函数
   const MarketLineChartInit = () => {
   const chartContainer = document.getElementById('chart-container_1');
@@ -2351,6 +2340,19 @@ for (const Name of date) {
   MarketLineChart_multiCategory_Init();
   MarketStickChart_multiMarket_Init();
   MarketRadarChart_multiArea_Init();
+
+// 遍历所有的一级下拉框
+  for (const firstLevelOption_market of options_market.value) {
+    // 调用函数获取二级数据
+    await fetchSecondLevelDataMarket(firstLevelOption_market);
+  }
+
+  for (const firstLevelOption_product of options_product.value) {
+    // 调用函数获取第三级数据
+    for (const secondLevelOption_product of firstLevelOption_product.children) {
+      await fetchThirdLevelDataProduct(secondLevelOption_product);
+    }
+  }
 
   // 监听 selectedIndex 以重新初始化图表
   watch([selectedProductValue_p1,refDate_p1,refPrice_p1,selectedIndex], () => {
