@@ -4,7 +4,7 @@ import trendChart from './DailyChart.vue';
 import MonthlyChart from './MonthlyChart.vue';
 import {baseUrl} from '@/main'
 // 引入Vue中的函数
-import {computed, onMounted, ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import axios from "axios";
 
 // 创建变量
@@ -33,51 +33,12 @@ function formatDate(date) {
 // 分页展示价格行情
 const currentPage = ref(1); // 当前页码
 const pageSize = ref(10); // 每页显示数量
-const priceTable = ref([
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-08',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-06',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-07',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-])
+const totalSize = ref(0);
 // displayData是获取到每一页的展示数据
-const displayedData = computed(() => {
-  const startIndex = (currentPage.value - 1) * pageSize.value;
-  const endIndex = startIndex + pageSize.value;
-  return priceTable.value.slice(startIndex, endIndex);
-});
-function handlePageChange(newPage) {
+const displayedData = ref([]);
+async function handlePageChange(newPage) {
   currentPage.value = newPage;
+  handleQuery();
 }
 
 // 设置下拉框是悬停点开
@@ -590,7 +551,7 @@ const handleQuery = () => {
   const selectedProductValue = selectedProduct.value[2];
   // 发送请求到后端，传递选中的值
   // 可以使用axios或其他方式发送HTTP请求
-  axios.get(`${baseUrl}/priceQuery/PriceData`, {
+  axios.get(`${baseUrl}/priceQuery/queryPriceDataAtPage/${currentPage.value}/${pageSize.value}`, {
     params: {
       market: selectedMarketValue,
       variety: selectedProductValue,
@@ -599,7 +560,10 @@ const handleQuery = () => {
       .then((response) => {
         // 处理从后端返回的数据
         // 更新组件中的数据以供模板使用
-        priceTable.value = response.data.data;
+        displayedData.value = response.data.data.records;
+        totalSize.value = response.data.data.pages * pageSize.value;
+        console.log("displayedData",displayedData.value);
+        console.log("totalSize",totalSize.value);
       })
       .catch((error) => {
         // 处理请求错误
@@ -714,10 +678,10 @@ onMounted(async () => {
 
         <div class="pagination">
           <el-pagination
-              :page-size="20"
+              :page-size="pageSize"
               :pager-count="11"
               layout="prev, pager, next"
-              :total="1000"
+              :total="totalSize"
               @current-change="handlePageChange"
           />
         </div>

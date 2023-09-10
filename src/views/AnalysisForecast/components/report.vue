@@ -1,31 +1,43 @@
 <script setup>
-import { ref, onMounted,computed } from 'vue'
+import { ref, onMounted} from 'vue'
 import axios from "axios";
 import {baseUrl} from "@/main";
 const props = {
   expandTrigger: 'hover'
 };
 const activeName = ref('first')
+
 // 分页展示日周度报告
 const currentPage = ref(1); // 当前页码
 const pageSize = ref(3); // 每页显示数量
+const totalSize = ref(0);
 // displayData是获取到每一页的展示数据
-const displayedData = computed(() => {
-  const startIndex = (currentPage.value - 1) * pageSize.value;
-  const endIndex = startIndex + pageSize.value;
-  return allDailyReport.value.slice(startIndex, endIndex);
-});
+const displayedData = ref([]);
 
-// 获取全部日报内容
-const allDailyReport = ref([]);
+// 获取分页日报内容
 async function fetchDailyReport () {
   try {
-    const response = await axios.get(`${baseUrl}/dailyPaper/all`);
-    allDailyReport.value = response.data.data;
+    const response = await axios.get(`${baseUrl}/dailyPaper/queryDailyPaperAtPage/${currentPage.value}/${pageSize.value}`);
+    displayedData.value = response.data.data.records;
+    totalSize.value = response.data.data.pages * pageSize.value;
   } catch (error) {
     console.error('获取日报数据失败', error);
   }
 }
+
+// 获取分页周报
+const totalWeeklySize = ref (0);
+const weeklyData = ref([]);
+async function fetchWeeklyReport () {
+  try {
+    const response = await axios.get(`${baseUrl}/weeklyPaperText/atPage/${currentPage.value}/${pageSize.value}`);
+    weeklyData.value = response.data.data.records;
+    totalWeeklySize.value = response.data.data.pages * pageSize.value;
+  } catch (error) {
+    console.error('获取日报数据失败', error);
+  }
+}
+
 // 处理传过来的时间
 function formatDate(dateString) {
   const parts = dateString.split('-'); // 使用 "-" 分割字符串
@@ -36,11 +48,6 @@ function formatDate(dateString) {
   return [yearAndMonth,day];
 }
 // 将内容完整展示
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 2aa4de3ee257158f7be17fc00b50c6d0283617dd
 const options_province = [
   {
     value: '全国',
@@ -303,6 +310,7 @@ const options_product = [
 ]
 function handlePageChange(newPage) {
   currentPage.value = newPage;
+  fetchDailyReport();
 }
 
 // 接收所有的预测报告
@@ -349,6 +357,7 @@ const handleProvinceChange = () => {
 }
 onMounted(() => {
   fetchDailyReport();
+  fetchWeeklyReport();
   fetchForecastReport();
   fetchData();
 });
@@ -360,11 +369,7 @@ onMounted(() => {
       <!--报告的边框-->
       <div class="report_border" >
         <!--报告的内容（三条）-->
-<<<<<<< HEAD
-        <div class="report_item" @click="item.isPopupVisible = true">
-=======
         <div class="report_item" v-for="item in displayedData" :key="item.id">
->>>>>>> 2aa4de3ee257158f7be17fc00b50c6d0283617dd
           <!--左侧日历栏 -->
           <div class="date">
             <p class="yearAndMonth">{{formatDate(item.thatDate)[0]}}</p>
@@ -398,10 +403,10 @@ onMounted(() => {
 
       <div class="pagination">
         <el-pagination
-            :page-size="20"
+            :page-size="pageSize"
             :pager-count="11"
             layout="prev, pager, next"
-            :total="1000"
+            :total="totalSize"
             @current-change="handlePageChange"
         />
       </div>
@@ -410,34 +415,43 @@ onMounted(() => {
       <!--报告的边框-->
       <div class="report_border" >
         <!--报告的内容（三条）-->
-        <div class="report_item" v-for="item in displayedData" :key="item.id">
+        <div class="report_item" v-for="item in weeklyData" :key="item.id">
           <!--左侧日历栏 -->
           <div class="date">
-
+            <p class="yearAndMonth">{{formatDate(item.firstDate)[0]}}</p>
+            <p class="day">{{formatDate(item.firstDate)[1]}}</p>
           </div>
           <!-- 右侧标题和内容-->
-          <div class="content">
+          <div class="content" @click="item.isPopupVisible = true">
             <div class="content_title">
               <div class="title">
-
+                {{item.title}}
               </div>
               <div class="source">
-
+                {{item.source}}
               </div>
             </div>
             <div class="content_main">
-
+              {{item.content}}
             </div>
           </div>
+          <el-dialog
+              v-model="item.isPopupVisible"
+              title="周度报告"
+              width="60%"
+              align-center
+          >
+            <span>{{item.content}}</span>
+          </el-dialog>
         </div>
       </div>
 
       <div class="pagination">
         <el-pagination
-            :page-size="20"
+            :page-size="pageSize"
             :pager-count="11"
             layout="prev, pager, next"
-            :total="1000"
+            :total="totalWeeklySize"
             @current-change="handlePageChange"
         />
       </div>
@@ -450,7 +464,15 @@ onMounted(() => {
       <div class="forecast_report_content">
         <li class="forecast_report_item" v-for="(item,index) in allForecastReport" :key="index">
           <i class="icon"></i>
-          <p>{{item.title}}</p>
+          <p @click="item.isPopupVisible = true">{{item.title}}</p>
+          <el-dialog
+              v-model="item.isPopupVisible"
+              :title=item.title
+              width="60%"
+              align-center
+          >
+            <span>{{item.passage}}</span>
+          </el-dialog>
         </li>
       </div>
     </div>
@@ -586,6 +608,7 @@ onMounted(() => {
   margin-right: 40px;
 }
 .forecast_report_title{
+  padding-left: 20px;
   border-radius: 10px 10px 0 0;
   background: #f2fbfb;
   line-height: 40px;
@@ -611,6 +634,7 @@ onMounted(() => {
   font-weight: normal;
 }
 .forecast_report_item{
+  border-bottom: 1px dashed #ccc; /* 添加底部分割线*/
   line-height: 36px;
   font-size: 13px;
   font-weight: normal;
@@ -620,6 +644,14 @@ onMounted(() => {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+.forecast_report_item:last-child {
+  border-bottom: none;
+}
+.forecast_report_item p {
+  white-space: nowrap; /* 禁止文本换行 */
+  overflow: hidden; /* 隐藏文本溢出部分 */
+  text-overflow: ellipsis; /* 显示省略号 */
 }
 .forecast_chart{
 

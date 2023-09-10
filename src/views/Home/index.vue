@@ -158,7 +158,7 @@ const getLatestExponent = async () => {
 }
 
   onMounted( async () => {
-  getLatestExponent();
+  await getLatestExponent();
 });
 
 </script>
