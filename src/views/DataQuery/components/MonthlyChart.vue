@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div id="chart-container" style="width: 100%; height: 416px;"></div>
+      <div id="chart-container" style="width: 100%; height: 320px;"></div>
     </div>
   </template>
   
@@ -19,7 +19,7 @@
 
   const getDate = async () => {
   try {
-    const response = await axios.get(`${baseUrl}/exponent/dailyExponent/date`); // 发起请求获取数据
+    const response = await axios.get(`${baseUrl}/exponent/monthlyExponent/date`); // 发起请求获取数据
     date.value = response.data.data; // 更新tableData变量
     console.log('调用')
   } catch (error) {
@@ -29,7 +29,7 @@
 
 const getProduct = async () => {
   try {
-    const response = await axios.get(`${baseUrl}/exponent/dailyExponent/Product`); // 发起请求获取数据
+    const response = await axios.get(`${baseUrl}/exponent/monthlyExponent/Product`); // 发起请求获取数据
     productExponent.value = response.data.data; // 更新tableData变量
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -38,7 +38,7 @@ const getProduct = async () => {
 
 const getVegetable = async () => {
   try {
-    const response = await axios.get(`${baseUrl}/exponent/dailyExponent/VegetableBasket`); // 发起请求获取数据
+    const response = await axios.get(`${baseUrl}/exponent/monthlyExponent/VegetableBasket`); // 发起请求获取数据
     vegetableBasketExponent.value = response.data.data; // 更新tableData变量
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -47,7 +47,7 @@ const getVegetable = async () => {
 
 const getOil = async () => {
   try {
-    const response = await axios.get(`${baseUrl}/exponent/dailyExponent/GrainOil`); // 发起请求获取数据
+    const response = await axios.get(`${baseUrl}/exponent/monthlyExponent/GrainOil`); // 发起请求获取数据
     grainOilExponent.value = response.data.data; // 更新tableData变量
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -75,7 +75,10 @@ const renderChart = () => {
             trigger: 'axis'
         },
         legend:{
-            show: true
+            show: true,
+            textStyle: {
+            fontSize: 9, // 设置系列名称的字体大小
+          },
         },
         xAxis: [
             {
@@ -90,7 +93,7 @@ const renderChart = () => {
                 formatter: '{value}', // 刻度标签的格式化方式
             },
             min: 115, // 设置刻度的最小值为数据的最小值
-            max: 125,
+            max: 140,
         }
         ],
         series: [

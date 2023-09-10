@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div id="chart-container" style="width: 100%; height: 416px;"></div>
+      <div id="chart-container" style="width: 100%; height: 320px;"></div>
     </div>
   </template>
   
@@ -74,8 +74,11 @@ const renderChart = () => {
         tooltip: {
             trigger: 'axis'
         },
-        legend:{
-            show: true
+        legend: {
+          show: true,
+          textStyle: {
+            fontSize: 9, // 设置系列名称的字体大小
+          },
         },
         xAxis: [
             {

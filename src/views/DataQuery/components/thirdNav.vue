@@ -768,7 +768,7 @@ onMounted(async () => {
   position: relative;
   font-size: var(--el-font-size-base);
   display: inline-flex;
-  width: 180px;
+  width: 150px;
   line-height: var(--el-input-height);
   box-sizing: border-box;
   vertical-align: middle;
