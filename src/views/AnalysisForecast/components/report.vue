@@ -36,8 +36,11 @@ function formatDate(dateString) {
   return [yearAndMonth,day];
 }
 // 将内容完整展示
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 2aa4de3ee257158f7be17fc00b50c6d0283617dd
 const options_province = [
   {
     value: '全国',
@@ -301,8 +304,53 @@ const options_product = [
 function handlePageChange(newPage) {
   currentPage.value = newPage;
 }
+
+// 接收所有的预测报告
+const allForecastReport = ref([]);
+async function fetchForecastReport () {
+  try{
+    const response = await axios.get(`${baseUrl}/predict/predictReports`);
+    allForecastReport.value = response.data.data;
+  } catch (error) {
+    console.error('获取预测报告数据失败', error);
+  }
+}
+
+
+// 预测曲线部分
+const selectedProvince = ref('全国');
+const selectedProduct = ref('猪肉');
+const originPrice = ref([]);
+const originDate = ref([]);
+const predictPrice = ref([]);
+const predictDate = ref([]);
+// 1.获取原始七天价格数据
+async function fetchData (province,product){
+  try{
+    const response_originPrice = await axios.get(`${baseUrl}/predict/originPrices/${product}/${province}`)
+    const response_originDate = await axios.get(`${baseUrl}/predict/originPricesDate/${product}/${province}`)
+    const response_predictPrice = await axios.get(`${baseUrl}/predict/predictPrices/${product}/${province}`)
+    const response_predictDate = await axios.get(`${baseUrl}/predict/predictPricesDate/${product}/${province}`)
+    originPrice.value = response_originPrice.data.data;
+    originDate.value = response_originDate.data.data;
+    predictPrice.value = response_predictPrice.data.data;
+    predictDate.value = response_predictDate.data.data;
+  } catch(error){
+    console.log("获取原始数据失败",error);
+  }
+}
+
+const handleQuery = async () => {
+  await fetchData(selectedProvince.value, selectedProduct.value);
+}
+const handleProductChange = () => {
+}
+const handleProvinceChange = () => {
+}
 onMounted(() => {
   fetchDailyReport();
+  fetchForecastReport();
+  fetchData();
 });
 </script>
 
@@ -310,16 +358,20 @@ onMounted(() => {
   <el-tabs v-model="activeName" class="demo-tabs" >
     <el-tab-pane label="日度报告" name="first" strech="true" >
       <!--报告的边框-->
-      <div class="report_border" v-for="item in displayedData" :key="item.id">
+      <div class="report_border" >
         <!--报告的内容（三条）-->
+<<<<<<< HEAD
         <div class="report_item" @click="item.isPopupVisible = true">
+=======
+        <div class="report_item" v-for="item in displayedData" :key="item.id">
+>>>>>>> 2aa4de3ee257158f7be17fc00b50c6d0283617dd
           <!--左侧日历栏 -->
           <div class="date">
             <p class="yearAndMonth">{{formatDate(item.thatDate)[0]}}</p>
             <p class="day">{{formatDate(item.thatDate)[1]}}</p>
           </div>
           <!-- 右侧标题和内容-->
-          <div class="content">
+          <div class="content" @click="item.isPopupVisible = true">
             <div class="content_title">
               <div class="title">
                 {{ item.title }}
@@ -356,9 +408,9 @@ onMounted(() => {
     </el-tab-pane>
     <el-tab-pane label="周度报告" name="second" strech="true">
       <!--报告的边框-->
-      <div class="report_border" v-for="item in displayedData" :key="item.id">
+      <div class="report_border" >
         <!--报告的内容（三条）-->
-        <div class="report_item">
+        <div class="report_item" v-for="item in displayedData" :key="item.id">
           <!--左侧日历栏 -->
           <div class="date">
 
@@ -393,12 +445,13 @@ onMounted(() => {
   </el-tabs>
 
   <div class="forecast">
-    <div class="forecast_report">
-      <div class="forecast_report_title">
-
-      </div>
+    <div class="forecast_report" >
+      <p class="forecast_report_title">预测新闻</p>
       <div class="forecast_report_content">
-
+        <li class="forecast_report_item" v-for="(item,index) in allForecastReport" :key="index">
+          <i class="icon"></i>
+          <p>{{item.title}}</p>
+        </li>
       </div>
     </div>
     <div class="forecast_chart">
@@ -522,7 +575,7 @@ onMounted(() => {
   display: flex;
   justify-content:normal;/* 水平对齐 */
   padding-top: 30px;
-  height:400px;
+  height:380px;
 }
 .forecast_report{
   width: 25%;
@@ -532,11 +585,42 @@ onMounted(() => {
   margin-left: 10px;
   margin-right: 40px;
 }
-
 .forecast_report_title{
-
+  border-radius: 10px 10px 0 0;
+  background: #f2fbfb;
+  line-height: 40px;
 }
-
+.forecast.forecast_report.forecast_report_title {
+  border-radius: 10px 10px 0 0;
+  background: #f2fbfb;
+}
+.icon{
+  width: 6px;
+  height: 6px;
+  display: block;
+  background-color: #ff7457;
+  margin-top: 15px;
+  margin-left: 12px;
+  margin-right: 8px;
+}
+.forecast_report_content{
+  height: calc(100% - 40px);
+  overflow-y: auto;
+  width: 100%;
+  border-radius: 0 0 10px 10px;
+  font-weight: normal;
+}
+.forecast_report_item{
+  line-height: 36px;
+  font-size: 13px;
+  font-weight: normal;
+  color: #828282;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
 .forecast_chart{
 
 }
@@ -558,7 +642,9 @@ onMounted(() => {
   position: relative;
   margin-bottom: 20px;
 }
-
+.p{
+  font-weight: normal;
+}
 .query{
   margin-left: 30px;
 }
