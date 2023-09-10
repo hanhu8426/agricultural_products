@@ -9,12 +9,6 @@ import axios from "axios";
 
 // 创建变量
 // 表格展示数据
-const productExponentArray = ref([]);
-const refProductExponent = ref([]);
-const vegetableBasketExponentArray = ref([]);
-const refVegetableBasketExponent = ref([]);
-const grainOilExponentArray = ref([]);
-const refGrainOilExponent = ref([]);
 const activeName = ref('first')  //默认打开第一个标签页（农产品批发价格200指数）
 const activeButton = ref('日度'); // 初始选中按钮
 const handleButtonClick = (button) => {  // 点击日度、月度按钮进行跳转
@@ -529,12 +523,6 @@ const getDailyExponent = async () => {
   try {
     const response = await axios.get(`${baseUrl}/exponent/dailyExponent`); // 发起请求获取数据
     index200Table.value = response.data.data; // 更新tableData变量
-    productExponentArray.value = response.data.data.map(item => item.productExponent);
-    refProductExponent.value = productExponentArray.value.slice(0,10).reverse();
-    vegetableBasketExponentArray.value = response.data.data.map(item => item.vegetableBasketExponent);
-    refVegetableBasketExponent.value = vegetableBasketExponentArray.value.slice(0,10).reverse();
-    grainOilExponentArray.value = response.data.data.map(item => item.grainOilExponent);
-    refGrainOilExponent.value = grainOilExponentArray.value.slice(0,10).reverse();
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -545,12 +533,6 @@ const getMonthlyExponent = async () => {
   try {
     const response = await axios.get(`${baseUrl}/exponent/monthlyExponent`); // 发起请求获取数据
     index200Table.value = response.data.data; // 更新tableData变量
-    productExponentArray.value = response.data.data.map(item => item.productExponent);
-    refProductExponent.value = productExponentArray.value.slice(0,10).reverse();
-    vegetableBasketExponentArray.value = response.data.data.map(item => item.vegetableBasketExponent);
-    refVegetableBasketExponent.value = vegetableBasketExponentArray.value.slice(0,10).reverse();
-    grainOilExponentArray.value = response.data.data.map(item => item.grainOilExponent);
-    refGrainOilExponent.value = grainOilExponentArray.value.slice(0,10).reverse();
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -679,10 +661,10 @@ onMounted(async () => {
           </div>
 
           <div v-if="activeButton === '日度'" style="width: 90%;margin: 0 auto;">
-            <trendChart :refProductExponent="refProductExponent" :refVegetableBasketExponent="refVegetableBasketExponent" :refGrainOilExponent="refGrainOilExponent" />
+            <trendChart  />
           </div>
           <div v-else-if="activeButton === '月度'" style="width: 90%;margin: 0 auto;">
-            <MonthlyChart :refProductExponent="refProductExponent" :refVegetableBasketExponent="refVegetableBasketExponent" :refGrainOilExponent="refGrainOilExponent"></MonthlyChart>
+            <MonthlyChart ></MonthlyChart>
           </div>
         </div>
       </el-tab-pane>
@@ -786,7 +768,7 @@ onMounted(async () => {
   position: relative;
   font-size: var(--el-font-size-base);
   display: inline-flex;
-  width: 180px;
+  width: 150px;
   line-height: var(--el-input-height);
   box-sizing: border-box;
   vertical-align: middle;

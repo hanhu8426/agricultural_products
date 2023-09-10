@@ -14,209 +14,474 @@ function formatDate(date) {
   return `${year}年${month}月${day}日`;
 }
 
+const options = [
+  {
+    value: '猪肉',
+    label: '猪肉',
+  },
+  {
+    value: '羊肉',
+    label: '羊肉',
+  },
+  {
+    value: '牛肉',
+    label: '牛肉',
+  },
+  {
+    value: '鸡蛋',
+    label: '鸡蛋',
+  },
+  {
+    value: '白条鸡',
+    label: '白条鸡',
+  },
+  {
+    value: '活草鱼',
+    label: '活草鱼',
+  },
+  {
+    value: '活鲫鱼',
+    label: '活鲫鱼',
+  },
+  {
+    value: '活鲤鱼',
+    label: '活鲤鱼',
+  },
+  {
+    value: '白鲢活鱼',
+    label: '白鲢活鱼',
+  },
+  {
+    value: '花鲢活鱼',
+    label: '花鲢活鱼',
+  },
+  {
+    value: '大带鱼',
+    label: '大带鱼',
+  },
+  {
+    value: '大黄花鱼',
+    label: '大黄花鱼',
+  },
+  {
+    value: '菠菜',
+    label: '菠菜',
+  },
+  {
+    value: '莴笋',
+    label: '莴笋',
+  },
+  {
+    value: '豆角',
+    label: '豆角',
+  },
+  {
+    value: '韭菜',
+    label: '韭菜',
+  },
+  {
+    value: '菜花',
+    label: '菜花',
+  },
+  {
+    value: '胡萝卜',
+    label: '胡萝卜',
+  },
+  {
+    value: '油菜',
+    label: '油菜',
+  },
+  {
+    value: '西红柿',
+    label: '西红柿',
+  },
+  {
+    value: '青椒',
+    label: '青椒',
+  },
+  {
+    value: '土豆',
+    label: '土豆',
+  },
+  {
+    value: '富士苹果',
+    label: '富士苹果',
+  },
+  {
+    value: '巨峰葡萄',
+    label: '巨峰葡萄',
+  },
+  {
+    value: '香蕉',
+    label: '香蕉',
+  },
+  {
+    value: '菠萝',
+    label: '菠萝',
+  },
+  {
+    value: '西瓜',
+    label: '西瓜',
+  },
+  {
+    value: '鸭梨',
+    label: '鸭梨',
+  },
+]
+const customColor = ref('rgb(255, 115, 88)');
+const customColor_2 = ref('rgb(253, 215, 108)');
+const customColor_3 = ref('#19d1c5');
+const customColor_4 = ref('rgb(143, 215, 141)');
+const customColor_5 = ref('#aaa');
+
 // 表格展示数据
-const index200Table = ref([]); //初始化空数组
-const productExponentArray = ref([]);
-const refProductExponent = ref([]);
-const vegetableBasketExponentArray = ref([]);
-const refVegetableBasketExponent = ref([]);
-const grainOilExponentArray = ref([]);
-const refGrainOilExponent = ref([]);
 const activeButton = ref('日度'); // 初始选中按钮
 const handleButtonClick = (button) => {  // 点击日度、月度按钮进行跳转
   activeButton.value = button;
-  if (activeButton.value === '日度') {
-    getDailyExponent(); // 调用获取日度数据的方法
-  } else if (activeButton.value === '月度') {
-    getMonthlyExponent(); // 调用获取月度数据的方法
-  }
 };
 
-// 从后端接收“农产品批发价格200日度指数”
-const getDailyExponent = async () => {
+
+//获得最新200指数数据
+const latestExponent = ref();
+const latestVegetable = ref();
+const latestOil = ref();
+const getLatestExponent = async () => {
   try {
-    const response = await axios.get(`${baseUrl}/exponent/dailyExponent`); // 发起请求获取数据
-    index200Table.value = response.data.data; // 更新tableData变量
-    productExponentArray.value = response.data.data.map(item => item.productExponent);
-    refProductExponent.value = productExponentArray.value.slice(0,10).reverse();
-    vegetableBasketExponentArray.value = response.data.data.map(item => item.vegetableBasketExponent);
-    refVegetableBasketExponent.value = vegetableBasketExponentArray.value.slice(0,10).reverse();
-    grainOilExponentArray.value = response.data.data.map(item => item.grainOilExponent);
-    refGrainOilExponent.value = grainOilExponentArray.value.slice(0,10).reverse();
+    const response = await axios.get(`${baseUrl}/exponent/dailyExponent/latest`); // 发起请求获取数据
+    latestExponent.value = response.data.data.productExponent;
+    latestVegetable.value = response.data.data.vegetableBasketExponent;
+    latestOil.value = response.data.data.grainOilExponent;
+    console.log('最新'+latestExponent.value);
   } catch (error) {
     console.error('Error fetching data:', error);
   }
-};
+}
 
-// 从后端接收“农产品批发价格200月度指数”
-const getMonthlyExponent = async () => {
-  try {
-    const response = await axios.get(`${baseUrl}/exponent/monthlyExponent`); // 发起请求获取数据
-    index200Table.value = response.data.data; // 更新tableData变量
-    productExponentArray.value = response.data.data.map(item => item.productExponent);
-    refProductExponent.value = productExponentArray.value.slice(0,10).reverse();
-    vegetableBasketExponentArray.value = response.data.data.map(item => item.vegetableBasketExponent);
-    refVegetableBasketExponent.value = vegetableBasketExponentArray.value.slice(0,10).reverse();
-    grainOilExponentArray.value = response.data.data.map(item => item.grainOilExponent);
-    refGrainOilExponent.value = grainOilExponentArray.value.slice(0,10).reverse();
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
-
-  onMounted(() => {
-  getDailyExponent();
+  onMounted( async () => {
+  getLatestExponent();
 });
-};
+
 </script>
 
 <template>
-    <div class="Exponent">
-        <div class="exponent_box">
-            <div class="exponent_box_title">
-                <img src="../../assets/images/exponent_pic.png" alt="" style="width: 30px;height: 30px;">
-                <span style="margin-left: 10px;font-size: 22px;font-weight: 700;">农产品批发价格200指数</span>
+    <div style="display: flex;background-color: #fdfcf5;">
+        <div class="left">
+            <div class="left_top">
+                <div class="exponent_box_title">
+                    <img src="../../assets/images/exponent_pic.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;">
+                    <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 260px;">农产品批发价格200指数</span>
+                </div>
+                <p class="exponent_box_date">{{ formattedDate }}</p>
+                <div class="exponent_box_pic">
+                    <div class="line_all"></div>
+                    <div class="line_dis"></div>
+                    <div class="line1_text">
+                        <span style="display: block;">“菜篮子”产品批发</span>
+                        <span style="display: block;text-align: center;">
+                            价格指数 
+                        </span>
+                    </div>
+                    <div class="line1_data">{{ latestVegetable }}</div>
+                    <div class="line2_text">
+                        <span style="display: block;">粮油产品批发</span>
+                        <span style="display: block;text-align: center;">
+                            价格指数 
+                        </span>
+                    </div>
+                    <div class="line2_data">{{ latestOil }}</div>
+                    <div class="line0_text">
+                        <span class="line0_text_200">200</span>
+                        <span class="line0_text_index">指数</span>
+                    </div>
+                    <div class="line0_data"><span class="line0_data_number">{{ latestExponent }}</span></div>
+                </div>
             </div>
-            <p class="exponent_box_date">{{ formattedDate }}</p>
-            <div class="exponent_box_pic">
-                <div class="line_all"></div>
-                <div class="line_dis"></div>
-                <div class="line1_text">
-                    <span style="display: block;">“菜篮子”产品批发</span>
-                    <span style="display: block;text-align: center;">
-                        价格指数
-                        
-                    </span>
+            <div class="left_bottom">
+                <div class="exponent_box_title">
+                    <img src="../../assets/images/shangsheng.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;background: none;">
+                    <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 260px;">批发价格最高排名</span>
                 </div>
-                <div class="line1_data">122.39</div>
-                <div class="line2_text">
-                    <span style="display: block;">粮油产品批发</span>
-                    <span style="display: block;text-align: center;">
-                        价格指数
-                        
-                    </span>
-                </div>
-                <div class="line2_data">120.18</div>
-                <div class="line0_text">
-                    <span class="line0_text_200">200</span>
-                    <span class="line0_text_index">指数</span>
-                </div>
-                <div class="line0_data"><span class="line0_data_number">122.07</span></div>
-            </div>
-        </div>
-        <div class="exponent_chart">
-            <div class="exponent_chart_title">
-                <div style="display: flex;-webkit-box-align: center;align-items: center;">
-                    <img src="../../assets/images/exponent_pic.png" alt="" style="width: 30px;height: 30px;">
-                    <span style="margin-left: 10px;font-size: 22px;font-weight: 700;">农产品批发价格200指数</span>
+                <div style="padding-left: 10px;">
+                    <el-select v-model="value" class="m-2" placeholder="请选择">
+                        <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                        />
+                    </el-select>
                 </div>
                 <div>
-                    <el-button type="success" plain @click="handleButtonClick('日度')" :active="activeButton === '日度'">日度</el-button>
-                    <el-button type="success" plain @click="handleButtonClick('月度')" :active="activeButton === '月度'">月度</el-button>
+                    <ul style="width: 290px;height: 254px;margin: 10px auto;border: 1px solid #fe9781;border-radius: 4px;">
+                        <li class="listDiv-ul-li-title">
+                            <p style="padding-left: 30px;font-size: 14px;line-height: 40px;">批发市场名称</p>
+                            <span style="    display: inline-block;line-height: 40px;position: absolute;top: 0;right: 17%;font-size: 14px;">价格（元/公斤）</span>
+                        </li>
+                        <li style="line-height: 40px;font-size: 14px;display: flex;">
+                            <p class="marketName">
+                                <i data-v-809e91fc class="bgNum">1</i>
+                                福建福鼎市场服务中心
+                            </p>
+                            <span class="price">26.2</span>
+                            <el-progress :percentage="100" :show-text="false" :color="customColor"/>
+                        </li>
+                        <li style="line-height: 40px;font-size: 14px;display: flex;">
+                            <p class="marketName">
+                                <i data-v-809e91fc class="bgNum_2">2</i>
+                                福建福鼎市场服务中心
+                            </p>
+                            <span class="price_2">26.2</span>
+                            <el-progress :percentage="80" :show-text="false" :color="customColor_2"/>
+                        </li>
+                        <li style="line-height: 40px;font-size: 14px;display: flex;">
+                            <p class="marketName">
+                                <i data-v-809e91fc class="bgNum_3">3</i>
+                                福建福鼎市场服务中心
+                            </p>
+                            <span class="price_3">26.2</span>
+                            <el-progress :percentage="60" :show-text="false" :color="customColor_3"/>
+                        </li>
+                        <li style="line-height: 40px;font-size: 14px;display: flex;">
+                            <p class="marketName">
+                                <i data-v-809e91fc class="bgNum_4">4</i>
+                                福建福鼎市场服务中心
+                            </p>
+                            <span class="price_4">26.2</span>
+                            <el-progress :percentage="40" :show-text="false" :color="customColor_4"/>
+                        </li>
+                        <li style="line-height: 40px;font-size: 14px;display: flex;">
+                            <p class="marketName">
+                                <i data-v-809e91fc class="bgNum_5">5</i>
+                                福建福鼎市场服务中心
+                            </p>
+                            <span class="price_5">26.2</span>
+                            <el-progress :percentage="20" :show-text="false" :color="customColor_5"/>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div class="exponent_chart_line">
-                <div v-if="activeButton === '日度'">
-                    <DailyChart :refProductExponent="refProductExponent" :refVegetableBasketExponent="refVegetableBasketExponent" :refGrainOilExponent="refGrainOilExponent" />
+        </div>
+        <div class="center"></div>
+        <div class="right">
+            <div class="right_top">
+                <div class="exponent_box_title">
+                    <img src="../../assets/images/exponent_pic.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;">
+                    <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 130px;">200指数趋势图</span>
+                    <div style="margin-left: 20px;">
+                        <el-button type="success" plain @click="handleButtonClick('日度')" :active="activeButton === '日度'">日度</el-button>
+                        <el-button type="success" plain @click="handleButtonClick('月度')" :active="activeButton === '月度'">月度</el-button>
+                    </div>
                 </div>
-                <div v-else-if="activeButton === '月度'">
-                    <MonthlyChart :refProductExponent="refProductExponent" :refVegetableBasketExponent="refVegetableBasketExponent" :refGrainOilExponent="refGrainOilExponent"></MonthlyChart>
+                <div class="exponent_chart_line">
+                    <div v-if="activeButton === '日度'">
+                        <DailyChart  />
+                    </div>
+                    <div v-else-if="activeButton === '月度'">
+                        <MonthlyChart ></MonthlyChart>
+                    </div>
+                </div>
+            </div>
+            <div class="right_bottom">
+                <div class="exponent_box_title">
+                    <img src="../../assets/images/tubiao-bingtu.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;background: none;">
+                    <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 260px;">批发价格最高排名</span>
                 </div>
             </div>
         </div>
     </div>
-    <div class="Analysis">
-        <div class="exponent_box">
-            <div class="exponent_box_title">
-                <img src="../../assets/images/exponent_pic.png" alt="" style="width: 30px;height: 30px;">
-                <span style="margin-left: 10px;font-size: 22px;font-weight: 700;">农产品批发价格200指数</span>
-            </div>
-            <p class="exponent_box_date">{{ formattedDate }}</p>
-            <div class="exponent_box_pic">
-                <div class="line_all"></div>
-                <div class="line_dis"></div>
-                <div class="line1_text">
-                    <span style="display: block;">“菜篮子”产品批发</span>
-                    <span style="display: block;text-align: center;">
-                        价格指数
-                        
-                    </span>
-                </div>
-                <div class="line1_data">122.39</div>
-                <div class="line2_text">
-                    <span style="display: block;">粮油产品批发</span>
-                    <span style="display: block;text-align: center;">
-                        价格指数
-                        
-                    </span>
-                </div>
-                <div class="line2_data">120.18</div>
-                <div class="line0_text">
-                    <span class="line0_text_200">200</span>
-                    <span class="line0_text_index">指数</span>
-                </div>
-                <div class="line0_data"><span class="line0_data_number">122.07</span></div>
-            </div>
-        </div>
-        <div class="exponent_chart">
-            <div class="exponent_chart_title">
-                <div style="display: flex;-webkit-box-align: center;align-items: center;">
-                    <img src="../../assets/images/exponent_pic.png" alt="" style="width: 30px;height: 30px;">
-                    <span style="margin-left: 10px;font-size: 22px;font-weight: 700;">农产品批发价格200指数</span>
-                </div>
-                <div>
-                    <el-button type="success" plain @click="handleButtonClick('日度')" :active="activeButton === '日度'">日度</el-button>
-                    <el-button type="success" plain @click="handleButtonClick('月度')" :active="activeButton === '月度'">月度</el-button>
-                </div>
-            </div>
-            <div class="exponent_chart_line">
-            </div>
-        </div>
-    </div>
+    
+    
 </template>
 
 <style scoped>
-.Exponent{
-    width: 1240px;
-    padding: 0 18px;
-    padding-top: 20px;
-    height: 486px;
-    display: flex;
-    -webkit-box-pack: justify;
+.left{
+    width: 310px;
+    height: 720px;
     justify-content: center;
-    background-color: white;
+    border: 2px solid #e28350;
+    border-left: none;
+    box-shadow: 1px 2px 16px 0 rgba(6, 0, 1, 0.04);
+    border-radius: 6px;
+    box-sizing: border-box;
 }
-.exponent_box{
-    float: left;
-    width: 350px!important;
-    height: 100%;
-    background-color: #f5fdfb;
-    margin: auto 0;
+.left_top{
+    width: 310px;
+    height: 350px;
+    justify-content: center;
+    align-items: center;
 }
 .exponent_box_title{
+    width: 100%;
+    height: 30px;
     display: flex;
-    -webkit-box-align: center;
+    margin-top: 10px;
     align-items: center;
-    padding: 0 14px;
-    height: 50px;
-    line-height: 50px;
-    border-radius: 4px 4px 0 0;
-    background: url(../../assets/images/home_title.png) no-repeat;
-    background-size: 100% 100%;
 }
-.exponent_box_date{
-    height: 40px;
+.left_bottom{
+    width: 310px;
+    height: 350px;
+    justify-content: center;
+    align-items: center;
+}
+.listDiv-ul-li-title{
     line-height: 40px;
-    padding-top: 17px;
-    padding-left: 24px;
-    font-weight: 700;
-    font-size: 20px;
+    font-size: 14px;
+    display: flex;
+    background-color: #ff765a;
+    color: #fff;
+    line-height: 40px;
+    height: 40px;
+    position: relative;
+}
+.marketName{
+    width: 50%;
+    line-height: 42px;
+    font-size: 14px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.bgNum{
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px 0 0 4px;
+    display: inline-block;
+    line-height: 20px;
+    text-align: center;
+    margin-left: 8px;
+    margin-right: 8px;
+    background: #ff0404;
+}
+.bgNum_2{
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px 0 0 4px;
+    display: inline-block;
+    line-height: 20px;
+    text-align: center;
+    margin-left: 8px;
+    margin-right: 8px;
+    background: #ffb10a;
+}
+.bgNum_3{
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px 0 0 4px;
+    display: inline-block;
+    line-height: 20px;
+    text-align: center;
+    margin-left: 8px;
+    margin-right: 8px;
+    background: #19d1c5;
+}
+.bgNum_4{
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px 0 0 4px;
+    display: inline-block;
+    line-height: 20px;
+    text-align: center;
+    margin-left: 8px;
+    margin-right: 8px;
+    background: rgb(143, 215, 141);
+}
+.bgNum_5{
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px 0 0 4px;
+    display: inline-block;
+    line-height: 20px;
+    text-align: center;
+    margin-left: 8px;
+    margin-right: 8px;
+    background: #aaa;
+}
+.price{
+    font-size: 12px;
+    color: #ff0404;
+    width: 25%;
+    line-height: 42px;    
+    font-weight: 550;    
+    text-align: center;
+}
+.price_2{
+    font-size: 12px;
+    color: #ffb10a;
+    width: 25%;
+    line-height: 42px;    
+    font-weight: 550;    
+    text-align: center;
+}
+.price_3{
+    font-size: 12px;
+    color: #19d1c5;
+    width: 25%;
+    line-height: 42px;    
+    font-weight: 550;    
+    text-align: center;
+}
+.price_4{
+    font-size: 12px;
+    color: rgb(143, 215, 141);
+    width: 25%;
+    line-height: 42px;    
+    font-weight: 550;    
+    text-align: center;
+}
+.price_5{
+    font-size: 12px;
+    color: #aaa;
+    width: 25%;
+    line-height: 42px;    
+    font-weight: 550;    
+    text-align: center;
+}
+.center{
+    width: 600px;
+    height: 720px;
+    justify-content: center;
+}
+.right{
+    width: 330px;
+    height: 720px;
+    justify-content: center;
+    border: 2px solid #e28350;
+    border-right: none;
+    box-shadow: 1px 2px 16px 0 rgba(6, 0, 1, 0.04);
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+.right_top{
+    width: 330px;
+    height: 350px;
+    justify-content: center;
+}
+.right_bottom{
+    width: 330px;
+    height: 350px;
+    justify-content: center;
+}
+
+.exponent_box_date{
+    height: 20px;
+    line-height: 20px;
+    padding-top: 5px;
+    padding-left: 30px;
+    font-weight: bold;
+    font-size: 16px;
 }
 .exponent_box_pic{
     position: relative;
-    margin-top: 50px;
+    margin-top: 35px;
 }
 .line_all{
-    height: 196px;
+    height: 160px;
     width: 24px;
     border-radius: 2px;
     border: 2px solid #e28350;
@@ -224,12 +489,12 @@ const getMonthlyExponent = async () => {
 }
 .line_dis{
     position: absolute;
-    height: 140px;
-    width: 68px;
+    height: 120px;
+    width: 56px;
     border-radius: 2px;
     border: 2px solid #e28350;
     border-right: none;
-    top: 112px;
+    top: 100px;
     left: 24px;
 }
 .line1_text{
@@ -240,8 +505,8 @@ const getMonthlyExponent = async () => {
     letter-spacing: 1px;
     color: #0dad3e;
     position: absolute;
-    top: 48px;
-    left: 83px;
+    top: 34px;
+    left: 71px;
 }
 .line1_data{
     width: 128px;
@@ -249,8 +514,8 @@ const getMonthlyExponent = async () => {
     border-radius: 2px;
     border: 2px solid #0dad3e;
     position: absolute;
-    top: 94px;
-    left: 92px;
+    top: 82px;
+    left: 80px;
     text-align: center;
     line-height: 36px;
     font-family: Impact;
@@ -268,8 +533,8 @@ const getMonthlyExponent = async () => {
     letter-spacing: 1px;
     color: #e1a412;
     position: absolute;
-    top: 186px;
-    left: 106px;
+    top: 155px;
+    left: 94px;
 }
 .line2_data{
     width: 128px;
@@ -277,8 +542,8 @@ const getMonthlyExponent = async () => {
     border-radius: 2px;
     border: 2px solid #e8ab18;
     position: absolute;
-    top: 232px;
-    left: 92px;
+    top: 201px;
+    left: 80px;
     text-align: center;
     line-height: 36px;
     font-family: Impact;
@@ -289,7 +554,7 @@ const getMonthlyExponent = async () => {
     color: #7dc53b;
 }
 .line0_text{
-    width: 165px;
+    width: 150px;
     height: 38px;
     line-height: 38px;
     background-color: #e42431;
@@ -319,12 +584,12 @@ const getMonthlyExponent = async () => {
     display: inline-block;
 }
 .line0_data{
-    width: 140px;
+    width: 130px;
     height: 38px;
     border: 2px solid #e42431;
     position: absolute;
     top: -18px;
-    left: 189px;
+    left: 174px;
     text-align: center;
 }
 .line0_data_number{
@@ -364,5 +629,10 @@ const getMonthlyExponent = async () => {
     -webkit-box-pack: justify;
     justify-content: center;
     background-color: white;
+}
+</style>
+<style>
+.el-progress--line {
+  width: 60px;
 }
 </style>

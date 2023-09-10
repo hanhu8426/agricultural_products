@@ -1,20 +1,7 @@
 <script setup>
-import {onMounted, ref} from 'vue'
-import MarketLineChartVue from './MarketLineChart.vue';
-import MarketStickChart from './MarketStickChart.vue';
-import MarketPieChart from './MarketPieChart.vue';
-import MarketLineChart_area from './MarketLineChart_area.vue';
-import MarketStickChart_area from './MarketStickChart_area.vue';
-import MarketPieChart_area from './MarketPieChart_area.vue';
-import MarketLineChart_multiCategory from './MarketLineChart_multiCategory.vue'
-import MarketStickChart_multiCategory from './MarketStickChart_multiCategory.vue'
-import MarketRadarChart_multiCategory from './MarketRadarChart_multiCategory.vue'
-import MarketLineChart_multiMarket from './MarketLineChart_multiMarket.vue'
-import MarketStickChart_multiMarket from './MarketStickChart_multiMarket.vue'
-import MarketRadarChart_multiMarket from './MarketRadarChart_multiMarket.vue'
-import MarketLineChart_multiArea from './MarketLineChart_multiArea.vue'
-import MarketStickChart_multiArea from './MarketStickChart_multiArea.vue'
-import MarketRadarChart_multiArea from './MarketRadarChart_multiArea.vue'
+import {onMounted, ref, watch} from 'vue'
+import * as echarts from 'echarts';
+import 'echarts/theme/essos';
 import zhexiantu from '@/assets/images/zhexiantu-xianxing.png'
 import zhuzhuangtu from '@/assets/images/stick.png'
 import bingtu from '@/assets/images/tubiao-bingtu.png'
@@ -29,10 +16,10 @@ const props_p3 ={
   expandTrigger: 'hover',
 }
 const selectedIndex = ref(0); // 默认选中第一个图标
-const selectedIndex_2 = ref(0); // 默认选中第一个图标
+const selectedIndex_2 = ref(1); // 默认选中第二个图标
 const selectedIndex_3 = ref(0); // 默认选中第一个图标
-const selectedIndex_4 = ref(0); // 默认选中第一个图标
-const selectedIndex_5 = ref(0); // 默认选中第一个图标
+const selectedIndex_4 = ref(1); // 默认选中第二个图标
+const selectedIndex_5 = ref(2); // 默认选中第三个图标
 
 const icons = [
   zhexiantu, // 本地PNG图片的相对路径
@@ -113,52 +100,67 @@ const shortcuts = [
 
 // 接收第一标签页的品种类别
 const selectedProduct_p1 = ref([]);
-const selectedProductValue_p1 = ref([]);
+const selectedProductValue_p1 = ref(['大米']);
 const timeFrame_p1 = ref('') // 接收时间范围的值
-const time_start_p1 = ref('');
-const time_end_p1 = ref('');
-const highestPrice_p1 = ref('');
-const highestMarket_p1 = ref('');
-const highestTime_p1 = ref('');
-const lowestPrice_p1 = ref('');
-const lowestMarket_p1 = ref('');
-const lowestTime_p1 = ref('');
+const time_start_p1 = ref('2023-08-30');
+const time_end_p1 = ref('2023-09-01');
+const highestPrice_p1 = ref('9');
+const highestMarket_p1 = ref('陇西县清吉洋芋批发交易市场有限责任公司');
+const highestTime_p1 = ref('2023-8-30');
+const lowestPrice_p1 = ref('3.3');
+const lowestMarket_p1 = ref('天长市永福农副产品批发市场');
+const lowestTime_p1 = ref('2023-09-01');
 const content_p1 = ref([]); // 接收后端返回的varietyNationalAverageList
-const refDate_p1 = ref([]);
-const refPrice_p1 = ref([]);
-const combinedData = ref([]);
+const refDate_p1 = ref(['2023-08-30','2023-08-31','2023-09-01']);
+const refPrice_p1 = ref([5.52857,5.53571,5.52857]);
+const combinedData = ref([
+  {value: 5.52857,name: '2023-08-30'},
+  {value: 5.53571,name: '2023-08-31'},
+  {value: 5.52857,name: '2023-09-01'}
+]);
 // 第二标签页中的地区，品种类别
-const selectedProvince_p2 = ref('');
+const selectedProvince_p2 = ref('北京市');
 const selectedProduct_p2 = ref([]);
-const selectedProductValue_p2 = ref([]);
+const selectedProductValue_p2 = ref(['大米']);
 const timeFrame_p2 = ref('');
-const time_start_p2 = ref('');
-const time_end_p2 = ref('');
-const highestPrice_p2 = ref('');
-const highestMarket_p2 = ref('');
-const highestTime_p2 = ref('');
-const lowestPrice_p2 = ref('');
-const lowestMarket_p2 = ref('');
-const lowestTime_p2 = ref('');
+const time_start_p2 = ref('2023-08-30');
+const time_end_p2 = ref('2023-09-01');
+const highestPrice_p2 = ref('5.5');
+const highestMarket_p2 = ref('北京新发地农副产品批发市场信息中心');
+const highestTime_p2 = ref('2023-08-30');
+const lowestPrice_p2 = ref('4.5');
+const lowestMarket_p2 = ref('北京朝阳区大洋路综合市场');
+const lowestTime_p2 = ref('2023-08-30');
 const content_p2 = ref([]); // 接收后端返回数组
-const refDate_p2 = ref([]);
-const refPrice_p2 = ref([]);
-const combinedData_p2 = ref([]);
+const refDate_p2 = ref(['2023-08-30','2023-08-31','2023-09-01']);
+const refPrice_p2 = ref([5.06667,5.13333,5.13333]);
+const combinedData_p2 = ref([
+  {value: 5.06667,name: '2023-08-30'},
+  {value: 5.13333,name: '2023-08-31'},
+  {value: 5.13333,name: '2023-09-01'}
+]);
 // 第三标签页中的批发市场，多选产品
 const selectedMarket_p3 = ref([]);
 const selectedProduct_p3 = ref([]);
 const selectedItems_p3 = ref([]);
 const lastLevelItems_p3 = ref([]);
-const time_start_p3 = ref('');
-const time_end_p3 = ref('');
+const time_start_p3 = ref('2023-08-30');
+const time_end_p3 = ref('2023-09-01');
 const allProductInfo = ref([]);
-const nameInfo = ref([]);
-const priceInfo = ref([]);
-const refDate_p3 = ref([]);
+const nameInfo = ref(['大米']);
+const priceInfo = ref([[4.4,4.5,4.3]]);
+const refDate_p3 = ref(['2023-08-30','2023-08-31','2023-09-01']);
 const item_name = ref('');
-const highestPrice = ref('');
-const bottomPrice = ref('');
-const ItemArray_p3 = ref([]);  // 用来存放每一个多选的对象属性
+const highestPrice = ref();
+const bottomPrice = ref();
+const ItemArray_p3 = ref([
+  {
+    item_name:'大米',
+    highestPrice:'4.5',
+    bottomPrice:'4.3',
+  }
+  
+]);  // 用来存放每一个多选的对象属性
 async function fetchProduct_p3 () {
   // 获得选中的大类名称
   const encodedValue = encodeURIComponent(selectedProduct_p3.value[1]);
@@ -560,13 +562,19 @@ const options_product_p3 = ref([
   },
 ])  // 第三标签页特制产品数组
 const allMarketInfo = ref([]);
-const time_start_p4 = ref('');
-const time_end_p4 = ref('');
-const ItemArray_p4 = ref([]);
+const time_start_p4 = ref('2023-08-30');
+const time_end_p4 = ref('2023-09-01');
+const ItemArray_p4 = ref([
+  {
+    market:'北京朝阳区大洋路综合市场',
+    highestPrice:4.5,
+    bottomPrice:4.3,
+  }
+]);
 const market = ref('');
-const nameInfo_p4 = ref([]);
-const priceInfo_p4 = ref([]);
-const refDate_p4 = ref([]);
+const nameInfo_p4 = ref(['北京朝阳区大洋路综合市场']);
+const priceInfo_p4 = ref([[4.4,4.5,4.3]]);
+const refDate_p4 = ref(['2023-08-30','2023-08-31','2023-09-01']);
 // 获取多选框中内容
 async function fetchMarket_p4 () {
   // 获得选中的省市名称
@@ -1183,14 +1191,21 @@ const options_province = [
   },
 ] // 第二个标签页中固定的省市数组
 const timeFrame_p5 = ref('')
-const time_start_p5 = ref('');
-const time_end_p5 = ref('');
+const time_start_p5 = ref('2023-08-30');
+const time_end_p5 = ref('2023-09-01');
 const highestMarket = ref('');
 const bottomMarket = ref('');
-const ItemArray_p5 = ref([]);
-const nameInfo_p5 = ref([]);
-const priceInfo_p5 = ref([]);
-const refDate_p5 = ref([]);
+const ItemArray_p5 = ref([
+  {
+    highestMarket:'北京新发地农副产品批发市场信息中心',
+    bottomMarket:'北京朝阳区大洋路综合市场',
+    highestPrice:5.5,
+    bottomPrice:4.5,
+  }
+]);
+const nameInfo_p5 = ref(['北京市']);
+const priceInfo_p5 = ref([[5.06667,5.13333,5.13333]]);
+const refDate_p5 = ref(['2023-08-30','2023-08-31','2023-09-01']);
 async function fetchProvincePrice (item) {
   const instanceItem = {
     highestMarket,
@@ -1357,7 +1372,6 @@ const handleQueryP5 = async () => {
   await Promise.all(fetchPromises);
 };
 
-
 // 挂载时加载产品三级一级省市二级批发市场
 onMounted(async () => {
   // 遍历所有的一级下拉框
@@ -1372,7 +1386,1030 @@ onMounted(async () => {
       await fetchThirdLevelDataProduct(secondLevelOption_product);
     }
   }
+  //初始化函数
+  const MarketLineChartInit = () => {
+  const chartContainer = document.getElementById('chart-container_1');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+
+  const option = {
+      title: {
+          text: 'Temperature Change in the Coming Week',
+          show: false
+      },
+      tooltip: {
+          trigger: 'axis'
+      },
+      legend: {},
+      toolbox: {
+          show: true,
+          feature: {
+          saveAsImage: {}
+          }
+      },
+      xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: refDate_p1.value
+      },
+      yAxis: {
+          type: 'value',
+          axisLabel: {
+          formatter: '{value}'
+          }
+      },
+      series: [
+          {
+          name: selectedProductValue_p1.value,
+          type: 'line',
+          data: refPrice_p1.value,
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          },
+          ]
+    };
+
+  chart_p1.setOption(option);
+};
+const MarketStickChart_Init = () => {
+  const chartContainer = document.getElementById('chart-container_1_2');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+  const data = refPrice_p1.value;
+  const maxIndex = data.indexOf(Math.max(...data)); // 找到最大值的索引
+  const minIndex = data.indexOf(Math.min(...data)); // 找到最小值的索引
+  // 设置ECharts配置选项
+  const option = {
+        toolbox: {
+            show: true,
+            feature: {
+            saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            data: refDate_p1.value
+        },
+        yAxis: {
+            type: 'value'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend:{
+            show: true
+        },
+        series: [
+        {
+            name: selectedProductValue_p1.value,
+            data: data,
+            type: 'bar',
+            itemStyle: {
+                color: (params) => {
+                // 根据索引设置颜色，最大值的柱子为#d87c7c，最小值的柱子为#919e8b
+                if (params.dataIndex === maxIndex) {
+                return '#893448';
+                } else if (params.dataIndex === minIndex) {
+                return '#ffb248';
+                } else {
+                return '#d95850';
+                }
+            }
+            }
+        }
+        ]
+        };
+
+  chart_p1.setOption(option);
+};
+const MarketPieChart_Init = () => {
+  const chartContainer = document.getElementById('chart-container_1_3');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+  // 设置ECharts配置选项
+  const option = {
+        legend: {
+            top: 'bottom'
+        },
+        tooltip: {
+          show: true,
+        },
+        toolbox: {
+            show: true,
+            feature: {
+            saveAsImage: { show: true }
+            }
+        },
+        series: [
+            {
+            name: selectedProductValue_p1.value,
+            type: 'pie',
+            radius: [0, '70%'],
+            center: ['50%', '50%'],
+            roseType: 'area',
+            itemStyle: {
+                borderRadius: 8
+            },
+            data: combinedData.value
+            }
+        ]
+        };
+
+  chart_p1.setOption(option);
+};
+const MarketLineChart_area_Init = () => {
+  const chartContainer = document.getElementById('chart-container_2_1');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+
+  const option = {
+        title: {
+            text: 'Temperature Change in the Coming Week',
+            show: false
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {},
+        toolbox: {
+            show: true,
+            feature: {
+            saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: refDate_p2.value
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+            formatter: '{value}'
+            }
+        },
+        series: [
+          {
+          name: selectedProductValue_p2.value,
+          type: 'line',
+          data: refPrice_p2.value,
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          },
+        ]
+      };
+
+  chart_p1.setOption(option);
+};
+const MarketStickChart_area_Init = () => {
+  const chartContainer = document.getElementById('chart-container_2');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+  const data = refPrice_p2.value;
+  const maxIndex = data.indexOf(Math.max(...data)); // 找到最大值的索引
+  const minIndex = data.indexOf(Math.min(...data)); // 找到最小值的索引
+  // 设置ECharts配置选项
+  const option = {
+        toolbox: {
+            show: true,
+            feature: {
+            saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            data: refDate_p2.value
+        },
+        yAxis: {
+            type: 'value'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend:{
+            show: true
+        },
+        series: [
+        {
+            name: selectedProductValue_p2.value,
+            data: data,
+            type: 'bar',
+            itemStyle: {
+                color: (params) => {
+                // 根据索引设置颜色，最大值的柱子为#d87c7c，最小值的柱子为#919e8b
+                if (params.dataIndex === maxIndex) {
+                return '#893448';
+                } else if (params.dataIndex === minIndex) {
+                return '#ffb248';
+                } else {
+                return '#d95850';
+                }
+            }
+            }
+        }
+        ]
+        };
+
+  chart_p1.setOption(option);
+};
+const MarketPieChart_area_Init = () => {
+  const chartContainer = document.getElementById('chart-container_2_3');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+  // 设置ECharts配置选项
+  const option = {
+        legend: {
+            top: 'bottom'
+        },
+        tooltip: {
+          show: true,
+        },
+        toolbox: {
+            show: true,
+            feature: {
+            saveAsImage: { show: true }
+            }
+        },
+        series: [
+            {
+            name: selectedProductValue_p2.value,
+            type: 'pie',
+            radius: [0, '70%'],
+            center: ['50%', '50%'],
+            roseType: 'area',
+            itemStyle: {
+                borderRadius: 8
+            },
+            data: combinedData_p2.value,
+            }
+        ]
+        };
+
+  chart_p1.setOption(option);
+};
+const MarketLineChart_multiCategory_Init = () => {
+  const chartContainer = document.getElementById('chart-container_3');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+  const refDate_p3Value = refDate_p3.value;
+  const nameInfoValue = nameInfo.value;
+  const priceInfoValue = priceInfo.value;
+  // 设置ECharts配置选项
+  const option = {
+      title: {
+          text: 'Temperature Change in the Coming Week',
+          show: false
+      },
+      tooltip: {
+          trigger: 'axis'
+      },
+      legend: {},
+      toolbox: {
+          show: true,
+          feature: {
+          saveAsImage: {}
+          }
+      },
+      xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: refDate_p3Value
+      },
+      yAxis: {
+          type: 'value',
+          axisLabel: {
+          formatter: '{value}'
+          }
+      },
+      series: [
+          {
+          name: nameInfoValue[0],
+          type: 'line',
+          data: priceInfoValue[0],
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          },
+          {
+          name: nameInfoValue[1],
+          type: 'line',
+          data: priceInfoValue[1],
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          },
+          {
+          name: nameInfoValue[2],
+          type: 'line',
+          data: priceInfoValue[2],
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          }
+      ]
+    };
+
+  chart_p1.setOption(option);
+};
+const MarketStickChart_multiCategory_Init = () => {
+  const chartContainer = document.getElementById('chart-container_3_2');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+  // 设置ECharts配置选项
+  const option = {
+        title: {
+          text: 'Rainfall vs Evaporation',
+          subtext: 'Fake Data',
+          show: false
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            saveAsImage: { show: true }
+          }
+        },
+        calculable: true,
+        xAxis: [
+          {
+            type: 'category',
+            data: refDate_p3.value
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value'
+          }
+        ],
+        series: [
+          {
+            name: nameInfo.value[0],
+            type: 'bar',
+            data: priceInfo.value[0],
+            markPoint: {
+              data: [
+                { type: 'max', name: 'Max' },
+                { type: 'min', name: 'Min' }
+              ]
+            },
+            markLine: {
+              data: [{ type: 'average', name: 'Avg' }]
+            }
+          },
+          {
+            name: nameInfo.value[1],
+            type: 'bar',
+            data: priceInfo.value[1],
+            markPoint: {
+              data: [
+                { type: 'max', name: 'Max' },
+                { type: 'min', name: 'Min' }
+              ]
+            },
+            markLine: {
+              data: [{ type: 'average', name: 'Avg' }]
+            }
+          },
+          {
+            name: nameInfo.value[2],
+            type: 'bar',
+            data: priceInfo.value[2],
+            markPoint: {
+              data: [
+                { type: 'max', name: 'Max' },
+                { type: 'min', name: 'Min' }
+              ]
+            },
+            markLine: {
+              data: [{ type: 'average', name: 'Avg' }]
+            }
+          }
+        ]
+      };
+
+  chart_p1.setOption(option);
+};
+const MarketRadarChart_multiCategory_Init = () => {
+  const chartContainer = document.getElementById('chart-container_3_3');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+  const radarName = [];
+  for (const Name of refDate_p3.value) {
+        radarName.push({
+        name: Name
+      });
+    }
+  // 设置ECharts配置选项
+  const option = {
+      title: {
+        text: 'Basic Radar Chart',
+        show: false
+      },
+      legend: {
+      },
+      tooltip: {
+        show: true
+      },
+      radar: {
+        // shape: 'circle',
+        indicator: radarName,
+        showEmpty: false,
+      },
+      series: [
+        {
+          type: 'radar',
+          data: [
+            {
+              value: priceInfo.value[0],
+              name: nameInfo.value[0]
+            },
+            {
+              value: priceInfo.value[1],
+              name: nameInfo.value[1]
+            },
+            {
+              value: priceInfo.value[2],
+              name: nameInfo.value[2]
+            }
+          ]
+        }
+      ]
+      
+    };
+
+  chart_p1.setOption(option);
+};
+const MarketLineChart_multiMarket_Init = () => {
+  const chartContainer = document.getElementById('chart-container_4_1');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+  const refDate_p3Value = refDate_p4.value;
+  const nameInfoValue = nameInfo_p4.value;
+  const priceInfoValue = priceInfo_p4.value;
+  // 设置ECharts配置选项
+  const option = {
+      title: {
+          text: 'Temperature Change in the Coming Week',
+          show: false
+      },
+      tooltip: {
+          trigger: 'axis'
+      },
+      legend: {},
+      toolbox: {
+          show: true,
+          feature: {
+          saveAsImage: {}
+          }
+      },
+      xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: refDate_p3Value
+      },
+      yAxis: {
+          type: 'value',
+          axisLabel: {
+          formatter: '{value}'
+          }
+      },
+      series: [
+          {
+          name: nameInfoValue[0],
+          type: 'line',
+          data: priceInfoValue[0],
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          },
+          {
+          name: nameInfoValue[1],
+          type: 'line',
+          data: priceInfoValue[1],
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          },
+          {
+          name: nameInfoValue[2],
+          type: 'line',
+          data: priceInfoValue[2],
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          }
+      ]
+    };
+
+  chart_p1.setOption(option);
+};
+const MarketStickChart_multiMarket_Init = () => {
+  const chartContainer = document.getElementById('chart-container_4');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+  // 设置ECharts配置选项
+  const option = {
+      title: {
+        text: 'Rainfall vs Evaporation',
+        subtext: 'Fake Data',
+        show: false
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+      },
+      toolbox: {
+        show: true,
+        feature: {
+          saveAsImage: { show: true }
+        }
+      },
+      calculable: true,
+      xAxis: [
+        {
+          type: 'category',
+          data: refDate_p4.value
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value'
+        }
+      ],
+      series: [
+        {
+          name: nameInfo_p4.value[0],
+          type: 'bar',
+          data: priceInfo_p4.value[0],
+          markPoint: {
+            data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+            ]
+          },
+          markLine: {
+            data: [{ type: 'average', name: 'Avg' }]
+          }
+        },
+        {
+          name: nameInfo_p4.value[1],
+          type: 'bar',
+          data: priceInfo_p4.value[1],
+          markPoint: {
+            data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+            ]
+          },
+          markLine: {
+            data: [{ type: 'average', name: 'Avg' }]
+          }
+        },
+        {
+          name: nameInfo_p4.value[2],
+          type: 'bar',
+          data: priceInfo_p4.value[2],
+          markPoint: {
+            data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+            ]
+          },
+          markLine: {
+            data: [{ type: 'average', name: 'Avg' }]
+          }
+        }
+      ]
+    };
+
+  chart_p1.setOption(option);
+};
+const MarketRadarChart_multiMarket_Init = () => {
+  const chartContainer = document.getElementById('chart-container_4_2');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+  const radarName = [];
+  for (const Name of refDate_p4.value) {
+        radarName.push({
+        name: Name
+      });
+    }
+  // 设置ECharts配置选项
+  const option = {
+      title: {
+        text: 'Basic Radar Chart',
+        show: false
+      },
+      legend: {
+      },
+      tooltip: {
+        show: true
+      },
+      radar: {
+        // shape: 'circle',
+        indicator: radarName,
+        showEmpty: false,
+      },
+      series: [
+        {
+          type: 'radar',
+          data: [
+            {
+              value: priceInfo_p4.value[0],
+              name: nameInfo_p4.value[0]
+            },
+            {
+              value: priceInfo_p4.value[1],
+              name: nameInfo_p4.value[1]
+            },
+            {
+              value: priceInfo_p4.value[2],
+              name: nameInfo_p4.value[2]
+            }
+          ]
+        }
+      ]
+      
+    };
+
+  chart_p1.setOption(option);
+};
+const MarketLineChart_multiArea_Init = () => {
+  const chartContainer = document.getElementById('chart-container_5_1');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+  const refDate_p3Value = refDate_p5.value;
+  const nameInfoValue = nameInfo_p5.value;
+  const priceInfoValue = priceInfo_p5.value;
+  // 设置ECharts配置选项
+  const option = {
+      title: {
+          text: 'Temperature Change in the Coming Week',
+          show: false
+      },
+      tooltip: {
+          trigger: 'axis'
+      },
+      legend: {},
+      toolbox: {
+          show: true,
+          feature: {
+          saveAsImage: {}
+          }
+      },
+      xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: refDate_p3Value
+      },
+      yAxis: {
+          type: 'value',
+          axisLabel: {
+          formatter: '{value}'
+          }
+      },
+      series: [
+          {
+          name: nameInfoValue[0],
+          type: 'line',
+          data: priceInfoValue[0],
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          },
+          {
+          name: nameInfoValue[1],
+          type: 'line',
+          data: priceInfoValue[1],
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          },
+          {
+          name: nameInfoValue[2],
+          type: 'line',
+          data: priceInfoValue[2],
+          markPoint: {
+              data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+              ]
+          },
+          markLine: {
+              data: [{ type: 'average', name: 'Avg' }],
+              label: {
+              show: true,
+              position: 'end',
+              offset: [10, 0],
+              },
+          }
+          }
+      ]
+    };
+
+  chart_p1.setOption(option);
+};
+const MarketStickChart_multiArea_Init = () => {
+  const chartContainer = document.getElementById('chart-container_5_2');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+  // 设置ECharts配置选项
+  const option = {
+      title: {
+        text: 'Rainfall vs Evaporation',
+        subtext: 'Fake Data',
+        show: false
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+      },
+      toolbox: {
+        show: true,
+        feature: {
+          saveAsImage: { show: true }
+        }
+      },
+      calculable: true,
+      xAxis: [
+        {
+          type: 'category',
+          data: refDate_p5.value
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value'
+        }
+      ],
+      series: [
+        {
+          name: nameInfo_p5.value[0],
+          type: 'bar',
+          data: priceInfo_p5.value[0],
+          markPoint: {
+            data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+            ]
+          },
+          markLine: {
+            data: [{ type: 'average', name: 'Avg' }]
+          }
+        },
+        {
+          name: nameInfo_p5.value[1],
+          type: 'bar',
+          data: priceInfo_p5.value[1],
+          markPoint: {
+            data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+            ]
+          },
+          markLine: {
+            data: [{ type: 'average', name: 'Avg' }]
+          }
+        },
+        {
+          name: nameInfo_p5.value[2],
+          type: 'bar',
+          data: priceInfo_p5.value[2],
+          markPoint: {
+            data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' }
+            ]
+          },
+          markLine: {
+            data: [{ type: 'average', name: 'Avg' }]
+          }
+        }
+      ]
+    };
+
+  chart_p1.setOption(option);
+};
+const MarketRadarChart_multiArea_Init = () => {
+  const chartContainer = document.getElementById('chart-container_5');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+  const date = refDate_p5.value;
+  const radarName = [];
+for (const Name of date) {
+        radarName.push({
+        name: Name
+      });
+    }
+  // 设置ECharts配置选项
+  const option = {
+      title: {
+        text: 'Basic Radar Chart',
+        show: false
+      },
+      legend: {
+      },
+      tooltip: {
+        show: true
+      },
+      radar: {
+        // shape: 'circle',
+        indicator: radarName,
+        showEmpty: false,
+      },
+      series: [
+        {
+          type: 'radar',
+          data: [
+            {
+              value: priceInfo_p5.value[0],
+              name: nameInfo_p5.value[0]
+            },
+            {
+              value: priceInfo_p5.value[1],
+              name: nameInfo_p5.value[1]
+            },
+            {
+              value: priceInfo_p5.value[2],
+              name: nameInfo_p5.value[2]
+            }
+          ]
+        }
+      ]
+      
+    };
+
+  chart_p1.setOption(option);
+};
+
+  // 首次初始化图表
+  MarketLineChartInit();
+  MarketStickChart_area_Init();
+  MarketLineChart_multiCategory_Init();
+  MarketStickChart_multiMarket_Init();
+  MarketRadarChart_multiArea_Init();
+
+  // 监听 selectedIndex 以重新初始化图表
+  watch([selectedProductValue_p1,refDate_p1,refPrice_p1,selectedIndex], () => {
+    if (selectedIndex.value === 0){
+      MarketLineChartInit();
+    }
+    else if(selectedIndex.value === 1){
+      MarketStickChart_Init();
+    }
+    else if(selectedIndex.value === 2){
+      MarketPieChart_Init();
+    }
+  });
+  watch([selectedProductValue_p2,refDate_p2,refPrice_p2,selectedIndex_2], () => {
+    if (selectedIndex_2.value === 1){
+      MarketStickChart_area_Init();
+    }
+    else if(selectedIndex_2.value === 0){
+      MarketLineChart_area_Init();
+    }
+    else if(selectedIndex_2.value === 2){
+      MarketPieChart_area_Init();
+    }
+  });
+  watch([nameInfo, refDate_p3, priceInfo,selectedIndex_3], () => {
+    if (selectedIndex_3.value === 0){
+      MarketLineChart_multiCategory_Init();
+    }
+    else if(selectedIndex_3.value === 1){
+      MarketStickChart_multiCategory_Init();
+    }
+    else if(selectedIndex_3.value === 2){
+      MarketRadarChart_multiCategory_Init();
+    }
+  });
+  watch([nameInfo_p4, refDate_p4, priceInfo_p4,selectedIndex_4], () => {
+    if (selectedIndex_4.value === 1){
+      MarketStickChart_multiMarket_Init();
+    }
+    else if(selectedIndex_4.value === 0){
+      MarketLineChart_multiMarket_Init();
+    }
+    else if(selectedIndex_4.value === 2){
+      MarketRadarChart_multiMarket_Init();
+    }
+  });
+  watch([nameInfo_p5, refDate_p5, priceInfo_p5,selectedIndex_5], () => {
+    if (selectedIndex_5.value === 2){
+      MarketRadarChart_multiArea_Init();
+    }
+    else if(selectedIndex_5.value === 0){
+      MarketLineChart_multiArea_Init();
+    }
+    else if(selectedIndex_5.value === 1){
+      MarketStickChart_multiArea_Init();
+    }
+  });
 });
+
 
 </script>
 
@@ -1427,14 +2464,10 @@ onMounted(async () => {
                 </div>
                 <div class="tableArea">
                     <!-- 根据selectedIndex的值显示对应的表格 -->
-                    <div v-if="selectedIndex === 0" class="tables">
-                        <MarketLineChartVue :selectedProductValue_p1="selectedProductValue_p1" :refDate_p1="refDate_p1" :refPrice_p1="refPrice_p1"></MarketLineChartVue>
-                    </div>
-                    <div v-if="selectedIndex === 1" class="tables">
-                        <MarketStickChart :selectedProductValue_p1="selectedProductValue_p1" :refDate_p1="refDate_p1" :refPrice_p1="refPrice_p1"></MarketStickChart>
-                    </div>
-                    <div v-if="selectedIndex === 2" class="tables">
-                        <MarketPieChart :selectedProductValue_p1="selectedProductValue_p1" :combinedData="combinedData"></MarketPieChart>
+                    <div class="tables">
+                      <div v-if="selectedIndex === 0" id="chart-container_1" style="width: 842px; height: 494px;"></div>
+                      <div v-if="selectedIndex === 1" id="chart-container_1_2" style="width: 842px; height: 494px;"></div>
+                      <div v-if="selectedIndex === 2" id="chart-container_1_3" style="width: 842px; height: 494px;"></div>
                     </div>
                     <div class="icon_container">
                         <!-- 使用ref来引用图标元素 -->
@@ -1513,13 +2546,13 @@ onMounted(async () => {
                 <div class="tableArea">
                     <!-- 根据selectedIndex的值显示对应的表格 -->
                     <div v-if="selectedIndex_2 === 0" class="tables">
-                        <MarketLineChart_area :selectedProductValue_p2="selectedProductValue_p2" :refDate_p2="refDate_p2" :refPrice_p2="refPrice_p2"></MarketLineChart_area>
+                      <div id="chart-container_2_1" style="width: 842px; height: 494px;"></div>
                     </div>
                     <div v-if="selectedIndex_2 === 1" class="tables">
-                        <MarketStickChart_area :selectedProductValue_p2="selectedProductValue_p2" :refDate_p2="refDate_p2" :refPrice_p2="refPrice_p2"></MarketStickChart_area>
+                      <div id="chart-container_2" style="width: 842px; height: 494px;"></div>
                     </div>
                     <div v-if="selectedIndex_2 === 2" class="tables">
-                        <MarketPieChart_area :selectedProductValue_p2="selectedProductValue_p2" :combinedData_p2="combinedData_p2"></MarketPieChart_area>
+                      <div id="chart-container_2_3" style="width: 842px; height: 494px;"></div>
                     </div>
                     <div class="icon_container">
                         <!-- 使用ref来引用图标元素 -->
@@ -1629,13 +2662,13 @@ onMounted(async () => {
             <div class="tableArea">
               <!-- 根据selectedIndex的值显示对应的表格 -->
               <div v-if="selectedIndex_3 === 0" class="tables">
-                <MarketLineChart_multiCategory :nameInfo="nameInfo" :refDate_p3="refDate_p3" :priceInfo="priceInfo"></MarketLineChart_multiCategory>
+                <div id="chart-container_3" style="width: 842px; height: 494px;"></div>
               </div>
               <div v-if="selectedIndex_3 === 1" class="tables">
-                <MarketStickChart_multiCategory :nameInfo="nameInfo" :refDate_p3="refDate_p3" :priceInfo="priceInfo"></MarketStickChart_multiCategory>
+                <div id="chart-container_3_2" style="width: 842px; height: 494px;"></div>
               </div>
               <div v-if="selectedIndex_3 === 2" class="tables">
-                <MarketRadarChart_multiCategory :nameInfo="nameInfo" :refDate_p3="refDate_p3" :priceInfo="priceInfo"></MarketRadarChart_multiCategory>
+                <div id="chart-container_3_3" style="width: 842px; height: 494px;"></div>
               </div>
               <div class="icon_container">
                 <!-- 使用ref来引用图标元素 -->
@@ -1745,13 +2778,13 @@ onMounted(async () => {
             <div class="tableArea">
               <!-- 根据selectedIndex的值显示对应的表格 -->
               <div v-if="selectedIndex_4 === 0" class="tables">
-                <MarketLineChart_multiMarket :nameInfo_p4="nameInfo_p4" :refDate_p4="refDate_p4" :priceInfo_p4="priceInfo_p4"></MarketLineChart_multiMarket>
+                <div id="chart-container_4_1" style="width: 842px; height: 494px;"></div>
               </div>
               <div v-if="selectedIndex_4 === 1" class="tables">
-                <MarketStickChart_multiMarket :nameInfo_p4="nameInfo_p4" :refDate_p4="refDate_p4" :priceInfo_p4="priceInfo_p4"></MarketStickChart_multiMarket>
+                <div id="chart-container_4" style="width: 842px; height: 494px;"></div>
               </div>
               <div v-if="selectedIndex_4 === 2" class="tables">
-                <MarketRadarChart_multiMarket :nameInfo_p4="nameInfo_p4" :refDate_p4="refDate_p4" :priceInfo_p4="priceInfo_p4"></MarketRadarChart_multiMarket>
+                <div id="chart-container_4_2" style="width: 842px; height: 494px;"></div>
               </div>
               <div class="icon_container">
                 <!-- 使用ref来引用图标元素 -->
@@ -1847,13 +2880,13 @@ onMounted(async () => {
             <div class="tableArea">
               <!-- 根据selectedIndex的值显示对应的表格 -->
               <div v-if="selectedIndex_5 === 0" class="tables">
-                <MarketLineChart_multiArea :nameInfo_p5="nameInfo_p5" :refDate_p5="refDate_p5" :priceInfo_p5="priceInfo_p5"></MarketLineChart_multiArea>
+                <div id="chart-container_5_1" style="width: 842px; height: 494px;"></div>
               </div>
               <div v-if="selectedIndex_5 === 1" class="tables">
-                <MarketStickChart_multiArea :nameInfo_p5="nameInfo_p5" :refDate_p5="refDate_p5" :priceInfo_p5="priceInfo_p5"></MarketStickChart_multiArea>
+                <div id="chart-container_5_2" style="width: 842px; height: 494px;"></div>
               </div>
               <div v-if="selectedIndex_5 === 2" class="tables">
-                <MarketRadarChart_multiArea :nameInfo_p5="nameInfo_p5" :refDate_p5="refDate_p5" :priceInfo_p5="priceInfo_p5"></MarketRadarChart_multiArea>
+                <div id="chart-container_5" style="width: 842px; height: 494px;"></div>
               </div>
               <div class="icon_container">
                 <!-- 使用ref来引用图标元素 -->

@@ -33,6 +33,9 @@ const login = () => {
 
 
 <template>
+  <div class="home">
+    <RouterLink to="/" class="backHome">返回首页</RouterLink>
+  </div>
   <div class="login-page">
     <div class="form">
       <form class="login-form">
@@ -48,6 +51,12 @@ const login = () => {
 /* 在这里放置CSS代码 */
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
+
+.home{
+  background-color: #76b852;
+  padding-left: 40px;
+  padding-top: 20px;
+}
 .login-page {
   width: 1280px;
   padding: 8% 0 ;
@@ -141,6 +150,14 @@ body { /* fallback for old browsers */
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.backHome{
+  background-color: #76b852;
+  color: white;
+  font-size: 18px;
+}
+.backHome:hover{
+  text-decoration: underline;
 }
 </style>
 

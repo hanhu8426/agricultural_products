@@ -36,6 +36,11 @@ function formatDate(dateString) {
   return [yearAndMonth,day];
 }
 // 将内容完整展示
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 2aa4de3ee257158f7be17fc00b50c6d0283617dd
 const options_province = [
   {
     value: '全国',
@@ -355,7 +360,11 @@ onMounted(() => {
       <!--报告的边框-->
       <div class="report_border" >
         <!--报告的内容（三条）-->
+<<<<<<< HEAD
+        <div class="report_item" @click="item.isPopupVisible = true">
+=======
         <div class="report_item" v-for="item in displayedData" :key="item.id">
+>>>>>>> 2aa4de3ee257158f7be17fc00b50c6d0283617dd
           <!--左侧日历栏 -->
           <div class="date">
             <p class="yearAndMonth">{{formatDate(item.thatDate)[0]}}</p>
@@ -638,5 +647,22 @@ onMounted(() => {
 }
 .query{
   margin-left: 30px;
+}
+
+</style>
+<style lang="scss">
+.el-dialog__header {
+  padding: 0;
+  padding-bottom: 0;
+  margin: auto 0;
+  padding-top: 30px;
+  text-align: center;
+  background-color: #aeddc7;
+}
+.el-dialog__title {
+    line-height: var(--el-dialog-font-line-height);
+    font-size: var(--el-dialog-title-font-size);
+    color: var(--el-text-color-primary);
+    align-items: center;
 }
 </style>

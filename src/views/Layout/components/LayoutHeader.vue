@@ -12,12 +12,12 @@
         农产品市场数据分析大数据平台
       </h2>
       <ul class="app-header-nav">
-        <li class="home">
-          <RouterLink to="/">首页</RouterLink>
+        <li >
+          <RouterLink to="/" :class="{ myActive: $route.path === '/' }">首页</RouterLink>
         </li>
-        <li> <RouterLink to="/dataQuery">数据查询</RouterLink> </li>
-        <li> <RouterLink to="/marketInfo">市场行情</RouterLink> </li>
-        <li> <RouterLink to="/analysisForecast">分析预测</RouterLink> </li>
+        <li > <RouterLink to="/dataQuery" :class="{ myActive: $route.path === '/dataQuery' }">数据查询</RouterLink> </li>
+        <li > <RouterLink to="/marketInfo" :class="{ myActive: $route.path === '/marketInfo' }">市场行情</RouterLink> </li>
+        <li > <RouterLink to="/analysisForecast" :class="{ myActive: $route.path === '/analysisForecast' }">分析预测</RouterLink> </li>
       </ul>
       <ul class="login">
         <li> <RouterLink to="/login">管理员登录</RouterLink> </li>
@@ -30,6 +30,9 @@
 
 
 <style scoped lang='scss'>
+.myActive {
+  color: #0aa385; /* 这里可以设置选中状态的颜色 */
+}
 .app-header {
   background: url('@/assets/images/true.jpg') no-repeat center  / cover;
 
@@ -89,10 +92,10 @@
         }
       }
   
-      .active {
-        color: $xtxColor;
-        border-bottom: 1px solid $xtxColor;
-      }
+      // .active {
+      //   color: $xtxColor;
+      //   border-bottom: 1px solid $xtxColor;
+      // }
     }
   }
 
