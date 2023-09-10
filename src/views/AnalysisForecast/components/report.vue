@@ -437,7 +437,13 @@ onMounted(() => {
 
   <div class="forecast">
     <div class="forecast_report" >
-      <p class="forecast_report_item" v-for="(item,index) in allForecastReport" :key="index">{{item.title}}</p>
+      <p class="forecast_report_title">预测新闻</p>
+      <div class="forecast_report_content">
+        <li class="forecast_report_item" v-for="(item,index) in allForecastReport" :key="index">
+          <i class="icon"></i>
+          <p>{{item.title}}</p>
+        </li>
+      </div>
     </div>
     <div class="forecast_chart">
       <div class="forecast_chart_title">
@@ -575,8 +581,36 @@ onMounted(() => {
   background: #f2fbfb;
   line-height: 40px;
 }
+.forecast.forecast_report.forecast_report_title {
+  border-radius: 10px 10px 0 0;
+  background: #f2fbfb;
+}
+.icon{
+  width: 6px;
+  height: 6px;
+  display: block;
+  background-color: #ff7457;
+  margin-top: 15px;
+  margin-left: 12px;
+  margin-right: 8px;
+}
+.forecast_report_content{
+  height: calc(100% - 40px);
+  overflow-y: auto;
+  width: 100%;
+  border-radius: 0 0 10px 10px;
+  font-weight: normal;
+}
 .forecast_report_item{
-  height: 35px;
+  line-height: 36px;
+  font-size: 13px;
+  font-weight: normal;
+  color: #828282;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 .forecast_chart{
 
@@ -599,7 +633,9 @@ onMounted(() => {
   position: relative;
   margin-bottom: 20px;
 }
-
+.p{
+  font-weight: normal;
+}
 .query{
   margin-left: 30px;
 }
