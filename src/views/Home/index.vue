@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import {baseUrl} from '@/main'
 import axios from "axios";
 import * as echarts from 'echarts';
@@ -133,122 +133,58 @@ const options = [
 ]
 const TypeOptions = [
   {
-    value: '猪肉',
-    label: '猪肉',
+    value: '猪',
+    label: '猪',
   },
   {
-    value: '羊肉',
-    label: '羊肉',
+    value: '羊',
+    label: '羊',
   },
   {
-    value: '牛肉',
-    label: '牛肉',
+    value: '牛',
+    label: '牛',
   },
   {
-    value: '鸡蛋',
-    label: '鸡蛋',
+    value: '禽蛋',
+    label: '禽蛋',
   },
   {
-    value: '白条鸡',
-    label: '白条鸡',
+    value: '禽类',
+    label: '禽类',
   },
   {
-    value: '活草鱼',
-    label: '活草鱼',
-  },
-  {
-    value: '活鲫鱼',
-    label: '活鲫鱼',
-  },
-  {
-    value: '活鲤鱼',
-    label: '活鲤鱼',
-  },
-  {
-    value: '白鲢活鱼',
-    label: '白鲢活鱼',
-  },
-  {
-    value: '花鲢活鱼',
-    label: '花鲢活鱼',
-  },
-  {
-    value: '大带鱼',
-    label: '大带鱼',
-  },
-  {
-    value: '大黄花鱼',
-    label: '大黄花鱼',
-  },
-  {
-    value: '菠菜',
-    label: '菠菜',
-  },
-  {
-    value: '莴笋',
-    label: '莴笋',
-  },
-  {
-    value: '豆角',
-    label: '豆角',
-  },
-  {
-    value: '韭菜',
-    label: '韭菜',
-  },
-  {
-    value: '菜花',
-    label: '菜花',
-  },
-  {
-    value: '胡萝卜',
-    label: '胡萝卜',
-  },
-  {
-    value: '油菜',
-    label: '油菜',
-  },
-  {
-    value: '西红柿',
-    label: '西红柿',
-  },
-  {
-    value: '青椒',
-    label: '青椒',
-  },
-  {
-    value: '土豆',
-    label: '土豆',
-  },
-  {
-    value: '富士苹果',
-    label: '富士苹果',
-  },
-  {
-    value: '巨峰葡萄',
-    label: '巨峰葡萄',
-  },
-  {
-    value: '香蕉',
-    label: '香蕉',
-  },
-  {
-    value: '菠萝',
-    label: '菠萝',
-  },
-  {
-    value: '西瓜',
-    label: '西瓜',
-  },
-  {
-    value: '鸭梨',
-    label: '鸭梨',
-  },
+    value: '奶制品',
+    label: '奶制品',
+  }
 ]
 const TimeOptions = [
     {
         value:'2023-07',
         label:'2023-07',
+    },
+    {
+        value:'2023-06',
+        label:'2023-06',
+    },
+    {
+        value:'2023-05',
+        label:'2023-05',
+    },
+    {
+        value:'2023-04',
+        label:'2023-04',
+    },
+    {
+        value:'2023-03',
+        label:'2023-03',
+    },
+    {
+        value:'2023-02',
+        label:'2023-02',
+    },
+    {
+        value:'2023-01',
+        label:'2023-01',
     }
 ]
 const customColor = ref('rgb(255, 115, 88)');
@@ -281,141 +217,234 @@ const getLatestExponent = async () => {
 }
 
 //获取下拉框数据
-const LBType = ref('');
-const RBType = ref('');
-const RBTime = ref('');
+const LBType = ref('猪肉');
+const RBType = ref('猪');
+const RBTime = ref('2023-07');
 
-//初始化图表
-// const chartProvince = ref([]);
-// const chartNumber = ref([]);
-// const combinedData = ref([])
+//获取价格最高的五个市场信息
+let HighestMarketName = ref([]);//市场名
+let HighestMarketPrice = ref([]);//价格
+const getMarketName = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/priceQuery/marketAveragePricesMarket/${LBType.value}`); // 发起请求获取数据
+    HighestMarketName.value = response.data.data;
+    console.log(HighestMarketName.value[0])
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+const getMarketPrice = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/priceQuery/marketAveragePrices/${LBType.value}`); // 发起请求获取数据
+    HighestMarketPrice.value = response.data.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
 
-const HomePieChart_Init = () => {
-  const chartContainer = document.getElementById('chart-container_RB');
-  let chart_p1 = echarts.init(chartContainer, 'essos');
-  // 设置ECharts配置选项
-const  option = {
-    tooltip: {
-        trigger: 'item'
-    },
-    legend: {
-          show: true,
-          textStyle: {
-            fontSize: 9, // 设置系列名称的字体大小
-          },
-        },
-    series: [
-        {
-        name: 'Access From',
-        type: 'pie',
-        radius: ['40%', '70%'],
-        avoidLabelOverlap: false,
-        itemStyle: {
-            borderRadius: 10,
-            borderColor: '#fff',
-            borderWidth: 2
-        },
-        label: {
-            show: false,
-            position: 'center'
-        },
-        emphasis: {
-            label: {
-            show: true,
-            fontSize: 40,
-            fontWeight: 'bold'
-            }
-        },
-        labelLine: {
-            show: false
-        },
-        data: [
-            { value: 1048, name: 'Search Engine' },
-            { value: 735, name: 'Direct' },
-            { value: 580, name: 'Email' },
-            { value: 484, name: 'Union Ads' },
-            { value: 300, name: 'Video Ads' }
-        ]
-        }
-    ]
-    };
+//获取出口量数据
+let ProvinceName = ref([]);//市场名
+let ProvinceData = ref([]);//价格
+let PieCombined = ref([]);
+const getProvinceName = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/homePage/export/exportProvince/${RBTime.value}/${RBType.value}`); // 发起请求获取数据
+    ProvinceName.value = response.data.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+const getProvinceData = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/homePage/export/exportVolume/${RBTime.value}/${RBType.value}`); // 发起请求获取数据
+    ProvinceData.value = response.data.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+const combine = () =>{
+  PieCombined = ref([]);
+  for (let i = 0; i < ProvinceData.value.length; i++) {
+      PieCombined.value.push({
+        value: ProvinceData.value[i],
+        name: ProvinceName.value[i]
+      });
+    }
+  console.log(PieCombined.value);
+}
 
-  chart_p1.setOption(option);
-};
-const mapChart = () => {
-  const chartContainer = document.getElementById('chart-container_center');
-  let myChart = echarts.init(chartContainer, 'essos');
-  echarts.registerMap('China', chinaJson);
-  const option = {
-    title: {
-      text: 'USA Population Estimates (2012)',
-      subtext: 'Data from www.census.gov',
-      sublink: 'http://www.census.gov/popest/data/datasets.html',
-      left: 'right'
-    },
-    tooltip: {
-      trigger: 'item',
-      showDelay: 0,
-      transitionDuration: 0.2
-    },
-    visualMap: {
-      left: 'right',
-      min: 500000,
-      max: 38000000,
-      inRange: {
-        color: [
-          '#313695',
-          '#4575b4',
-          '#74add1',
-          '#abd9e9',
-          '#e0f3f8',
-          '#ffffbf',
-          '#fee090',
-          '#fdae61',
-          '#f46d43',
-          '#d73027',
-          '#a50026'
-        ]
-      },
-      text: ['High', 'Low'],
-      calculable: true
-    },
-    toolbox: {
-      show: true,
-      //orient: 'vertical',
-      left: 'left',
-      top: 'top',
-      feature: {
-        dataView: { readOnly: false },
-        restore: {},
-        saveAsImage: {}
-      }
-    },
-    series: [
-      {
-        name: 'USA PopEstimates',
-        type: 'map',
-        roam: true,
-        map: 'China',
-        emphasis: {
-          label: {
-            show: true
-          }
-        },
-        data: [
-          { name: '北京市', value: 4822023 },
-        ]
-      }
-    ]
-  };
-  myChart.setOption(option);
 
-};
+//获取地图数据
+let chartProvince = ref([]);
+let chartNumber = ref([]);
+let combinedData = ref([]);
+const getChartProvince = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/homePage/markets`); // 发起请求获取数据
+    chartProvince.value = response.data.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+const getChartNumber = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/homePage/marketQuantity`); // 发起请求获取数据
+    chartNumber.value = response.data.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+const combineMap = () =>{
+  combinedData = ref([]);
+  for (let i = 0; i < chartProvince.value.length; i++) {
+    combinedData.value.push({
+        name: chartProvince.value[i],
+        value: chartNumber.value[i]
+      });
+    }
+  console.log(PieCombined.value);
+}
+
+
 
   onMounted( async () => {
   await getLatestExponent();
+  await getMarketName();
+  await getMarketPrice();
+  await getProvinceName();
+  await getProvinceData();
+  await getChartProvince();
+  await getChartNumber();
+  combine();
+  combineMap();
+  const chartContainer = document.getElementById('chart-container_RB');
+  let chart_p1 = echarts.init(chartContainer, 'essos');
+  const chartContainer_2 = document.getElementById('chart-container_center');
+  let myChart = echarts.init(chartContainer_2, 'essos');
+  const HomePieChart_Init = () => {
+
+    // 设置ECharts配置选项
+  const  option = {
+      tooltip: {
+          trigger: 'item'
+      },
+      legend: {
+            show: true,
+            textStyle: {
+              fontSize: 9, // 设置系列名称的字体大小
+            },
+          },
+      series: [
+          {
+          name: 'Access From',
+          type: 'pie',
+          radius: ['40%', '70%'],
+          avoidLabelOverlap: false,
+          itemStyle: {
+              borderRadius: 10,
+              borderColor: '#fff',
+              borderWidth: 2
+          },
+          label: {
+              show: false,
+              position: 'center'
+          },
+          emphasis: {
+              label: {
+              show: true,
+              fontSize: 40,
+              fontWeight: 'bold'
+              }
+          },
+          labelLine: {
+              show: false
+          },
+          data: PieCombined.value
+          }
+      ]
+      };
+
+    chart_p1.setOption(option);
+  };
+  const mapChart = () => {
+    
+    echarts.registerMap('China', chinaJson);
+    const option = {
+      title: {
+        text: 'USA Population Estimates (2012)',
+        subtext: 'Data from www.census.gov',
+        sublink: 'http://www.census.gov/popest/data/datasets.html',
+        left: 'right',
+        show: false
+      },
+      tooltip: {
+        trigger: 'item',
+        showDelay: 0,
+        transitionDuration: 0.2
+      },
+      visualMap: {
+        left: 'right',
+        min: 0,
+        max: 26,
+        inRange: {
+          color: [
+            '#313695',
+            '#4575b4',
+            '#74add1',
+            '#abd9e9',
+            '#e0f3f8',
+            '#ffffbf',
+            '#fee090',
+            '#fdae61',
+            '#f46d43',
+            '#d73027',
+            '#a50026'
+          ]
+        },
+        text: ['High', 'Low'],
+        calculable: true
+      },
+      toolbox: {
+        show: true,
+        //orient: 'vertical',
+        left: 'left',
+        top: 'top',
+        feature: {
+          dataView: { readOnly: false },
+          restore: {},
+          saveAsImage: {}
+        }
+      },
+      series: [
+        {
+          name: '全国各省市市场数量',
+          type: 'map',
+          roam: true,
+          map: 'China',
+          emphasis: {
+            label: {
+              show: true
+            }
+          },
+          data: combinedData.value
+        }
+      ]
+    };
+    myChart.setOption(option);
+
+  };
   HomePieChart_Init();
   mapChart();
+  watch([LBType], () => {
+    getMarketName();
+    getMarketPrice();
+  });
+  watch([RBTime,RBType], async () => {
+     await getProvinceName();
+     await getProvinceData();
+     combine();
+     HomePieChart_Init();
+  });
 });
 
 </script>
@@ -475,43 +504,43 @@ const mapChart = () => {
                             <span style="    display: inline-block;line-height: 40px;position: absolute;top: 0;right: 17%;font-size: 14px;">价格（元/公斤）</span>
                         </li>
                         <li style="line-height: 40px;font-size: 14px;display: flex;">
-                            <p class="marketName">
+                            <p class="marketName" >
                                 <i data-v-809e91fc class="bgNum">1</i>
-                                福建福鼎市场服务中心
+                                {{HighestMarketName[0]}}
                             </p>
-                            <span class="price">26.2</span>
+                            <span class="price">{{ HighestMarketPrice[0] }}</span>
                             <el-progress :percentage="100" :show-text="false" :color="customColor"/>
                         </li>
                         <li style="line-height: 40px;font-size: 14px;display: flex;">
                             <p class="marketName">
                                 <i data-v-809e91fc class="bgNum_2">2</i>
-                                福建福鼎市场服务中心
+                                {{HighestMarketName[1]}}
                             </p>
-                            <span class="price_2">26.2</span>
+                            <span class="price_2">{{ HighestMarketPrice[1] }}</span>
                             <el-progress :percentage="80" :show-text="false" :color="customColor_2"/>
                         </li>
                         <li style="line-height: 40px;font-size: 14px;display: flex;">
                             <p class="marketName">
                                 <i data-v-809e91fc class="bgNum_3">3</i>
-                                福建福鼎市场服务中心
+                                {{HighestMarketName[2]}}
                             </p>
-                            <span class="price_3">26.2</span>
+                            <span class="price_3">{{ HighestMarketPrice[2] }}</span>
                             <el-progress :percentage="60" :show-text="false" :color="customColor_3"/>
                         </li>
                         <li style="line-height: 40px;font-size: 14px;display: flex;">
                             <p class="marketName">
                                 <i data-v-809e91fc class="bgNum_4">4</i>
-                                福建福鼎市场服务中心
+                                {{HighestMarketName[3]}}
                             </p>
-                            <span class="price_4">26.2</span>
+                            <span class="price_4">{{ HighestMarketPrice[3] }}</span>
                             <el-progress :percentage="40" :show-text="false" :color="customColor_4"/>
                         </li>
                         <li style="line-height: 40px;font-size: 14px;display: flex;">
                             <p class="marketName">
                                 <i data-v-809e91fc class="bgNum_5">5</i>
-                                福建福鼎市场服务中心
+                                {{HighestMarketName[4]}}
                             </p>
-                            <span class="price_5">26.2</span>
+                            <span class="price_5">{{ HighestMarketPrice[4] }}</span>
                             <el-progress :percentage="20" :show-text="false" :color="customColor_5"/>
                         </li>
                     </ul>
@@ -543,7 +572,8 @@ const mapChart = () => {
             <div class="right_bottom">
                 <div class="exponent_box_title">
                     <img src="../../assets/images/tubiao-bingtu.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;background: none;">
-                    <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 260px;">批发价格最高排名</span>
+                    <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 200px;">农产品各省市出口量</span>
+                    <span style="font-size: 12px;font-weight: normal;color: #aaa;">单位：万吨</span>
                 </div>
                 <div style="display: flex;padding-left: 10px;">
                     <el-select v-model="RBTime" class="m-2" placeholder="请选择">

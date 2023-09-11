@@ -9,7 +9,7 @@
         <RouterLink to="/">小兔鲜</RouterLink>
       </h1>
       <h2 class="title">
-        农产品市场数据分析大数据平台
+        农产品市场数据分析平台
       </h2>
       <ul class="app-header-nav">
         <li >
