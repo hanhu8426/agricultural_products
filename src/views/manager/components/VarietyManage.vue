@@ -1,0 +1,3 @@
+<template>
+    Variety
+</template>

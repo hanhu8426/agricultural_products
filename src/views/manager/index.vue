@@ -3,11 +3,31 @@ import {
   Setting,
 } from '@element-plus/icons-vue'
 import {ref} from 'vue'
+import {useRouter} from "vue-router"
+const router = useRouter();
 const handleOpen = (key, keyPath) => {
   console.log(key, keyPath)
 }
 const handleClose = (key, keyPath) => {
   console.log(key, keyPath)
+}
+const toMarket = () => {
+  router.push('/manage');
+}
+const toVariety = () => {
+  router.push('/manage/variety');
+}
+const toLink = () => {
+  router.push('/manage/link');
+}
+const toDaily = () => {
+  router.push('/manage/daily');
+}
+const toMonthly = () => {
+  router.push('/manage/monthly');
+}
+const toForecast = () => {
+  router.push('/manage/forecast');
 }
 const circleUrl = ref('https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png');
 </script>
@@ -44,17 +64,20 @@ const circleUrl = ref('https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726
                 <el-icon><setting /></el-icon>
                 <span>系统管理</span>
               </template>
-                <el-menu-item index="1-1">市场管理</el-menu-item>
-                <el-menu-item index="1-2">农产品种类管理</el-menu-item>
-                <el-menu-item index="1-3">链接管理</el-menu-item>
-                <el-menu-item index="1-4">日报管理</el-menu-item>
-                <el-menu-item index="1-5">周报管理</el-menu-item>
-                <el-menu-item index="1-6">预测报告管理</el-menu-item>
+                <el-menu-item index="1-1" @click="toMarket">市场管理</el-menu-item>
+                <el-menu-item index="1-2" @click="toVariety">农产品种类管理</el-menu-item>
+                <el-menu-item index="1-3" @click="toLink">链接管理</el-menu-item>
+                <el-menu-item index="1-4" @click="toDaily">日报管理</el-menu-item>
+                <el-menu-item index="1-5" @click="toMonthly">周报管理</el-menu-item>
+                <el-menu-item index="1-6" @click="toForecast">预测报告管理</el-menu-item>
             </el-sub-menu>
           </el-menu>
         </el-col>
       </el-aside>
-      <el-main>Main</el-main>
+      <el-main>
+        <RouterView>
+        </RouterView>
+      </el-main>
     </el-container>
   </div>
 </template>
