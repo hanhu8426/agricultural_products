@@ -1,9 +1,5 @@
 <script setup>
-<<<<<<< HEAD
-import { ref, onMounted,computed,watch } from 'vue'
-=======
-import { ref, onMounted} from 'vue'
->>>>>>> 17e33c7ce10b5213f4060f27e766b672fd5c98d5
+import { ref, onMounted,watch } from 'vue'
 import axios from "axios";
 import {baseUrl} from "@/main";
 import * as echarts from 'echarts';
@@ -736,8 +732,6 @@ onMounted(() => {
   display: -ms-flexbox;
   display: flex;
 }
-<<<<<<< HEAD
-=======
 .forecast_report_item:last-child {
   border-bottom: none;
 }
@@ -746,10 +740,6 @@ onMounted(() => {
   overflow: hidden; /* 隐藏文本溢出部分 */
   text-overflow: ellipsis; /* 显示省略号 */
 }
-.forecast_chart{
-
-}
->>>>>>> 17e33c7ce10b5213f4060f27e766b672fd5c98d5
 .forecast_chart_searchBar{
   font-size: 15px;
   display: flex;
