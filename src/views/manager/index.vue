@@ -44,7 +44,7 @@ const handleCommand = (command)=> {
 
 <template>
   <div class="common-layout">
-    <el-header style="border-bottom: 1px solid #545c64">
+    <el-header style="background-color: #f3f3f3;">
       <div class="title" style="font-size: 18px; display: flex">农产品市场数据分析平台后台管理
         <div style="display:flex;justify-content: center;">
           <el-avatar :size="30" :src="circleUrl" />
@@ -126,4 +126,5 @@ el-avatar{
   --el-dropdown-menuItem-hover-color: white;
   --el-dropdown-menu-index: 10;
 }
+
 </style>
