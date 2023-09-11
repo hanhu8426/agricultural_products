@@ -1,10 +1,10 @@
 <script setup>
 import {
+  CaretBottom,
   Setting,
 } from '@element-plus/icons-vue'
+import {useRouter} from "vue-router";
 import {ref} from 'vue'
-import {useRouter} from "vue-router"
-const router = useRouter();
 const handleOpen = (key, keyPath) => {
   console.log(key, keyPath)
 }
@@ -30,6 +30,16 @@ const toForecast = () => {
   router.push('/manage/forecast');
 }
 const circleUrl = ref('https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png');
+
+// 点击退出按钮进行退出
+const router = useRouter();
+const handleCommand = (command)=> {
+  console.log(command);
+  if (command === 'logout') {
+    // 使用 Vue Router 的编程式导航跳转到另一个路由
+    router.push('/login'); // 假设路由的名称是 'logout'
+  }
+}
 </script>
 
 <template>
@@ -38,8 +48,19 @@ const circleUrl = ref('https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726
       <div class="title" style="font-size: 18px; display: flex">农产品市场数据分析平台后台管理
         <div style="display:flex;justify-content: center;">
           <el-avatar :size="30" :src="circleUrl" />
-          <p style="font-size: 12px;padding-top: 6px">系统管理员</p>
-          <i class="el-icon-arrow-down"></i>
+          <el-dropdown trigger="click" style="font-size: 12px;padding-top: 6px; margin-left: 7px" @command="handleCommand">
+            <span class="el-dropdown-link">
+              系统管理员
+              <el-icon class="el-icon--right"><caret-bottom /></el-icon>
+            </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item class="clearfix" command="logout">
+                    退出登录
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+          </el-dropdown>
         </div>
       </div>
       <div class="header_right" >
@@ -53,7 +74,7 @@ const circleUrl = ref('https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726
               active-text-color="#ffd04b"
               background-color="#545c64"
               class="el-menu-vertical-demo"
-              default-active="2"
+              default-active="1"
               text-color="#fff"
               @open="handleOpen"
               @close="handleClose"
@@ -99,5 +120,10 @@ el-avatar{
   justify-content: space-between;
   align-items: center;
 }
-
+.el-dropdown__popper {
+  --el-dropdown-menu-box-shadow: var(--el-box-shadow-light);
+  --el-dropdown-menuItem-hover-fill: #545c64;
+  --el-dropdown-menuItem-hover-color: white;
+  --el-dropdown-menu-index: 10;
+}
 </style>
