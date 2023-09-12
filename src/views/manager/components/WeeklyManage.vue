@@ -153,12 +153,6 @@ onMounted(() => {
 .select_left{
   display: flex;
 }
-.el-table.is-scrolling-none th.el-table-fixed-column--left, .el-table.is-scrolling-none th.el-table-fixed-column--right {
-  background-color: #37cba3 !important;
-}
-.el-table__body-wrapper tr td.el-table-fixed-column--right{
-  background-color: #f5fdfb !important
-}
 .el-button--primary.is-plain, .el-button--primary.is-text, .el-button--primary.is-link {
   --el-button-text-color: #545c64;
   --el-button-bg-color: var(--el-color-primary-light-9);

@@ -384,10 +384,10 @@ onMounted(() => {
   display: flex;
 }
 .el-table.is-scrolling-none th.el-table-fixed-column--left, .el-table.is-scrolling-none th.el-table-fixed-column--right {
-  background-color: #37cba3 !important;
+  background-color: #f6eac5 !important;
 }
 .el-table__body-wrapper tr td.el-table-fixed-column--right{
-  background-color: #f5fdfb !important
+  background-color: #faf6f2 !important
 }
 .el-button--primary.is-plain, .el-button--primary.is-text, .el-button--primary.is-link {
   --el-button-text-color: #545c64;
@@ -400,5 +400,21 @@ onMounted(() => {
 }
 .el-button.is-link:hover, .el-button.is-link:focus {
   color: #545c64;
+}
+.el-button--success {
+    --el-button-text-color: var(--el-color-white);
+    --el-button-bg-color: #05354b!important;
+    --el-button-border-color: #05354b;
+    --el-button-outline-color: var(--el-color-success-light-5);
+    --el-button-active-color: var(--el-color-success-dark-2);
+    --el-button-hover-text-color: var(--el-color-white);
+    --el-button-hover-link-text-color: var(--el-color-success-light-5);
+    --el-button-hover-bg-color: var(--el-color-success-light-3);
+    --el-button-hover-border-color: var(--el-color-success-light-3);
+    --el-button-active-bg-color: var(--el-color-success-dark-2);
+    --el-button-active-border-color: var(--el-color-success-dark-2);
+    --el-button-disabled-text-color: var(--el-color-white);
+    --el-button-disabled-bg-color: var(--el-color-success-light-5);
+    --el-button-disabled-border-color: var(--el-color-success-light-5);
 }
 </style>
