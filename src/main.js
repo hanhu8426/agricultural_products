@@ -9,6 +9,7 @@ import router from './router'
 
 import '@/styles/common.scss'
 import '@/styles/index.scss'
+import {ElementPlus} from "@element-plus/icons-vue";
 
 // import {getCategory} from '@/apis/api'
 // getCategory().then(res=>{
@@ -21,4 +22,4 @@ app.use(router)
 app.use(Particles)
 app.mount('#app')
 
-export const baseUrl = 'http://10.203.135.140:8081';
+export const baseUrl = 'http://10.203.194.231:8081';

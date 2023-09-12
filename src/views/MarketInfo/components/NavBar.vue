@@ -3000,7 +3000,7 @@ p img {
     text-align: center;
 }
 .font_red{
-    font-size: 22px;
+    font-size: 20px;
     color: #c50b03;
 }
 .select_name{

@@ -591,6 +591,19 @@ onMounted(async () => {
   }
 });
 
+// 下载按钮
+const download = () => {
+  if(activeButton.value==='日度'){
+    window.location.href = `${baseUrl}/priceQuery/download`; // 将 'https://www.example.com' 替换为你要跳转的网页地址
+  }else {
+    window.location.href = `${baseUrl}/exponent/monthlyExponent/download`;
+  }
+}
+
+const download_query = () => {
+  console.log(selectedProduct.value[2],selectedMarket.value[1]);
+  window.location.href = `${baseUrl}/priceQuery/download?market=${selectedMarket.value[1]}&variety=${selectedProduct.value[2]}`;
+}
 </script>
 
 <template>
@@ -601,10 +614,12 @@ onMounted(async () => {
           <el-button type="success" plain @click="handleButtonClick('月度')" :active="activeButton === '月度'">月度</el-button>
         </div>
 
-        <div class="topTitle">
+        <div class="topTitle" style="justify-content: space-between">
           <p class="underline-text">
             农业农村部”农产品批发价格200指数“{{activeButton}}数据
           </p>
+          <el-button class="queryButton" type="success" plain @click="download"
+          style="margin-left: 700px;height: 20px;font-size: 10px">下载</el-button>
         </div>
 
         <div class="scrollTable">
@@ -659,7 +674,10 @@ onMounted(async () => {
             />
           </div>
           <div class="queryBox">
-            <el-button class="queryButton" type="success" plain @click="handleQuery">查询</el-button>
+            <el-button class="queryButton" type="success" plain @click="handleQuery" >查询</el-button>
+          </div>
+          <div class="queryBox">
+            <el-button class="queryButton" type="success" plain @click="download_query" >下载</el-button>
           </div>
           <div class="remark">
             单位：元/公斤
@@ -683,6 +701,7 @@ onMounted(async () => {
               layout="prev, pager, next"
               :total="totalSize"
               @current-change="handlePageChange"
+              style="justify-content: right; margin-right: 60px"
           />
         </div>
       </el-tab-pane>
@@ -698,13 +717,13 @@ onMounted(async () => {
   color: #959494;
   font-weight: normal;
   padding-top: 22px;
-  padding-left: 150px;
+  margin-left: 80px;
   justify-content: right;
 }
 .queryBox{
   padding-top: 15px;
   padding-left: 40px;
-  padding-right: 80px;
+  padding-right: 30px;
 }
 .queryButton{
   background-color: #05354b;
