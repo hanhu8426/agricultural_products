@@ -10,7 +10,7 @@ import Market from '@/views/manager/components/MarketManage.vue'
 import Variety from '@/views/manager/components/VarietyManage.vue'
 import Link from '@/views/manager/components/LinkManage.vue'
 import Daily from '@/views/manager/components/DailyManage.vue'
-import Monthly from '@/views/manager/components/MonthlyManage.vue'
+import Monthly from '@/views/manager/components/WeeklyManage.vue'
 import Forecast from '@/views/manager/components/ForecastManage.vue'
 
 const router = createRouter({
