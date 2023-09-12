@@ -479,7 +479,9 @@ onMounted(() => {
               width="60%"
               align-center
           >
-            <span>{{item.content}}</span>
+            <p style="font-size: 24px;color: black;text-align: center;margin-bottom: 20px">{{item.title}}</p>
+            <p style="font-size: 14px;color: #aaa;text-align: right;margin-bottom: 20px">来源：{{item.source}}</p>
+            <span style="line-height: 2">{{item.content}}</span>
           </el-dialog>
         </div>
 
@@ -526,7 +528,9 @@ onMounted(() => {
               width="60%"
               align-center
           >
-            <span>{{item.content}}</span>
+            <p style="font-size: 22px;color: black;text-align: center;margin-bottom: 20px">{{item.title}}</p>
+            <p style="font-size: 14px;color: #aaa;text-align: right;margin-bottom: 20px">来源：{{item.source}}</p>
+            <span style="line-height: 2">{{item.content}}</span>
           </el-dialog>
         </div>
       </div>
@@ -811,5 +815,10 @@ onMounted(() => {
 }
 .el-dialog__headerbtn:focus .el-dialog__close, .el-dialog__headerbtn:hover .el-dialog__close {
     color: #010531;
+}
+.el-dialog__body {
+  padding: 30px 50px;
+  color: var(--el-text-color-regular);
+  font-size: 16px;
 }
 </style>
