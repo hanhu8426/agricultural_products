@@ -2944,7 +2944,7 @@ for (const Name of date) {
     width: 200px;
     height: 46px;
     text-align: center;
-    background-color: #37cba3;
+    background-color: #919e8b;
     border-radius: 6px 6px 0 0;
     font-size: 18px;
     font-weight: normal;
@@ -3171,6 +3171,30 @@ p img {
   justify-content: center; /* 在垂直方向上居中对齐子元素 */
   align-content: center;
 }
-
+.el-tabs__active-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background-color: #05354b;
+    z-index: 1;
+    transition: width var(--el-transition-duration) var(--el-transition-function-ease-in-out-bezier), transform var(--el-transition-duration) var(--el-transition-function-ease-in-out-bezier);
+    list-style: none;
+}
+.el-tabs__item:hover {
+    color: #05354b;
+    cursor: pointer;
+}
+.el-tabs__item.is-active {
+    color: #05354b;
+}
+.el-pager li.is-active {
+    color: #016fa1;
+    cursor: default;
+    font-weight: bold;
+}
+.el-pager li:hover {
+    color: #016fa1;
+}
 
 </style>

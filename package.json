@@ -15,7 +15,9 @@
     "element-plus": "^2.3.12",
     "highcharts": "^11.1.0",
     "highcharts-vue": "^1.4.3",
+    "particles.vue3": "^2.12.0",
     "pinia": "^2.1.6",
+    "tsparticles": "^2.12.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   },

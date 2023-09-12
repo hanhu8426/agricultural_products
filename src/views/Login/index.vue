@@ -3,7 +3,92 @@ import {ref} from 'vue'
 import axios from 'axios';
 import {useRouter} from "vue-router";
 import {baseUrl} from "@/main";
+import { loadFull } from "tsparticles";
 
+const options = {
+      background: {
+        color: {
+          value: "#fef8ef",//粒子颜色
+          opacity: 0.5,
+        },
+      },
+      fpsLimit: 60,
+      interactivity: {
+        events: {
+          onClick: {
+            enable: true,
+            mode: "push",//可用的click模式有: "push", "remove", "repulse", "bubble"。
+          },
+          onHover: {
+            enable: true,
+            mode: "grab",//可用的hover模式有: "grab", "repulse", "bubble"。
+          },
+          resize: true,
+        },
+        modes: {
+          bubble: {
+            distance: 400,
+            duration: 2,
+            opacity: 0.8,
+            size: 40,
+          },
+          push: {
+            quantity: 4,
+          },
+          repulse: {
+            distance: 200,
+            duration: 0.4,
+          },
+        },
+      },
+      particles: {
+        color: {
+          value: '#893448',
+        },
+        links: {
+          color: '#893448',//'#dedede'。线条颜色。
+          distance: 150,//线条长度
+          enable: true,//是否有线条
+          opacity: 0.5,//线条透明度。
+          width: 1,//线条宽度。
+        },
+        collisions: {
+          enable: false,
+        },
+        move: {
+          direction: "none",
+          enable: true,
+          outMode: "bounce",
+          random: false,
+          speed: 2,//粒子运动速度。
+          straight: false,
+        },
+        number: {
+          density: {
+            enable: true,
+            area: 800,
+          },
+          value: 80,//粒子数量。
+        },
+        opacity: {
+          value: 0.5,//粒子透明度。
+        },
+        shape: {
+          type: "none", //可用的粒子外观类型有："circle","edge","triangle", "polygon","star"
+        },
+        size: {
+          random: true,
+          value: 5,
+        },
+      },
+      detectRetina: true,
+    };
+    const particlesInit = async engine => {
+        await loadFull(engine);
+};
+const particlesLoaded = async container => {
+    console.log("Particles container loaded", container);
+}
 const loginData=  ref({
   adminID: '',
   adminPassword: ''
@@ -33,15 +118,23 @@ const login = () => {
 
 
 <template>
-  <div class="home">
+  
+  
+  <div class="login-page">
+    <Particles
+        id="tsparticles"
+        :particlesInit="particlesInit"
+        :particlesLoaded="particlesLoaded"
+        :options="options"
+      />
+    <div class="form">
+      <form style="padding: 50px;justify-content: center;">
+        <input type="text" placeholder="用户名" v-model="loginData.adminID" style="margin-top: 30px;"/>
+        <input type="password" placeholder="密码" v-model="loginData.adminPassword " style="margin-top: 20px;" />
+        <button @click.prevent="login" style="width: 200px;margin-top: 30px;background-color: #eee3c1;color: #893448;">登录</button>
+        <div style="background-color: #fbf2e5;padding-top: 50px;">
     <RouterLink to="/" class="backHome">返回首页</RouterLink>
   </div>
-  <div class="login-page">
-    <div class="form">
-      <form class="login-form">
-        <input type="text" placeholder="用户名" v-model="loginData.adminID" />
-        <input type="password" placeholder="密码" v-model="loginData.adminPassword" />
-        <button @click.prevent="login">登录</button>
       </form>
     </div>
   </div>
@@ -66,8 +159,9 @@ const login = () => {
 .form {
   position: relative;
   z-index: 1;
-  background: #FFFFFF;
-  max-width: 360px;
+  background: #fbf2e5;
+  max-width: 500px;
+  min-height: 500px;
   margin: 0 auto 100px;
   padding: 45px;
   text-align: center;
@@ -76,7 +170,7 @@ const login = () => {
 .form input {
   font-family: "Roboto", sans-serif;
   outline: 0;
-  background: #f2f2f2;
+  background: #fff;
   width: 100%;
   border: 0;
   margin: 0 0 15px;
@@ -152,8 +246,8 @@ body { /* fallback for old browsers */
   -moz-osx-font-smoothing: grayscale;
 }
 .backHome{
-  background-color: #76b852;
-  color: white;
+  background-color: #fbf2e5;
+  color: #4b565b;
   font-size: 18px;
 }
 .backHome:hover{

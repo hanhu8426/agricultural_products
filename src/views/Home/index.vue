@@ -187,10 +187,10 @@ const TimeOptions = [
         label:'2023-01',
     }
 ]
-const customColor = ref('rgb(255, 115, 88)');
-const customColor_2 = ref('rgb(253, 215, 108)');
-const customColor_3 = ref('#19d1c5');
-const customColor_4 = ref('rgb(143, 215, 141)');
+const customColor = ref('#a00712');
+const customColor_2 = ref('#e28350');
+const customColor_3 = ref('#4b565b');
+const customColor_4 = ref('#919e8b');
 const customColor_5 = ref('#aaa');
 
 // 表格展示数据
@@ -226,16 +226,16 @@ let HighestMarketName = ref([]);//市场名
 let HighestMarketPrice = ref([]);//价格
 const getMarketName = async () => {
   try {
-    const response = await axios.get(`${baseUrl}/priceQuery/marketAveragePricesMarket/${LBType.value}`); // 发起请求获取数据
+    const response = await axios.get(`${baseUrl}/priceQuery/fiveMarketAveragePricesMarket/${LBType.value}`); // 发起请求获取数据
     HighestMarketName.value = response.data.data;
-    console.log(HighestMarketName.value[0])
+    console.log(HighestMarketName.value)
   } catch (error) {
     console.error('Error fetching data:', error);
   }
 }
 const getMarketPrice = async () => {
   try {
-    const response = await axios.get(`${baseUrl}/priceQuery/marketAveragePrices/${LBType.value}`); // 发起请求获取数据
+    const response = await axios.get(`${baseUrl}/priceQuery/fiveMarketAveragePrices/${LBType.value}`); // 发起请求获取数据
     HighestMarketPrice.value = response.data.data;
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -388,17 +388,12 @@ const combineMap = () =>{
         max: 26,
         inRange: {
           color: [
-            '#313695',
-            '#4575b4',
-            '#74add1',
-            '#abd9e9',
-            '#e0f3f8',
-            '#ffffbf',
-            '#fee090',
-            '#fdae61',
-            '#f46d43',
-            '#d73027',
-            '#a50026'
+            '#4b565b',
+            '#919e8b',
+            '#ebdba4',
+            '#e28350',
+            '#a00712',
+            '#893448'
           ]
         },
         text: ['High', 'Low'],
@@ -450,11 +445,11 @@ const combineMap = () =>{
 </script>
 
 <template>
-    <div style="display: flex;background-color: #fdfcf5;">
+    <div style="display: flex;">
         <div class="left">
             <div class="left_top">
                 <div class="exponent_box_title">
-                    <img src="../../assets/images/exponent_pic.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;">
+                    <img src="../../assets/images/zhexiantu-xianxing.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;">
                     <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 260px;">农产品批发价格200指数</span>
                 </div>
                 <p class="exponent_box_date">{{ formattedDate }}</p>
@@ -548,12 +543,12 @@ const combineMap = () =>{
             </div>
         </div>
         <div class="center">
-          <div id="chart-container_center" style="width: 600px; height: 600px;"></div>
+          <div id="chart-container_center" style="width: 580px; height: 580px;"></div>
         </div>
         <div class="right">
             <div class="right_top">
                 <div class="exponent_box_title">
-                    <img src="../../assets/images/exponent_pic.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;">
+                    <img src="../../assets/images/zhexiantu-xianxing.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;">
                     <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 130px;">200指数趋势图</span>
                     <div style="margin-left: 20px;">
                         <el-button type="success" plain @click="handleButtonClick('日度')" :active="activeButton === '日度'">日度</el-button>
@@ -617,6 +612,8 @@ const combineMap = () =>{
     height: 350px;
     justify-content: center;
     align-items: center;
+    background-color: #fcf6e7;
+    position: relative;
 }
 .exponent_box_title{
     width: 100%;
@@ -624,18 +621,21 @@ const combineMap = () =>{
     display: flex;
     margin-top: 10px;
     align-items: center;
+    position: relative;
 }
 .left_bottom{
     width: 310px;
     height: 350px;
     justify-content: center;
     align-items: center;
+    background-color: #fcf6e7;
+    position: relative;
 }
 .listDiv-ul-li-title{
     line-height: 40px;
     font-size: 14px;
     display: flex;
-    background-color: #ff765a;
+    background-color: #a00712;
     color: #fff;
     line-height: 40px;
     height: 40px;
@@ -649,6 +649,7 @@ const combineMap = () =>{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    position: relative;
 }
 .bgNum{
     color: #fff;
@@ -660,7 +661,8 @@ const combineMap = () =>{
     text-align: center;
     margin-left: 8px;
     margin-right: 8px;
-    background: #ff0404;
+    background: #a00712;
+    position: relative;
 }
 .bgNum_2{
     color: #fff;
@@ -672,7 +674,8 @@ const combineMap = () =>{
     text-align: center;
     margin-left: 8px;
     margin-right: 8px;
-    background: #ffb10a;
+    background: #e28350;
+    position: relative;
 }
 .bgNum_3{
     color: #fff;
@@ -684,7 +687,8 @@ const combineMap = () =>{
     text-align: center;
     margin-left: 8px;
     margin-right: 8px;
-    background: #19d1c5;
+    background: #4b565b;
+    position: relative;
 }
 .bgNum_4{
     color: #fff;
@@ -696,7 +700,8 @@ const combineMap = () =>{
     text-align: center;
     margin-left: 8px;
     margin-right: 8px;
-    background: rgb(143, 215, 141);
+    background: #919e8b;
+    position: relative;
 }
 .bgNum_5{
     color: #fff;
@@ -709,38 +714,43 @@ const combineMap = () =>{
     margin-left: 8px;
     margin-right: 8px;
     background: #aaa;
+    position: relative;
 }
 .price{
     font-size: 12px;
-    color: #ff0404;
+    color: #a00712;
     width: 25%;
     line-height: 42px;    
     font-weight: 550;    
     text-align: center;
+    position: relative;
 }
 .price_2{
     font-size: 12px;
-    color: #ffb10a;
+    color: #e28350;
     width: 25%;
     line-height: 42px;    
     font-weight: 550;    
     text-align: center;
+    position: relative;
 }
 .price_3{
     font-size: 12px;
-    color: #19d1c5;
+    color: #4b565b;
     width: 25%;
     line-height: 42px;    
     font-weight: 550;    
     text-align: center;
+    position: relative;
 }
 .price_4{
     font-size: 12px;
-    color: rgb(143, 215, 141);
+    color: #919e8b;
     width: 25%;
     line-height: 42px;    
     font-weight: 550;    
     text-align: center;
+    position: relative;
 }
 .price_5{
     font-size: 12px;
@@ -749,13 +759,15 @@ const combineMap = () =>{
     line-height: 42px;    
     font-weight: 550;    
     text-align: center;
+    position: relative;
 }
 .center{
-    width: 600px;
+    width: 580px;
     height: 720px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0 10px;
 }
 .right{
     width: 330px;
@@ -771,11 +783,15 @@ const combineMap = () =>{
     width: 330px;
     height: 350px;
     justify-content: center;
+    background-color: #fcf6e7;
+    position: relative;
 }
 .right_bottom{
     width: 330px;
     height: 350px;
     justify-content: center;
+    background-color: #fcf6e7;
+    position: relative;
 }
 
 .exponent_box_date{
@@ -785,6 +801,7 @@ const combineMap = () =>{
     padding-left: 30px;
     font-weight: bold;
     font-size: 16px;
+    position: relative;
 }
 .exponent_box_pic{
     position: relative;
@@ -813,7 +830,7 @@ const combineMap = () =>{
     font-stretch: normal;
     line-height: 22px;
     letter-spacing: 1px;
-    color: #0dad3e;
+    color: #4f7051;
     position: absolute;
     top: 34px;
     left: 71px;
@@ -822,7 +839,7 @@ const combineMap = () =>{
     width: 128px;
     height: 38px;
     border-radius: 2px;
-    border: 2px solid #0dad3e;
+    border: 2px solid #4f7051;
     position: absolute;
     top: 82px;
     left: 80px;
@@ -833,7 +850,7 @@ const combineMap = () =>{
     font-weight: 400;
     font-stretch: normal;
     letter-spacing: 1px;
-    color: #f7523f;
+    color: #a00712;
 }
 .line2_text{
     font-weight: 700;
@@ -861,13 +878,13 @@ const combineMap = () =>{
     font-weight: 400;
     font-stretch: normal;
     letter-spacing: 1px;
-    color: #7dc53b;
+    color: #4f7051;
 }
 .line0_text{
     width: 150px;
     height: 38px;
     line-height: 38px;
-    background-color: #e42431;
+    background-color: #a00712;
     position: absolute;
     top: -18px;
     left: 24px;
@@ -896,7 +913,7 @@ const combineMap = () =>{
 .line0_data{
     width: 130px;
     height: 38px;
-    border: 2px solid #e42431;
+    border: 2px solid #a00712;
     position: absolute;
     top: -18px;
     left: 174px;

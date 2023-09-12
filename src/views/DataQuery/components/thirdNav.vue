@@ -707,8 +707,23 @@ onMounted(async () => {
   padding-right: 80px;
 }
 .queryButton{
-  background-color: var(--el-color-success);
+  background-color: #05354b;
   color: var(--el-color-white);
+}
+.el-button:hover, .el-button:focus {
+    color: var(--el-button-hover-text-color);
+    border-color: #05354b;
+    background-color: #05354b;
+    outline: none;
+}
+.el-button--success.is-plain, .el-button--success.is-text, .el-button--success.is-link {
+    --el-button-text-color: #05354b!important;
+    --el-button-bg-color: white;
+    --el-button-border-color: #05354b!important;
+    --el-button-hover-text-color: var(--el-color-white);
+    --el-button-hover-bg-color: var(--el-color-success);
+    --el-button-hover-border-color: var(--el-color-success);
+    --el-button-active-text-color: var(--el-color-white);
 }
 .firstSelect{
   padding-left: 40px;
@@ -830,12 +845,12 @@ onMounted(async () => {
   border: 1px solid #e0e0e0; /* 添加单元格边框 */
   padding: 8px; /* 添加单元格内边距 */
   text-align: center; /* 居中文本 */
-  background-color: #f5fdfb;
+  background-color: #faf6f2;
 }
 
 .el-table th.el-table__cell{
-  background-color: #37cba3;
-  color: white;
+  background-color: #f6eac5;
+  color: #893448;
   text-align: center;
   font-size: 15px;
   font-weight: bolder;

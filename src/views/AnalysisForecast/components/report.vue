@@ -602,9 +602,12 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
+.demo-tabs{
+  width: 1240px;
+}
 .report_item{
   height: 100px;
-  width: 100%;
+  width: 1240px;
   border-bottom: 1px dashed #e5e5e5;
   display: flex;
   padding: 10px;
@@ -685,6 +688,7 @@ onMounted(() => {
   justify-content:normal;/* 水平对齐 */
   margin-top: 30px;
   height:400px;
+  width: 1240px;
 }
 .forecast_report{
   width: 25%;
@@ -693,11 +697,12 @@ onMounted(() => {
   border-radius: 10px;
   margin-left: 10px;
   margin-right: 40px;
+  position: relative;
 }
 .forecast_report_title{
   padding-left: 20px;
   border-radius: 10px 10px 0 0;
-  background: #f2fbfb;
+  background: #faf3d9;
   line-height: 40px;
 }
 .forecast.forecast_report.forecast_report_title {
