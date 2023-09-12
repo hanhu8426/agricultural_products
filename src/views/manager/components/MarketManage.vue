@@ -147,6 +147,14 @@ const options_province = [
     label: '澳门特别行政区',
   },
 ];
+const selectedMarket = ref('');
+const form = ref({
+  province:'',
+  market:''
+    }
+)
+const editDialogVisible = ref(false);
+const addDialogVisible = ref(false);
 const handleProvinceChange = () => {
 }
 const searchMarket = async () => {
@@ -161,6 +169,46 @@ const searchMarket = async () => {
     }catch(error){
         console.log('获取省市数据失败',error)
     }
+}
+
+const add = async () =>{
+  addDialogVisible.value = true;
+  form.value.market = '';
+  form.value.province = '';
+}
+
+const handleEdit = (row) =>{
+  selectedMarket.value = row.market;
+  form.value.province = row.province;
+  form.value.market = row.market;
+  editDialogVisible.value = true;
+}
+const handleDelete = async (row) => {
+  try{
+    await axios.delete(`${baseUrl}/dropDownBox/markets/${row.province}/${row.market}`);
+  }catch(error){
+    console.log("删除市场失败",error)
+  }
+  await searchMarket();
+}
+const onSubmit = async () => {
+  try{
+    await axios.post(`${baseUrl}/dropDownBox/markets/edit/${selectedMarket.value}/${form.value.market}/${form.value.province}`)
+  }catch (error){
+    console.log("修改市场失败",error);
+  }
+  editDialogVisible.value = false;
+  await searchMarket();
+}
+
+const onAdd = async () => {
+  try{
+    await axios.post(`${baseUrl}/dropDownBox/markets/${form.value.province}/${form.value.market}`)
+  }catch (error){
+    console.log("添加市场失败",error);
+  }
+  addDialogVisible.value = false;
+  await searchMarket();
 }
 
 onMounted(() => {
@@ -179,22 +227,70 @@ onMounted(() => {
             <el-button type="info" style="margin-left: 10px;" @click="searchMarket">查询</el-button>
         </div>
         <div class="addButton">
-            <el-button type="success">添加</el-button>
+            <el-button type="success" @click="add">添加</el-button>
+            <el-dialog v-model="addDialogVisible" title="添加">
+              <el-form :model="form">
+                <el-form-item label="省市:">
+                  <el-select v-model="form.province" class="m-2" placeholder="请选择">
+                    <el-option
+                        v-for="item in options_province"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                    />
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="市场名称:">
+                  <el-input style="width: 300px" v-model="form.market" />
+                </el-form-item>
+              </el-form>
+              <template #footer>
+            <span class="dialog-footer">
+            <el-button @click="addDialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="onAdd">
+              确认
+            </el-button>
+            </span>
+              </template>
+            </el-dialog>
         </div>
     </div>
     <div class="ManageTable">
-        <el-table :data="searchMarketValue" style="width: 960px;max-width: 100%;height: 518px;">
-            <el-table-column prop="province" label="省市" width="230px" style="color: #aaa;"/>
-            <el-table-column prop="market" label="市场" width="430px" />
-            <el-table-column fixed="right" label="选项" width="300px">
-            <template #default>
-                <el-button link type="primary" size="small" @click="handleClick"
-                >编辑</el-button
-                >
-                <el-button link type="primary" size="small">删除</el-button>
-            </template>
-            </el-table-column>
-        </el-table>
+      <el-table :data="searchMarketValue" style="width: 960px;max-width: 100%;height: 518px;">
+          <el-table-column prop="province" label="省市" width="230px" style="color: #aaa;"/>
+          <el-table-column prop="market" label="市场" width="430px" />
+          <el-table-column fixed="right" label="选项" width="300px">
+          <template #default="scope">
+              <el-button link type="primary" size="small" @click="handleEdit(scope.row)">编辑</el-button>
+              <el-button link type="primary" size="small" @click="handleDelete(scope.row)">删除</el-button>
+          </template>
+          </el-table-column>
+      </el-table>
+      <el-dialog v-model="editDialogVisible" title="编辑">
+        <el-form :model="form">
+          <el-form-item label="省市:">
+            <el-select v-model="form.province" class="m-2" placeholder="请选择">
+              <el-option
+                  v-for="item in options_province"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="市场名称:">
+            <el-input style="width: 300px" v-model="form.market" />
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <span class="dialog-footer">
+          <el-button @click="editDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="onSubmit">
+            确认
+          </el-button>
+          </span>
+        </template>
+      </el-dialog>
     </div>
 </template>
 

@@ -3,14 +3,14 @@ import{ref,onMounted} from 'vue'
 import axios from 'axios';
 import {baseUrl} from "@/main";
 
-const DailyReportValue = ref([]);
+const weeklyReportValue = ref([]);
 const selectedDate = ref('');
 const date = ref('');
 const form = ref({
-      thatDate:'',
-      source:'',
-      content:'',
-      title:'',
+  firstDate:'',
+  source:'',
+  content:'',
+  title:'',
     }
 )
 // 处理时间格式
@@ -27,24 +27,24 @@ function formatDates(dateStrings) {
 }
 
 const editDialogVisible = ref(false);
-const searchDailyReport = async () => {
+const searchWeeklyReport = async () => {
   const time = formatDates(selectedDate.value);
   console.log(time);
   try{
-    const response = await axios.get(`${baseUrl}/dailyPaper/${time}`);
-    DailyReportValue.value = [];
-    DailyReportValue.value.push(response.data.data);
-    console.log(DailyReportValue.value)
+    const response = await axios.get(`${baseUrl}/weeklyPaperText/byDay/${time}`);
+    weeklyReportValue.value = [];
+    weeklyReportValue.value.push(response.data.data);
+    console.log(weeklyReportValue.value)
   }catch(error){
     console.log('获取日报数据失败',error)
   }
 }
 
 const handleEdit = (row) =>{
-  date.value = row.thatDate;
+  date.value = row.firstDate;
   form.value.content = row.content;
   form.value.title = row.title;
-  form.value.thatDate = row.thatDate;
+  form.value.firstDate = row.firstDate;
   form.value.source = row.source;
   editDialogVisible.value = true;
 }
@@ -56,20 +56,20 @@ const onSubmit = async () => {
     console.log("修改日报失败",error);
   }
   editDialogVisible.value = false;
-  await searchDailyReport();
+  await searchWeeklyReport();
 }
 
-const fetchDailyReport = async () => {
+const fetchWeeklyReport = async () => {
   try{
-    const response = await axios.get(`${baseUrl}/dailyPaper/all`);
-    DailyReportValue.value = response.data.data;
-    console.log(DailyReportValue.value)
+    const response = await axios.get(`${baseUrl}/weeklyPaperText`);
+    weeklyReportValue.value = response.data.data;
+    console.log(weeklyReportValue.value)
   }catch(error){
     console.log('获取全部日报数据失败',error)
   }
 }
 onMounted(() => {
-  fetchDailyReport();
+  fetchWeeklyReport();
 })
 </script>
 <template>
@@ -81,13 +81,13 @@ onMounted(() => {
           placeholder="选择日期"
           :size="'default'"
       />
-      <el-button type="info" style="margin-left: 10px;" @click="searchDailyReport">查询</el-button>
+      <el-button type="info" style="margin-left: 10px;" @click="searchWeeklyReport">查询</el-button>
     </div>
   </div>
   <div class="ManageTable">
-    <el-table :data="DailyReportValue" style="width: 960px;max-width: 100%;height: 518px;">
+    <el-table :data="weeklyReportValue" style="width: 960px;max-width: 100%;height: 518px;">
       <el-table-column prop="title" label="标题" width="200px" style="color: #aaa;"/>
-      <el-table-column prop="thatDate" label="日期" width="130px" />
+      <el-table-column prop="firstDate" label="日期" width="130px" />
       <el-table-column prop="source" label="来源" width="130px" />
       <el-table-column prop="content" label="内容" width="400px" >
         <template #default="{ row }">
@@ -109,7 +109,7 @@ onMounted(() => {
           <el-input style="width: 300px" v-model="form.source" />
         </el-form-item>
         <el-form-item label="日期:">
-          <el-input style="width: 300px" v-model="form.thatDate" />
+          <el-input style="width: 300px" v-model="form.firstDate" />
         </el-form-item>
         <el-form-item label="内容:">
           <el-input style="width: 500px" :rows="5" type="textarea" v-model="form.content" />
