@@ -308,6 +308,7 @@ onMounted(() => {
 </template>
 
 <style>
+
 .ManageSearchBar{
     width: 960px;
     height: 40px;

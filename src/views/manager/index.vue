@@ -104,6 +104,9 @@ const handleCommand = (command)=> {
 </template>
 
 <style>
+el-container {
+  overflow: hidden;
+}
 .common-layout{
   width:1240px;
   height: 100%;
