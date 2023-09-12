@@ -336,7 +336,6 @@ const combineMap = () =>{
           },
       series: [
           {
-          name: 'Access From',
           type: 'pie',
           radius: ['40%', '70%'],
           avoidLabelOverlap: false,
@@ -449,7 +448,7 @@ const combineMap = () =>{
         <div class="left">
             <div class="left_top">
                 <div class="exponent_box_title">
-                    <img src="../../assets/images/zhexiantu-xianxing.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;">
+                    <img src="../../assets/images/zhexiantu-xianxing.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;background: none;">
                     <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 260px;">农产品批发价格200指数</span>
                 </div>
                 <p class="exponent_box_date">{{ formattedDate }}</p>
@@ -543,12 +542,16 @@ const combineMap = () =>{
             </div>
         </div>
         <div class="center">
-          <div id="chart-container_center" style="width: 580px; height: 580px;"></div>
+          <div class="exponent_box_title">
+              <img src="../../assets/images/地图.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;background: none;">
+              <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 200px;">各省市市场数量热力图</span>
+          </div>
+          <div id="chart-container_center" style="width: 580px; height: 680px;"></div>
         </div>
         <div class="right">
             <div class="right_top">
                 <div class="exponent_box_title">
-                    <img src="../../assets/images/zhexiantu-xianxing.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;">
+                    <img src="../../assets/images/zhexiantu-xianxing.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;background: none;">
                     <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 130px;">200指数趋势图</span>
                     <div style="margin-left: 20px;">
                         <el-button type="success" plain @click="handleButtonClick('日度')" :active="activeButton === '日度'">日度</el-button>
@@ -764,10 +767,11 @@ const combineMap = () =>{
 .center{
     width: 580px;
     height: 720px;
-    display: flex;
     justify-content: center;
     align-items: center;
     margin: 0 10px;
+    position: relative;
+    background-color: #fcf6e7;
 }
 .right{
     width: 330px;

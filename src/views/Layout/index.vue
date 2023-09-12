@@ -244,7 +244,7 @@ padding: 0 2em;
 .nav h1,
 .slider h1 {
 font-family: "Josefin Sans", sans-serif;
-font-size: 5vw;
+font-size: 22px;
 margin: 0;
 padding-bottom: 0.5rem;
 letter-spacing: 0.5rem;
@@ -266,7 +266,8 @@ color: #faebd7;
 z-index: 4;
 }
 h3.span {
-font-size: 2vw;
+  margin-top: 50px;
+font-size: 30px;
 letter-spacing: 0.7em;
 font-family: "ROBOTO", sans-serif;
 font-weight: 300;
@@ -339,7 +340,7 @@ z-index: -999;
 @media (min-width: 800px) {
 .nav h1,
 .slider h1 {
-  font-size: 5vw;
+  font-size: 22px;
 }
 
 .nav h2,
@@ -357,7 +358,7 @@ z-index: -999;
 
 .nav h1,
 .slider h1 {
-  font-size: 8vw;
+  font-size: 90px;
 }
 
 .nav h2,

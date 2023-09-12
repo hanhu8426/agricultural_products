@@ -31,7 +31,6 @@ onMounted(()=>{
           <p class="p_item">
             <a v-for="(item,index) in links" :key="index" :href=item.link>{{ item.linkName }}</a>
           </p>
-          <p>CopyRight © 小兔鲜儿</p>
           <p>暑期项目-13组-怎么放暑假也要打工啊啊啊啊</p>
         </div>
       </div>

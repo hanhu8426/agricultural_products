@@ -767,6 +767,7 @@ onMounted(() => {
 }
 .query{
   padding-left: 30px;
+  position: relative;
 }
 
 </style>
@@ -775,14 +776,38 @@ onMounted(() => {
   padding: 0;
   padding-bottom: 0;
   margin: auto 0;
-  padding-top: 30px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
   text-align: center;
-  background-color: #aeddc7;
+  background-color: #fdf7d3;
 }
 .el-dialog__title {
     line-height: var(--el-dialog-font-line-height);
     font-size: var(--el-dialog-title-font-size);
     color: var(--el-text-color-primary);
     align-items: center;
+    margin: auto 0;
+}
+.el-dialog {
+    --el-dialog-width: 50%;
+    --el-dialog-margin-top: 15vh;
+    --el-dialog-bg-color: var(--el-bg-color);
+    --el-dialog-box-shadow: var(--el-box-shadow);
+    --el-dialog-title-font-size: var(--el-font-size-large);
+    --el-dialog-content-font-size: 14px;
+    --el-dialog-font-line-height: var(--el-font-line-height-primary);
+    --el-dialog-padding-primary: 20px;
+    --el-dialog-border-radius: var(--el-border-radius-small);
+    position: relative;
+    margin: var(--el-dialog-margin-top, 15vh) auto 50px;
+    background: var(--el-dialog-bg-color);
+    border-radius: 10px;
+    box-shadow: var(--el-dialog-box-shadow);
+    box-sizing: border-box;
+    width: var(--el-dialog-width, 50%);
+}
+.el-dialog__headerbtn:focus .el-dialog__close, .el-dialog__headerbtn:hover .el-dialog__close {
+    color: #010531;
 }
 </style>

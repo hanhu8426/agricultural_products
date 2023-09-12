@@ -1851,6 +1851,12 @@ const MarketRadarChart_multiCategory_Init = () => {
       tooltip: {
         show: true
       },
+      toolbox: {
+          show: true,
+          feature: {
+            saveAsImage: { show: true }
+          }
+        },
       radar: {
         // shape: 'circle',
         indicator: radarName,
@@ -2077,6 +2083,12 @@ const MarketRadarChart_multiMarket_Init = () => {
       tooltip: {
         show: true
       },
+      toolbox: {
+          show: true,
+          feature: {
+            saveAsImage: { show: true }
+          }
+        },
       radar: {
         // shape: 'circle',
         indicator: radarName,
@@ -2304,6 +2316,12 @@ for (const Name of date) {
       tooltip: {
         show: true
       },
+      toolbox: {
+          show: true,
+          feature: {
+            saveAsImage: { show: true }
+          }
+        },
       radar: {
         // shape: 'circle',
         indicator: radarName,

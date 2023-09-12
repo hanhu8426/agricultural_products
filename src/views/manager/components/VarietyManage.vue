@@ -402,8 +402,8 @@ onMounted(() => {
   color: #545c64;
 }
 .el-button--success {
-    --el-button-text-color: var(--el-color-white);
-    --el-button-bg-color: #05354b!important;
+    --el-button-text-color: #05354b;
+    --el-button-bg-color: var(--el-color-white);
     --el-button-border-color: #05354b;
     --el-button-outline-color: var(--el-color-success-light-5);
     --el-button-active-color: var(--el-color-success-dark-2);

@@ -128,29 +128,13 @@ const login = () => {
         :options="options"
       />
     <div class="form">
-      <header class="head-form">
-      <h2>Log In</h2>
-   </header>
-      <form style="padding: 0 70px 50px 0;justify-content: center;">
-        <div style="display: flex;align-items: center;">
-          <div style="width: 50px;height: 50px;background: #fff;display: flex;justify-content: center;align-items: center;"><img src="../../assets/images/用户.png" alt="" style="width: 30px;height: 30px;background: #fff;"></div>
-          <input  type="text" placeholder="用户名" v-model="loginData.adminID" style="margin-top: 15px;border: none;border-bottom: 2px solid #D1D1D4;background: none;width: 75%;"/>
-        </div>
-        <div style="display: flex;align-items: center;">
-          <div style="width: 50px;height: 50px;background: #fff;display: flex;justify-content: center;align-items: center;"><img src="../../assets/images/密码.png" alt="" style="width: 30px;height: 30px;background: #fff;"></div>
-          <input type="password" placeholder="密码" v-model="loginData.adminPassword " style="margin-top: 15px;border: none;border-bottom: 2px solid #D1D1D4;background: none;width: 75%;" />
-        </div>
-        
-        <button @click.prevent="login" class="login-button" style="width: 200px;margin-top: 30px;margin-right: 100px;background: #fff;font-size: 16px;border-radius: 26px;border: 1px solid #fae9a7;text-transform: uppercase;font-weight: 700;color: #b49105;box-shadow: 0px 2px 2px #b49105;cursor: pointer;">登录</button>
-        <div style="background-color: white;margin-top: 50px;margin-left: 50px;width: 80px;">
+      <form style="padding: 50px;justify-content: center;">
+        <input type="text" placeholder="用户名" v-model="loginData.adminID" style="margin-top: 30px;"/>
+        <input type="password" placeholder="密码" v-model="loginData.adminPassword " style="margin-top: 20px;" />
+        <button @click.prevent="login" style="width: 200px;margin-top: 30px;background-color: #eee3c1;color: #893448;">登录</button>
+        <div style="background-color: #fbf2e5;padding-top: 50px;">
     <RouterLink to="/" class="backHome">返回首页</RouterLink>
   </div>
-  <div class="screen__background">
-			<span class="screen__background__shape screen__background__shape4"></span>
-			<span class="screen__background__shape screen__background__shape3"></span>		
-			<span class="screen__background__shape screen__background__shape2"></span>
-			<span class="screen__background__shape screen__background__shape1"></span>
-		</div>
       </form>
     </div>
   </div>
@@ -158,73 +142,9 @@ const login = () => {
 
 <style scoped>
 /* 在这里放置CSS代码 */
-@import url('https://fonts.googleapis.com/css?family=Roboto:300');
-@import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
 
-.screen__background {		
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	z-index: -1;
-	-webkit-clip-path: inset(0 0 0 0);
-	clip-path: inset(0 0 0 0);	
-}
-
-.screen__background__shape {
-	transform: rotate(45deg);
-	position: absolute;
-}
-
-.screen__background__shape1 {
-	height: 520px;
-	width: 520px;
-	background: #FFF;	
-	top: -50px;
-	right: 120px;	
-	border-radius: 0 72px 0 0;
-}
-
-.screen__background__shape2 {
-	height: 220px;
-	width: 220px;
-	background: #fcecb4;	
-	top: -172px;
-	right: 0;	
-	border-radius: 32px;
-}
-
-.screen__background__shape3 {
-	height: 540px;
-	width: 190px;
-	background: linear-gradient(270deg, #faf5e8, #fae9a7);
-	top: -24px;
-	right: 0;	
-	border-radius: 32px;
-}
-
-.screen__background__shape4 {
-	height: 400px;
-	width: 200px;
-	background: #feefbd;	
-	top: 420px;
-	right: 50px;	
-	border-radius: 60px;
-}
-
-header {
-    margin:30px 0;
-    margin-right: 200px;
-    text-align: center;
-}
-/* Login title form form */
-header h2 {
-    font-size: 250%;
-    font-family: 'Playfair Display', serif;
-    color: #3e403f;
-}
 .home{
   background-color: #76b852;
   padding-left: 40px;
@@ -239,15 +159,13 @@ header h2 {
 .form {
   position: relative;
   z-index: 1;
-  background: linear-gradient(90deg, #faf8ee, #fff2bc);
-  /* background: #fbf2e5; */
+  background: #fbf2e5;
   max-width: 500px;
   min-height: 500px;
   margin: 0 auto 100px;
   padding: 45px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-  border-radius: 20px;
 }
 .form input {
   font-family: "Roboto", sans-serif;
@@ -320,20 +238,20 @@ header h2 {
 .container .info span .fa {
   color: #EF3B3A;
 }
-body {
-	background: linear-gradient(90deg, #C7C5F4, #776BCC);		
+body { /* fallback for old browsers */
+  background: rgb(141,194,111);
+  background: linear-gradient(90deg, rgba(141,194,111,1) 0%, rgba(118,184,82,1) 50%);
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .backHome{
-  background-color: white;
+  background-color: #fbf2e5;
   color: #4b565b;
-  font-size: 16px;
+  font-size: 18px;
 }
 .backHome:hover{
   text-decoration: underline;
-}
-button:hover {
-    transform: translatey(3px);
-    box-shadow: none;
 }
 </style>
 
