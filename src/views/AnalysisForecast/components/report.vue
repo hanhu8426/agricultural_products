@@ -492,6 +492,7 @@ onMounted(() => {
             layout="prev, pager, next"
             :total="totalSize"
             @current-change="handlePageChange"
+            style="justify-content: right"
         />
       </div>
     </el-tab-pane>
@@ -537,6 +538,7 @@ onMounted(() => {
             layout="prev, pager, next"
             :total="totalWeeklySize"
             @current-change="handlePageChange"
+            style="justify-content: right"
         />
       </div>
     </el-tab-pane>

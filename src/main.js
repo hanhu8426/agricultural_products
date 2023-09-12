@@ -9,6 +9,7 @@ import router from './router'
 
 import '@/styles/common.scss'
 import '@/styles/index.scss'
+import {ElementPlus} from "@element-plus/icons-vue";
 
 // import {getCategory} from '@/apis/api'
 // getCategory().then(res=>{

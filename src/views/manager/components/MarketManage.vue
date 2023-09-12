@@ -2,6 +2,7 @@
 import{ref,onMounted} from 'vue'
 import axios from 'axios';
 import {baseUrl} from "@/main";
+import { InfoFilled } from '@element-plus/icons-vue'
 
 const searchMarketValue = ref([]);
 const selectedProvince = ref('');
@@ -193,7 +194,7 @@ const handleDelete = async (row) => {
 }
 const onSubmit = async () => {
   try{
-    await axios.post(`${baseUrl}/dropDownBox/markets/edit/${selectedMarket.value}/${form.value.market}/${form.value.province}`)
+    await axios.post(`${baseUrl}/dropDownBox/markets/edit/${selectedMarket.value}/${form.value.market}/${form.value.province}`);
   }catch (error){
     console.log("修改市场失败",error);
   }
@@ -262,7 +263,19 @@ onMounted(() => {
           <el-table-column fixed="right" label="选项" width="300px">
           <template #default="scope">
               <el-button link type="primary" size="small" @click="handleEdit(scope.row)">编辑</el-button>
-              <el-button link type="primary" size="small" @click="handleDelete(scope.row)">删除</el-button>
+              <el-popconfirm
+                  width="220"
+                  confirm-button-text="OK"
+                  cancel-button-text="Cancel"
+                  :icon="InfoFilled"
+                  icon-color="#626AEF"
+                  title="确定要删除本条数据？"
+                  @confirm="handleDelete(scope.row)"
+              >
+                <template #reference>
+                  <el-button link type="primary" size="small">删除</el-button>
+                </template>
+              </el-popconfirm>
           </template>
           </el-table-column>
       </el-table>
