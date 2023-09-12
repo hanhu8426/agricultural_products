@@ -94,10 +94,10 @@ onMounted(() => {
     </div>
   </div>
   <div class="ManageTable">
-    <el-table :data="searchLinkValue" style="width: 960px;max-width: 100%;height: 518px;">
+    <el-table :data="searchLinkValue" style="width: 960px;max-width: 100%;height: 100vh;">
       <el-table-column prop="linkName" label="链接名称" width="300px" style="color: #aaa;"/>
       <el-table-column prop="link" label="链接地址" width="430px" />
-      <el-table-column fixed="right" label="选项" width="200px">
+      <el-table-column fixed="right" label="选项" width="230px">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="handleEdit(scope.row)">编辑</el-button>
           <el-popconfirm

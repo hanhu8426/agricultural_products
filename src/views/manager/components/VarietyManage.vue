@@ -330,11 +330,11 @@ onMounted(() => {
     </div>
   </div>
   <div class="ManageTable">
-    <el-table :data="searchProductValue" style="width: 960px;max-width: 100%;height: 518px;">
-      <el-table-column prop="firstVariety" label="品种大类" width="230px" style="color: #aaa;"/>
-      <el-table-column prop="secondVariety" label="品种中类" width="230px" />
-      <el-table-column prop="thirdVariety" label="品种小类" width="230px" />
-      <el-table-column fixed="right" label="选项" width="200px">
+    <el-table :data="searchProductValue" style="width: 960px;max-width: 100%;height: 100vh;">
+      <el-table-column prop="firstVariety" label="品种大类" width="250px" style="color: #aaa;"/>
+      <el-table-column prop="secondVariety" label="品种中类" width="250px" />
+      <el-table-column prop="thirdVariety" label="品种小类" width="250px" />
+      <el-table-column fixed="right" label="选项" width="210px">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="handleEdit(scope.row)">编辑</el-button>
           <el-popconfirm

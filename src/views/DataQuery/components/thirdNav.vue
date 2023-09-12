@@ -849,7 +849,7 @@ const download_query = () => {
   height: fit-content;
   width: 90%;
   max-width: 90%;
-  background-color: var(--el-table-bg-color);
+  background-color: transparent;
   font-size: 14px;
   color: var(--el-table-text-color);
 }

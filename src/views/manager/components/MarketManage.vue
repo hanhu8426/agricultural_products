@@ -257,7 +257,7 @@ onMounted(() => {
         </div>
     </div>
     <div class="ManageTable">
-      <el-table :data="searchMarketValue" style="width: 960px;max-width: 100%;height: 518px;">
+      <el-table :data="searchMarketValue" style="width: 960px;max-width: 100%;height: 100vh;">
           <el-table-column prop="province" label="省市" width="230px" style="color: #aaa;"/>
           <el-table-column prop="market" label="市场" width="430px" />
           <el-table-column fixed="right" label="选项" width="300px">
@@ -335,5 +335,27 @@ onMounted(() => {
 }
 .el-button.is-link:hover, .el-button.is-link:focus {
     color: #545c64;
+}
+.el-button:hover, .el-button:focus {
+    color: white;
+    border-color: #05354b;
+    background-color: #05354b;
+    outline: none;
+}
+.el-button--primary {
+    --el-button-text-color: #05354b;
+    --el-button-bg-color: white;
+    --el-button-border-color: #05354b;
+    --el-button-outline-color: var(--el-color-primary-light-5);
+    --el-button-active-color: #05354b;
+    --el-button-hover-text-color: var(--el-color-white);
+    --el-button-hover-link-text-color: var(--el-color-primary-light-5);
+    --el-button-hover-bg-color: var(--el-color-primary-light-3);
+    --el-button-hover-border-color: var(--el-color-primary-light-3);
+    --el-button-active-bg-color: var(--el-color-primary-dark-2);
+    --el-button-active-border-color: var(--el-color-primary-dark-2);
+    --el-button-disabled-text-color: var(--el-color-white);
+    --el-button-disabled-bg-color: var(--el-color-primary-light-5);
+    --el-button-disabled-border-color: var(--el-color-primary-light-5);
 }
 </style>

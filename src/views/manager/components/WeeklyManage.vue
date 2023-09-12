@@ -85,16 +85,16 @@ onMounted(() => {
     </div>
   </div>
   <div class="ManageTable">
-    <el-table :data="weeklyReportValue" style="width: 960px;max-width: 100%;height: 518px;">
+    <el-table :data="weeklyReportValue" style="width: 960px;max-width: 100%;height: 100vh;">
       <el-table-column prop="title" label="标题" width="200px" style="color: #aaa;"/>
       <el-table-column prop="firstDate" label="日期" width="130px" />
-      <el-table-column prop="source" label="来源" width="130px" />
+      <el-table-column prop="source" label="来源" width="150px" />
       <el-table-column prop="content" label="内容" width="400px" >
         <template #default="{ row }">
           <div class="ellipsis-text">{{ row.content }}</div>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="选项" width="55px">
+      <el-table-column fixed="right" label="选项" width="80px">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="handleEdit(scope.row)">编辑</el-button>
         </template>

@@ -5,6 +5,93 @@ import {
 } from '@element-plus/icons-vue'
 import {useRouter} from "vue-router";
 import {ref} from 'vue'
+import { loadFull } from "tsparticles";
+
+const options = {
+      background: {
+        color: {
+          value: "#fef8ef",//粒子颜色
+          opacity: 0.5,
+        },
+      },
+      fpsLimit: 60,
+      interactivity: {
+        events: {
+          onClick: {
+            enable: true,
+            mode: "push",//可用的click模式有: "push", "remove", "repulse", "bubble"。
+          },
+          onHover: {
+            enable: true,
+            mode: "grab",//可用的hover模式有: "grab", "repulse", "bubble"。
+          },
+          resize: true,
+        },
+        modes: {
+          bubble: {
+            distance: 400,
+            duration: 2,
+            opacity: 0.8,
+            size: 40,
+          },
+          push: {
+            quantity: 4,
+          },
+          repulse: {
+            distance: 200,
+            duration: 0.4,
+          },
+        },
+      },
+      particles: {
+        color: {
+          value: '#893448',
+        },
+        links: {
+          color: '#893448',//'#dedede'。线条颜色。
+          distance: 150,//线条长度
+          enable: true,//是否有线条
+          opacity: 0.5,//线条透明度。
+          width: 1,//线条宽度。
+        },
+        collisions: {
+          enable: false,
+        },
+        move: {
+          direction: "none",
+          enable: true,
+          outMode: "bounce",
+          random: false,
+          speed: 2,//粒子运动速度。
+          straight: false,
+        },
+        number: {
+          density: {
+            enable: true,
+            area: 800,
+          },
+          value: 80,//粒子数量。
+        },
+        opacity: {
+          value: 0.5,//粒子透明度。
+        },
+        shape: {
+          type: "none", //可用的粒子外观类型有："circle","edge","triangle", "polygon","star"
+        },
+        size: {
+          random: true,
+          value: 5,
+        },
+      },
+      detectRetina: true,
+    };
+    const particlesInit = async engine => {
+        await loadFull(engine);
+};
+const particlesLoaded = async container => {
+    console.log("Particles container loaded", container);
+}
+
 const handleOpen = (key, keyPath) => {
   console.log(key, keyPath)
 }
@@ -43,6 +130,12 @@ const handleCommand = (command)=> {
 </script>
 
 <template>
+  <Particles
+        id="tsparticles"
+        :particlesInit="particlesInit"
+        :particlesLoaded="particlesLoaded"
+        :options="options"
+      />
   <div class="common-layout">
     <el-header style="background-color: #f3f3f3;">
       <div class="title" style="font-size: 18px; display: flex">农产品市场数据分析平台后台管理
@@ -78,7 +171,7 @@ const handleCommand = (command)=> {
               text-color="#fff"
               @open="handleOpen"
               @close="handleClose"
-              style="height: 598px"
+              style="height: 100vh"
           >
             <el-sub-menu index="1">
               <template #title>
@@ -106,7 +199,8 @@ const handleCommand = (command)=> {
 <style>
 .common-layout{
   width:1240px;
-  height: 100%;
+  height: 100vh;
+  position: relative;
 }
 el-header{
   display: flex;
