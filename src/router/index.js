@@ -22,53 +22,53 @@ const router = createRouter({
       children:[
         {
           path:'',
-          component: Home
+          component: Home//首页
         },
         {
           path:'dataQuery',
-          component: DataQuery
+          component: DataQuery//数据查询
         },
         {
           path:'marketInfo',
-          component: MarketInfo
+          component: MarketInfo//市场行情
         },
         {
           path:'analysisForecast',
-          component: AnalysisForecast
+          component: AnalysisForecast//分析预测
         },
       ]
     },
     {
       path:'/login',
-      component: Login,
+      component: Login,//登录
     },
     {
-      path:'/manage',
+      path:'/manage',//管理员
       component: Manage,
       children:[
         {
           path:'',
-          component: Market
+          component: Market//市场更改
         },
         {
           path:'/manage/variety',
-          component: Variety
+          component: Variety//品种更改
         },
         {
           path:'/manage/link',
-          component: Link
+          component: Link//链接更改
         },
         {
           path:'/manage/daily',
-          component: Daily
+          component: Daily//日报更改
         },
         {
           path:'/manage/monthly',
-          component: Monthly
+          component: Monthly//周报更改
         },
         {
           path:'/manage/forecast',
-          component: Forecast
+          component: Forecast//预测报告更改
         },
       ]
     }

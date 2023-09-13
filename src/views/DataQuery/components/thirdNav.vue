@@ -612,7 +612,7 @@ const download_query = () => {
         <div class="topButton">
           <el-button type="success" plain @click="handleButtonClick('日度')" :active="activeButton === '日度'">日度</el-button>
           <el-button type="success" plain @click="handleButtonClick('月度')" :active="activeButton === '月度'">月度</el-button>
-        </div>
+        </div><!--日度月度切换按钮-->
 
         <div class="topTitle" style="justify-content: space-between">
           <p class="underline-text">
@@ -622,7 +622,7 @@ const download_query = () => {
           style="margin-left: 700px;height: 20px;font-size: 10px">下载</el-button>
         </div>
 
-        <div class="scrollTable">
+        <div class="scrollTable"> <!--200指数表格-->
           <el-table :data="index200Table" height="400" class="custom-table" stripe style="width: 100%">
             <el-table-column prop="collectDate" label="时间" width="180" />
             <el-table-column prop="productExponent" label="农产品批发价格200指数"  />
@@ -638,7 +638,7 @@ const download_query = () => {
               农业农村部”农产品批发价格200指数“{{activeButton}}走势图
             </p>
           </div>
-
+          <!--200指数折线图-->
           <div v-if="activeButton === '日度'" style="width: 90%;margin: 0 auto;">
             <trendChart  />
           </div>
@@ -653,7 +653,7 @@ const download_query = () => {
         </div>
 
         <div class="searchBar">
-          <div class="firstSelect">
+          <div class="firstSelect"> <!--选择与查询-->
             批发市场:
             <el-cascader
                 v-model="selectedMarket"
@@ -683,7 +683,7 @@ const download_query = () => {
             单位：元/公斤
           </div>
         </div>
-        <div class="scrollTable">
+        <div class="scrollTable"> <!--表格展示数据-->
           <el-table :data="displayedData" class="custom-table">
             <el-table-column prop="market" label="批发市场"/>
             <el-table-column prop="variety" label="品种" width="180" />

@@ -7,8 +7,8 @@ import 'echarts/theme/essos';
 
 const props = {
   expandTrigger: 'hover'
-};
-const activeName = ref('first')
+};//鼠标悬停打开级联框
+const activeName = ref('first')//默认选中日报
 
 // 分页展示日周度报告
 const currentPage = ref(1); // 当前页码
@@ -548,9 +548,9 @@ onMounted(() => {
     </el-tab-pane>
   </el-tabs>
 
-  <div class="forecast">
+  <div class="forecast">  <!--预测部分-->
     <div class="forecast_report" >
-      <p class="forecast_report_title">预测新闻</p>
+      <p class="forecast_report_title">预测新闻</p> <!--左侧新闻栏-->
       <div class="forecast_report_content">
         <li class="forecast_report_item" v-for="(item,index) in allForecastReport" :key="index">
           <i class="icon"></i>
@@ -569,7 +569,7 @@ onMounted(() => {
     <div class="forecast_chart">
       <div class="forecast_chart_title">
         <p class="forecast_chart_title_content">
-          常见农产品各省市（全国）均价预测表
+          常见农产品各省市（全国）均价预测表  <!--右侧预测趋势图-->
         </p>
       </div>
       <div class="forecast_chart_searchBar">
@@ -777,7 +777,7 @@ onMounted(() => {
 }
 
 </style>
-<style lang="scss">
+<style lang="scss">//全局格式以覆盖element原始格式
 .el-dialog__header {
   padding: 0;
   padding-bottom: 0;

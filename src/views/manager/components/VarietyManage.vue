@@ -217,7 +217,7 @@ const options_product = [
       },
     ],
   },
-];
+];//所有可选大类与中类
 const selectedThirdVariety = ref('');
 const form = ref({
       variety:[],
@@ -241,13 +241,13 @@ const searchProduct = async () => {
   }catch(error){
     console.log('获取省市数据失败',error)
   }
-}
+}//按中类获取小类，可不选，即展示所有
 
 const add = async () =>{
   addDialogVisible.value = true;
   form.value.market = '';
   form.value.province = '';
-}
+}//打开添加
 
 const handleEdit = (row) =>{
   selectedThirdVariety.value = row.thirdVariety;
@@ -255,7 +255,7 @@ const handleEdit = (row) =>{
   form.value.variety[1] = row.secondVariety;
   form.value.product = row.thirdVariety;
   editDialogVisible.value = true;
-}
+}//打开编辑
 const handleDelete = async (row) => {
   try{
     await axios.delete(`${baseUrl}/dropDownBox/variety/${row.thirdVariety}`);
@@ -263,7 +263,7 @@ const handleDelete = async (row) => {
     console.log("删除品种失败",error)
   }
   await searchProduct();
-}
+}//删除
 const onSubmit = async () => {
   try{
     await axios.post(`${baseUrl}/dropDownBox/variety/edit/${selectedThirdVariety.value}/
@@ -273,7 +273,7 @@ const onSubmit = async () => {
   }
   editDialogVisible.value = false;
   await searchProduct();
-}
+}//提交编辑
 
 const onAdd = async () => {
   try{
@@ -285,7 +285,7 @@ const onAdd = async () => {
   await searchProduct();
   form.value.variety = [];
   form.value.product = '';
-}
+}//提交增加
 
 onMounted(() => {
   searchProduct();

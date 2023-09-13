@@ -1,7 +1,7 @@
 <script setup>
 import {useRouter} from "vue-router";
 import {ref} from 'vue'
-
+//获取当前时间
 const currentDate = ref(new Date());
 const formattedDate = ref(formatDate(currentDate.value));
 function formatDate(date) {
@@ -10,9 +10,10 @@ function formatDate(date) {
   const day = date.getDate();
   return `${year}年${month}月${day}日`;
 }
+//默认选中市场管理页
 const selectedPage = ref(0);
 const PageName = ['市场管理','农产品种类管理','链接管理','日报管理','周报管理','预测报告管理']
-
+//随路由跳转更改页面名
 const toMarket = () => {
   selectedPage.value = 0;
 }
@@ -35,7 +36,7 @@ const toForecast = () => {
 // 点击退出按钮进行退出
 const router = useRouter();
 const toLogin = ()=> {
-    router.push('/login'); // 假设路由的名称是 'logout'
+    router.push('/login'); 
   }
 
 
@@ -483,9 +484,6 @@ button, a {
     margin: 0;
   }
   
-  &-wrapper {
-    
-  }
   
   &-percentage {
     text-align: right;

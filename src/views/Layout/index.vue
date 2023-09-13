@@ -1,27 +1,13 @@
 <script setup> 
 import LayoutFooter from './components/LayoutFooter.vue'
-import { ref, onMounted, onBeforeUnmount, watchEffect } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
   import { loadFull } from "tsparticles";
-  import { useRoute } from 'vue-router';
-
-const route = useRoute();
-
-const scrollToTab = (hash) => {
-  const targetElement = document.querySelector(hash);
-  if (targetElement) {
-    targetElement.scrollIntoView({ behavior: 'smooth' });
-  }
-};
-
-
-
-
+//首页副标题
   const loaderChars = ref(['C', 'R', 'E', 'A', 'T', 'E', 'D', ' ', 'B', 'Y', ' ', '暑', '期', '项', '目', '-', '1', '3', '组']);
-      const currentId = ref(null);
-      const currentTab = ref(null);
+      
       const tabContainerHeight = 70;
       const lastScroll = ref(0);
-  
+//背景动态几何线条设置
       const options = {
       background: {
         color: {
@@ -106,23 +92,10 @@ const scrollToTab = (hash) => {
 const particlesLoaded = async container => {
     console.log("Particles container loaded", container);
 };
-    //   function onTabClick(event, element) {
-    //     event.preventDefault();
-    //     const scrollTop = document.querySelector(element.getAttribute('href')).offsetTop - tabContainerHeight + 1;
-    //     window.scrollTo({ top: scrollTop, behavior: 'smooth' });
-    //   }
-
-
-
+//导航栏向下滚动置顶
       function onScroll() {
         checkHeaderPosition();
         lastScroll.value = window.scrollY;
-      }
-  
-      function onResize() {
-        if (currentId.value) {
-          setSliderCss();
-        }
       }
   
       function checkHeaderPosition() {
@@ -149,34 +122,12 @@ const particlesLoaded = async container => {
         }
       }
   
-      
-  
-      function setSliderCss() {
-        let width = '0';
-        let left = '0';
-        if (currentTab.value) {
-          width = window.getComputedStyle(currentTab.value).width;
-          left = currentTab.value.offsetLeft + 'px';
-        }
-        document.querySelector('.nav-tab-slider').style.width = width;
-        document.querySelector('.nav-tab-slider').style.left = left;
-      }
-  
       onMounted(() => {
         window.addEventListener('scroll', onScroll);
-        window.addEventListener('resize', onResize);
-        // 监听路由变化，滚动到对应选项卡
-        watchEffect(() => {
-          const hash = route.hash;
-          if (hash) {
-            scrollToTab(hash);
-          }
-        });
       });
   
       onBeforeUnmount(() => {
         window.removeEventListener('scroll', onScroll);
-        window.removeEventListener('resize', onResize);
       });
 </script>
 
@@ -189,18 +140,17 @@ const particlesLoaded = async container => {
         :particlesInit="particlesInit"
         :particlesLoaded="particlesLoaded"
         :options="options"
-      />
-        <h1>农产品市场数据分析平台</h1>
+      /> <!--背景几何线条-->
+        <h1>农产品市场数据分析平台</h1> <!--标题-->
         <h3 class="span loader">
           <span class="m" v-for="(char, index) in loaderChars" :key="index">{{ char }}</span>
         </h3>
-        <div class="nav-container" :class="navContainerClass">
+        <div class="nav-container" :class="navContainerClass"> <!--导航栏-->
           <router-link to="/" class="nav-tab" :class="{ myActive: $route.path === '/' }">首页</router-link>
           <router-link to="/dataQuery" class="nav-tab" :class="{ myActive: $route.path === '/dataQuery' }">数据查询</router-link>
           <router-link to="/marketInfo" class="nav-tab" :class="{ myActive: $route.path === '/marketInfo' }">市场行情</router-link>
           <router-link to="/analysisForecast" class="nav-tab" :class="{ myActive: $route.path === '/analysisForecast' }">分析预测</router-link>
           <router-link to="/login" class="nav-tab" :class="{ myActive: $route.path === '/login' }">管理员登录</router-link>
-          <!-- 其他选项卡链接... -->
           <span class="nav-tab-slider" :style="{ left: tabSliderLeft }"></span>
         </div>
       </section>
@@ -389,79 +339,6 @@ animation: loading 1s ease-in-out infinite alternate;
   color: #4b565b;
   text-shadow: 0 0 0 #4b565b;
   animation: loading 1s ease-in-out infinite alternate;
-}
-
-@keyframes loading {
-to {
-  text-shadow: 20px 0 70px #4b565b;
-  color: #4b565b;
-}
-}
-
-.loader span:nth-child(2) {
-animation-delay: 0.1s;
-}
-
-.loader span:nth-child(3) {
-animation-delay: 0.2s;
-}
-.loader span:nth-child(4) {
-animation-delay: 0.3s;
-}
-.loader span:nth-child(5) {
-animation-delay: 0.4s;
-}
-.loader span:nth-child(6) {
-animation-delay: 0.5s;
-}
-.loader span:nth-child(7) {
-animation-delay: 0.6s;
-}
-.loader span:nth-child(8) {
-animation-delay: 0.7s;
-}
-.loader span:nth-child(9) {
-animation-delay: 0.8s;
-}
-
-.loader span:nth-child(10) {
-animation-delay: 0.9s;
-}
-.loader span:nth-child(11) {
-animation-delay: 1s;
-}
-.loader span:nth-child(12) {
-animation-delay: 1.1s;
-}
-.loader span:nth-child(13) {
-animation-delay: 1.2s;
-}
-.loader span:nth-child(14) {
-animation-delay: 1.3s;
-}
-.loader span:nth-child(15) {
-animation-delay: 1.4s;
-}
-.loader span:nth-child(16) {
-animation-delay: 1.5s;
-}
-.loader span:nth-child(17) {
-animation-delay: 1.6s;
-}
-.loader span:nth-child(18) {
-animation-delay: 1.7s;
-}
-.loader span:nth-child(19) {
-animation-delay: 1.8s;
-}
-.loader span:nth-child(20) {
-animation-delay: 1.9s;
-}
-.loader span:nth-child(21) {
-animation-delay: 2s;
-}
-.loader span:nth-child(22) {
-animation-delay: 2.1s;
 }
 
 </style>

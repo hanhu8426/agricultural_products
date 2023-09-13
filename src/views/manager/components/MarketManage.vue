@@ -147,7 +147,7 @@ const options_province = [
     value: '澳门特别行政区',
     label: '澳门特别行政区',
   },
-];
+];//所有可选省市
 const selectedMarket = ref('');
 const form = ref({
   province:'',
@@ -170,20 +170,20 @@ const searchMarket = async () => {
     }catch(error){
         console.log('获取省市数据失败',error)
     }
-}
+}//按省市获取市场（可不选省市，即为拉取所有市场）
 
 const add = async () =>{
   addDialogVisible.value = true;
   form.value.market = '';
   form.value.province = '';
-}
+}//打开添加
 
 const handleEdit = (row) =>{
   selectedMarket.value = row.market;
   form.value.province = row.province;
   form.value.market = row.market;
   editDialogVisible.value = true;
-}
+}//打开编辑
 const handleDelete = async (row) => {
   try{
     await axios.delete(`${baseUrl}/dropDownBox/markets/${row.province}/${row.market}`);
@@ -191,7 +191,7 @@ const handleDelete = async (row) => {
     console.log("删除市场失败",error)
   }
   await searchMarket();
-}
+}//删除
 const onSubmit = async () => {
   try{
     await axios.post(`${baseUrl}/dropDownBox/markets/edit/${selectedMarket.value}/${form.value.market}/${form.value.province}`);
@@ -200,7 +200,7 @@ const onSubmit = async () => {
   }
   editDialogVisible.value = false;
   await searchMarket();
-}
+}//编辑提交
 
 const onAdd = async () => {
   try{
@@ -210,7 +210,7 @@ const onAdd = async () => {
   }
   addDialogVisible.value = false;
   await searchMarket();
-}
+}//添加提交
 
 onMounted(() => {
     searchMarket();

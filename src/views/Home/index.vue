@@ -7,7 +7,7 @@ import 'echarts/theme/essos';
 import DailyChart from '../DataQuery/components/DailyChart.vue';
 import MonthlyChart from '../DataQuery/components/MonthlyChart.vue';
 import chinaJson from './china.json'
-
+//展示当前时间
 const currentDate = ref(new Date());
 const formattedDate = ref(formatDate(currentDate.value));
 function formatDate(date) {
@@ -16,7 +16,7 @@ function formatDate(date) {
   const day = date.getDate();
   return `${year}年${month}月${day}日`;
 }
-
+//左下品种下拉框内容
 const options = [
   {
     value: '猪肉',
@@ -131,6 +131,7 @@ const options = [
     label: '鸭梨',
   },
 ]
+//右下品种下拉框内容
 const TypeOptions = [
   {
     value: '猪',
@@ -157,6 +158,7 @@ const TypeOptions = [
     label: '奶制品',
   }
 ]
+//右下时间选项
 const TimeOptions = [
     {
         value:'2023-07',
@@ -187,6 +189,7 @@ const TimeOptions = [
         label:'2023-01',
     }
 ]
+//左下前五市场分别的进度条颜色
 const customColor = ref('#a00712');
 const customColor_2 = ref('#e28350');
 const customColor_3 = ref('#4b565b');
@@ -262,7 +265,7 @@ const getProvinceData = async () => {
     console.error('Error fetching data:', error);
   }
 }
-const combine = () =>{
+const combine = () =>{//合并为图表所需的混合信息
   PieCombined = ref([]);
   for (let i = 0; i < ProvinceData.value.length; i++) {
       PieCombined.value.push({
@@ -294,7 +297,7 @@ const getChartNumber = async () => {
     console.error('Error fetching data:', error);
   }
 }
-const combineMap = () =>{
+const combineMap = () =>{//合并为图表所需的混合信息
   combinedData = ref([]);
   for (let i = 0; i < chartProvince.value.length; i++) {
     combinedData.value.push({
@@ -317,9 +320,9 @@ const combineMap = () =>{
   await getChartNumber();
   combine();
   combineMap();
-  const chartContainer = document.getElementById('chart-container_RB');
+  const chartContainer = document.getElementById('chart-container_RB');//初始化饼图
   let chart_p1 = echarts.init(chartContainer, 'essos');
-  const chartContainer_2 = document.getElementById('chart-container_center');
+  const chartContainer_2 = document.getElementById('chart-container_center');//初始化地图
   let myChart = echarts.init(chartContainer_2, 'essos');
   const HomePieChart_Init = () => {
 
@@ -372,7 +375,7 @@ const combineMap = () =>{
       };
 
     chart_p1.setOption(option);
-  };
+  };//饼图配置
   const mapChart = () => {
     
     echarts.registerMap('China', chinaJson);
@@ -434,9 +437,10 @@ const combineMap = () =>{
     };
     myChart.setOption(option);
 
-  };
+  };//地图配置
   HomePieChart_Init();
   mapChart();
+  //监听以实时改变
   watch([LBType], () => {
     getMarketName();
     getMarketPrice();
@@ -454,7 +458,7 @@ const combineMap = () =>{
 <template>
     <div style="display: flex;">
         <div class="left">
-            <div class="left_top">
+            <div class="left_top"> <!--左上指数手绘图-->
                 <div class="exponent_box_title">
                     <img src="../../assets/images/zhexiantu-xianxing.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;background: none;">
                     <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 260px;">农产品批发价格200指数</span>
@@ -484,7 +488,7 @@ const combineMap = () =>{
                     <div class="line0_data"><span class="line0_data_number">{{ latestExponent }}</span></div>
                 </div>
             </div>
-            <div class="left_bottom">
+            <div class="left_bottom"><!--左下排行-->
                 <div class="exponent_box_title">
                     <img src="../../assets/images/shangsheng.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;background: none;">
                     <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 260px;">批发价格最高排名</span>
@@ -549,7 +553,7 @@ const combineMap = () =>{
                 </div>
             </div>
         </div>
-        <div class="center">
+        <div class="center"><!--居中地图-->
           <div class="exponent_box_title">
               <img src="../../assets/images/地图.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;background: none;">
               <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 200px;">各省市市场数量热力图</span>
@@ -557,7 +561,7 @@ const combineMap = () =>{
           <div id="chart-container_center" style="width: 580px; height: 680px;"></div>
         </div>
         <div class="right">
-            <div class="right_top">
+            <div class="right_top"><!--右上指数折线图-->
                 <div class="exponent_box_title">
                     <img src="../../assets/images/zhexiantu-xianxing.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;background: none;">
                     <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 130px;">200指数趋势图</span>
@@ -575,7 +579,7 @@ const combineMap = () =>{
                     </div>
                 </div>
             </div>
-            <div class="right_bottom">
+            <div class="right_bottom"><!--右下饼图-->
                 <div class="exponent_box_title">
                     <img src="../../assets/images/tubiao-bingtu.png" alt="" style="width: 20px;height: 20px;margin-left: 10px;background: none;">
                     <span style="margin-left: 10px;font-size: 16px;font-weight: bold;width: 200px;">农产品各省市出口量</span>

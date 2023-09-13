@@ -14,7 +14,8 @@ const props = {
 };
 const props_p3 ={
   expandTrigger: 'hover',
-}
+}//鼠标悬停打开级联框
+//图表样式选择
 const selectedIndex = ref(0); // 默认选中第一个图标
 const selectedIndex_2 = ref(1); // 默认选中第二个图标
 const selectedIndex_3 = ref(0); // 默认选中第一个图标
@@ -25,12 +26,12 @@ const icons = [
   zhexiantu, // 本地PNG图片的相对路径
   zhuzhuangtu,
   bingtu,
-];
+];//均价使用的三个图表icon
 const icons_2 = [
   zhexiantu, // 本地PNG图片的相对路径
   zhuzhuangtu,
   leidatu,
-];
+];//其余使用的三个图表icon
 const selectTable = (index) => {
   // 切换选中状态
   selectedIndex.value = index;
@@ -112,11 +113,11 @@ const lowestMarket_p1 = ref('天长市永福农副产品批发市场');
 const lowestTime_p1 = ref('2023-09-01');
 const content_p1 = ref([]); // 接收后端返回的varietyNationalAverageList
 const refDate_p1 = ref(['2023-08-30','2023-08-31','2023-09-01']);
-const refPrice_p1 = ref([5.52857,5.53571,5.52857]);
+const refPrice_p1 = ref([5.01143,5.53571,5.20112]);
 const combinedData = ref([
-  {value: 5.52857,name: '2023-08-30'},
+  {value: 5.01143,name: '2023-08-30'},
   {value: 5.53571,name: '2023-08-31'},
-  {value: 5.52857,name: '2023-09-01'}
+  {value: 5.20112,name: '2023-09-01'}
 ]);
 // 第二标签页中的地区，品种类别
 const selectedProvince_p2 = ref('北京市');
@@ -1376,6 +1377,7 @@ const handleQueryP5 = async () => {
 onMounted(async () => {
   
   //初始化函数
+  //第一页三个图表
   const MarketLineChartInit = () => {
   const chartContainer = document.getElementById('chart-container_1');
   let chart_p1 = echarts.init(chartContainer, 'essos');
@@ -1515,6 +1517,7 @@ const MarketPieChart_Init = () => {
 
   chart_p1.setOption(option);
 };
+//第二页三个图表
 const MarketLineChart_area_Init = () => {
   const chartContainer = document.getElementById('chart-container_2_1');
   let chart_p1 = echarts.init(chartContainer, 'essos');
@@ -1654,6 +1657,7 @@ const MarketPieChart_area_Init = () => {
 
   chart_p1.setOption(option);
 };
+//第三页三个图表
 const MarketLineChart_multiCategory_Init = () => {
   const chartContainer = document.getElementById('chart-container_3');
   let chart_p1 = echarts.init(chartContainer, 'essos');
@@ -1886,6 +1890,7 @@ const MarketRadarChart_multiCategory_Init = () => {
 
   chart_p1.setOption(option);
 };
+//第四页三个图表
 const MarketLineChart_multiMarket_Init = () => {
   const chartContainer = document.getElementById('chart-container_4_1');
   let chart_p1 = echarts.init(chartContainer, 'essos');
@@ -2118,6 +2123,7 @@ const MarketRadarChart_multiMarket_Init = () => {
 
   chart_p1.setOption(option);
 };
+//第五页三个图表
 const MarketLineChart_multiArea_Init = () => {
   const chartContainer = document.getElementById('chart-container_5_1');
   let chart_p1 = echarts.init(chartContainer, 'essos');

@@ -38,7 +38,7 @@ const searchWeeklyReport = async () => {
   }catch(error){
     console.log('获取日报数据失败',error)
   }
-}
+}//按时间搜索周报
 
 const handleEdit = (row) =>{
   date.value = row.firstDate;
@@ -47,7 +47,7 @@ const handleEdit = (row) =>{
   form.value.firstDate = row.firstDate;
   form.value.source = row.source;
   editDialogVisible.value = true;
-}
+}//打开编辑
 
 const onSubmit = async () => {
   try{
@@ -57,7 +57,7 @@ const onSubmit = async () => {
   }
   editDialogVisible.value = false;
   await searchWeeklyReport();
-}
+}//提交编辑
 
 const fetchWeeklyReport = async () => {
   try{
@@ -67,7 +67,7 @@ const fetchWeeklyReport = async () => {
   }catch(error){
     console.log('获取全部日报数据失败',error)
   }
-}
+}//获取全部周报
 onMounted(() => {
   fetchWeeklyReport();
 })

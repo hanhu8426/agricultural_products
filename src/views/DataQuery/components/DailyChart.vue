@@ -12,12 +12,13 @@
   // 引入ECharts主题文件
   import 'echarts/theme/essos'; 
 
+  //获取日度200指数
   const date = ref([]);
   const productExponent = ref([]);
   const vegetableBasketExponent =ref([]);
   const grainOilExponent = ref([]);
 
-  const getDate = async () => {
+  const getDate = async () => {//获取全部数据
   try {
     const response = await axios.get(`${baseUrl}/exponent/dailyExponent/date`); // 发起请求获取数据
     date.value = response.data.data; // 更新tableData变量
@@ -26,7 +27,7 @@
     console.error('Error fetching data:', error);
   }
 };
-
+//提取总指数
 const getProduct = async () => {
   try {
     const response = await axios.get(`${baseUrl}/exponent/dailyExponent/Product`); // 发起请求获取数据
@@ -35,7 +36,7 @@ const getProduct = async () => {
     console.error('Error fetching data:', error);
   }
 };
-
+//提取菜篮子
 const getVegetable = async () => {
   try {
     const response = await axios.get(`${baseUrl}/exponent/dailyExponent/VegetableBasket`); // 发起请求获取数据
@@ -44,7 +45,7 @@ const getVegetable = async () => {
     console.error('Error fetching data:', error);
   }
 };
-
+//提取粮油
 const getOil = async () => {
   try {
     const response = await axios.get(`${baseUrl}/exponent/dailyExponent/GrainOil`); // 发起请求获取数据
@@ -53,7 +54,7 @@ const getOil = async () => {
     console.error('Error fetching data:', error);
   }
 };
-
+//初始化图表函数
 const renderChart = () => {
   const chartContainer = document.getElementById('chart-container');
   const chart = echarts.init(chartContainer, 'essos');
@@ -128,7 +129,7 @@ const renderChart = () => {
 
   chart.setOption(option);
 };
-
+//监听变化以实时更新
 watch([date, productExponent, vegetableBasketExponent, grainOilExponent], () => {
     renderChart();
 });

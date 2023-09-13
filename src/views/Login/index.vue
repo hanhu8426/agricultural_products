@@ -4,7 +4,7 @@ import axios from 'axios';
 import {useRouter} from "vue-router";
 import {baseUrl} from "@/main";
 import { loadFull } from "tsparticles";
-
+//背景几何线条设置
 const options = {
       background: {
         color: {
@@ -126,7 +126,7 @@ const login = () => {
         :particlesInit="particlesInit"
         :particlesLoaded="particlesLoaded"
         :options="options"
-      />
+      /><!--背景几何线条-->
     <div class="form">
       <header class="head-form">
       <h2>Log In</h2>
@@ -145,7 +145,7 @@ const login = () => {
         <div style="background-color: white;margin-top: 50px;margin-left: 50px;width: 80px;">
     <RouterLink to="/" class="backHome">返回首页</RouterLink>
   </div>
-  <div class="screen__background">
+  <div class="screen__background"><!--设置背景颜色图案-->
 			<span class="screen__background__shape screen__background__shape4"></span>
 			<span class="screen__background__shape screen__background__shape3"></span>		
 			<span class="screen__background__shape screen__background__shape2"></span>

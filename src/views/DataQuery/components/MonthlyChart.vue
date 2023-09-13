@@ -11,12 +11,12 @@
   import {ref,onMounted,watch} from "vue";
   // 引入ECharts主题文件
   import 'echarts/theme/essos'; 
-
+//获取月度200指数
   const date = ref([]);
   const productExponent = ref([]);
   const vegetableBasketExponent =ref([]);
   const grainOilExponent = ref([]);
-
+//获取所有数据
   const getDate = async () => {
   try {
     const response = await axios.get(`${baseUrl}/exponent/monthlyExponent/date`); // 发起请求获取数据
@@ -26,7 +26,7 @@
     console.error('Error fetching data:', error);
   }
 };
-
+//提取总指数
 const getProduct = async () => {
   try {
     const response = await axios.get(`${baseUrl}/exponent/monthlyExponent/Product`); // 发起请求获取数据
@@ -35,7 +35,7 @@ const getProduct = async () => {
     console.error('Error fetching data:', error);
   }
 };
-
+//提取菜篮子
 const getVegetable = async () => {
   try {
     const response = await axios.get(`${baseUrl}/exponent/monthlyExponent/VegetableBasket`); // 发起请求获取数据
@@ -44,7 +44,7 @@ const getVegetable = async () => {
     console.error('Error fetching data:', error);
   }
 };
-
+//提取粮油
 const getOil = async () => {
   try {
     const response = await axios.get(`${baseUrl}/exponent/monthlyExponent/GrainOil`); // 发起请求获取数据
@@ -53,7 +53,7 @@ const getOil = async () => {
     console.error('Error fetching data:', error);
   }
 };
-
+//初始化图表函数
 const renderChart = () => {
   const chartContainer = document.getElementById('chart-container');
   const chart = echarts.init(chartContainer, 'essos');

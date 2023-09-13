@@ -38,7 +38,7 @@ const searchDailyReport = async () => {
   }catch(error){
     console.log('获取日报数据失败',error)
   }
-}
+}//按时间查询日报
 
 const handleEdit = (row) =>{
   date.value = row.thatDate;
@@ -47,7 +47,7 @@ const handleEdit = (row) =>{
   form.value.thatDate = row.thatDate;
   form.value.source = row.source;
   editDialogVisible.value = true;
-}
+}//点击编辑按钮后出编辑弹窗并填上本行数据
 
 const onSubmit = async () => {
   try{
@@ -57,7 +57,7 @@ const onSubmit = async () => {
   }
   editDialogVisible.value = false;
   await searchDailyReport();
-}
+}//修改日报
 
 const fetchDailyReport = async () => {
   try{
@@ -66,7 +66,7 @@ const fetchDailyReport = async () => {
     console.log(DailyReportValue.value)
   }catch(error){
     console.log('获取全部日报数据失败',error)
-  }
+  }//获取全部日报数据
 }
 onMounted(() => {
   fetchDailyReport();

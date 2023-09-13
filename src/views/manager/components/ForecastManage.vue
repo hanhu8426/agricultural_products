@@ -24,13 +24,13 @@ const searchLink = async () => {
   }catch(error){
     console.log('获取省市数据失败',error)
   }
-}
+}//获取所有预测报告
 
 const add = async () =>{
   addDialogVisible.value = true;
   form.value.market = '';
   form.value.province = '';
-}
+}//添加打开
 
 const handleEdit = (row) =>{
   selectedTitle.value = row.title;
@@ -39,7 +39,7 @@ const handleEdit = (row) =>{
   form.value.date = row.date;
   form.value.source = row.source
   editDialogVisible.value = true;
-}
+}//编辑弹窗打开
 const handleDelete = async (row) => {
   try{
     await axios.delete(`${baseUrl}/predict/predictReports/${row.title}`);
@@ -47,7 +47,7 @@ const handleDelete = async (row) => {
     console.log("删除市场失败",error)
   }
   await searchLink();
-}
+}//删除
 const onSubmit = async () => {
   try{
     await axios.post(`${baseUrl}/predict/predictReports/edit/${selectedTitle.value}`,form.value)
@@ -56,7 +56,7 @@ const onSubmit = async () => {
   }
   editDialogVisible.value = false;
   await searchLink();
-}
+}//编辑提交
 
 const onAdd = async () => {
   console.log("调用添加函数");
@@ -67,7 +67,7 @@ const onAdd = async () => {
   }
   addDialogVisible.value = false;
   await searchLink();
-}
+}//添加提交
 
 onMounted(() => {
   searchLink();

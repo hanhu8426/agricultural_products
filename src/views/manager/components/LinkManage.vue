@@ -13,7 +13,7 @@ const form = ref({
 )
 const editDialogVisible = ref(false);
 const addDialogVisible = ref(false);
-
+//获取所有链接
 const searchLink = async () => {
   try{
     const response = await axios.get(`${baseUrl}/links`);
@@ -23,19 +23,20 @@ const searchLink = async () => {
     console.log('获取省市数据失败',error)
   }
 }
-
+//打开添加
 const add = async () =>{
   addDialogVisible.value = true;
   form.value.market = '';
   form.value.province = '';
 }
-
+//打开编辑
 const handleEdit = (row) =>{
   selectedLink.value = row.linkName;
   form.value.linkName = row.linkName;
   form.value.link = row.link;
   editDialogVisible.value = true;
 }
+//删除
 const handleDelete = async (row) => {
   try{
     await axios.delete(`${baseUrl}/links/${row.linkName}`);
@@ -44,6 +45,7 @@ const handleDelete = async (row) => {
   }
   await searchLink();
 }
+//编辑提交
 const onSubmit = async () => {
   try{
     await axios.post(`${baseUrl}/links/edit/${selectedLink.value}`,form.value)
@@ -53,7 +55,7 @@ const onSubmit = async () => {
   editDialogVisible.value = false;
   await searchLink();
 }
-
+//添加提交
 const onAdd = async () => {
   console.log("调用添加函数");
   try{
