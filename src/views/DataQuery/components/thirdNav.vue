@@ -685,11 +685,11 @@ const download_query = () => {
         </div>
         <div class="scrollTable"> <!--表格展示数据-->
           <el-table :data="displayedData" class="custom-table">
-            <el-table-column prop="market" label="批发市场"/>
+            <el-table-column prop="market" label="批发市场" width="250"/>
             <el-table-column prop="variety" label="品种" width="180" />
-            <el-table-column prop="highestPrice" label="最高价"  />
-            <el-table-column prop="minimumPrice" label="最低价" width="180" />
-            <el-table-column prop="bulkPrice" label="大宗价" width="180" />
+            <el-table-column prop="highestPrice" label="最高价"  width="170"/>
+            <el-table-column prop="minimumPrice" label="最低价" width="170" />
+            <el-table-column prop="bulkPrice" label="大宗价" width="170" />
             <el-table-column prop="province" label="产地"/>
           </el-table>
         </div>
