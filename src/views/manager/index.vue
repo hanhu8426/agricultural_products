@@ -1,6 +1,7 @@
 <script setup>
 import {useRouter} from "vue-router";
-import {ref} from 'vue'
+import {ref} from 'vue';
+
 //获取当前时间
 const currentDate = ref(new Date());
 const formattedDate = ref(formatDate(currentDate.value));
@@ -52,7 +53,7 @@ const toLogin = ()=> {
     <div class="app-header-right">
       
       <button class="profile-btn">
-        <img src="../../assets/images/头像.JPG" />
+        <img src="../../assets/images/用户.png" style="background: none;"/>
         <span>您好！管理员</span>
       </button>
     </div>
