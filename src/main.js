@@ -22,4 +22,4 @@ app.use(router)
 app.use(Particles)
 app.mount('#app')
 
-export const baseUrl = 'http://10.203.194.231:8081';
+export const baseUrl = 'http://10.203.255.52:8081';
