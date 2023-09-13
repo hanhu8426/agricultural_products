@@ -85,7 +85,7 @@ onMounted(() => {
     </div>
   </div>
   <div class="ManageTable">
-    <el-table :data="DailyReportValue" style="width: 960px;max-width: 100%;height: 100vh;background: none!important;;">
+    <el-table :data="DailyReportValue" style="width: 960px;max-width: 100%;height: 100%;background: none!important;;">
       <el-table-column prop="title" label="标题" width="200px" style="color: #aaa;"/>
       <el-table-column prop="thatDate" label="日期" width="130px" />
       <el-table-column prop="source" label="来源" width="130px" />

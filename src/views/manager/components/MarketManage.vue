@@ -228,7 +228,9 @@ onMounted(() => {
             <el-button type="info" style="margin-left: 10px;" @click="searchMarket">查询</el-button>
         </div>
         <div class="addButton">
-            <el-button type="success" @click="add">添加</el-button>
+          <a class="app-sidebar-link" @click="add">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+          </a>
             <el-dialog v-model="addDialogVisible" title="添加">
               <el-form :model="form">
                 <el-form-item label="省市:">
@@ -257,7 +259,7 @@ onMounted(() => {
         </div>
     </div>
     <div class="ManageTable">
-      <el-table :data="searchMarketValue" style="width: 960px;max-width: 100%;height: 100vh;">
+      <el-table :data="searchMarketValue" style="width: 960px;max-width: 100%;height: 100%;">
           <el-table-column prop="province" label="省市" width="230px" style="color: #aaa;"/>
           <el-table-column prop="market" label="市场" width="430px" />
           <el-table-column fixed="right" label="选项" width="300px">

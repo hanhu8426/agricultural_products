@@ -80,6 +80,14 @@ const renderChart = () => {
             fontSize: 9, // 设置系列名称的字体大小
           },
         },
+        toolbox: {
+          show: true,
+          right: 'right',
+          bottom: 'bottom',
+          feature: {
+            saveAsImage: { show: true }
+          }
+        },
         xAxis: [
             {
             data: date.value

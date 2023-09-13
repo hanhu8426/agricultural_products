@@ -328,6 +328,14 @@ const combineMap = () =>{
       tooltip: {
           trigger: 'item'
       },
+      toolbox: {
+          show: true,
+          right: 'right',
+          bottom: 'bottom',
+          feature: {
+            saveAsImage: { show: true }
+          }
+        },
       legend: {
             show: true,
             textStyle: {

@@ -74,6 +74,14 @@ const renderChart = () => {
         tooltip: {
             trigger: 'axis'
         },
+        toolbox: {
+          show: true,
+          right: 'right',
+          bottom: 'bottom',
+          feature: {
+            saveAsImage: { show: true }
+          }
+        },
         legend: {
           show: true,
           textStyle: {

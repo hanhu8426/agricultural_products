@@ -33,7 +33,7 @@ const scrollToTab = (hash) => {
       interactivity: {
         events: {
           onClick: {
-            enable: true,
+            enable: false,
             mode: "push",//可用的click模式有: "push", "remove", "repulse", "bubble"。
           },
           onHover: {

@@ -85,8 +85,8 @@ onMounted(() => {
     </div>
   </div>
   <div class="ManageTable">
-    <el-table :data="weeklyReportValue" style="width: 960px;max-width: 100%;height: 100vh;">
-      <el-table-column prop="title" label="标题" width="200px" style="color: #aaa;"/>
+    <el-table :data="weeklyReportValue" style="width: 960px;max-width: 100%;height: 100%;">
+      <el-table-column prop="title" label="标题" width="210px" style="color: #aaa;"/>
       <el-table-column prop="firstDate" label="日期" width="130px" />
       <el-table-column prop="source" label="来源" width="150px" />
       <el-table-column prop="content" label="内容" width="400px" >
@@ -164,5 +164,8 @@ onMounted(() => {
 }
 .el-button.is-link:hover, .el-button.is-link:focus {
   color: #545c64;
+}
+.el-table__header-wrapper tr th.el-table-fixed-column--left, .el-table__header-wrapper tr th.el-table-fixed-column--right {
+    background-color: #f6eac5;
 }
 </style>
